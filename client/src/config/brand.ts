@@ -56,3 +56,5 @@ export const trackWhatsAppClick = (service?: string) => {
     });
   }
 };
+
+export const BRAND = brand;
