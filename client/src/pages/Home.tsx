@@ -230,7 +230,7 @@ export default function Home() {
                   href={whatsappLink()}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-xl bg-[#B07070] px-8 py-5 sm:px-10 sm:py-4 text-base font-bold text-white shadow-xl hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                  className="inline-flex items-center justify-center rounded-xl bg-[#B07070] px-8 py-5 sm:px-10 sm:py-4 text-base font-bold text-white shadow-[0_0_12px_rgba(176,112,112,0.45),0_0_24px_rgba(214,182,182,0.25)] hover:shadow-[0_0_18px_rgba(176,112,112,0.6),0_0_32px_rgba(214,182,182,0.35)] hover:opacity-95 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40 transition-shadow duration-300"
                   data-testid="button-hero-whatsapp"
                 >
                   Reservar turno ahora
