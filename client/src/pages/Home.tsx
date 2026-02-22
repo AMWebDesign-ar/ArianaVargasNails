@@ -81,15 +81,18 @@ function MobileMenu({
         <div className="flex flex-col gap-1 p-4">
           {[
             { href: "#services", label: "Servicios" },
+            { href: "#gallery", label: "Ver trabajos" },
+            { href: BRAND.mapsUrl, label: "Ubicación", external: true },
             { href: "#turnos", label: "Turnos" },
-          ].map((item, i) => (
+          ].map((item: { href: string; label: string; external?: boolean }, i) => (
             <a
               key={item.label}
               href={item.href}
+              {...(item.external ? { target: "_blank", rel: "noreferrer" } : {})}
               onClick={onClose}
               className="rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-all duration-300"
               style={{ animationDelay: `${i * 60}ms` }}
-              data-testid={`link-mobile-nav-${item.label.toLowerCase()}`}
+              data-testid={`link-mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
               {item.label}
             </a>
