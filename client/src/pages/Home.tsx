@@ -123,6 +123,25 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
+  useEffect(() => {
+    if (servicesOpen || menuOpen) {
+      window.history.pushState({ modal: "open" }, "");
+      
+      const handlePopState = () => {
+        setServicesOpen(false);
+        setMenuOpen(false);
+      };
+
+      window.addEventListener("popstate", handlePopState);
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+        if (window.history.state?.modal === "open") {
+          window.history.back();
+        }
+      };
+    }
+  }, [servicesOpen, menuOpen]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FAFAFA] to-[#F3F0ED]">
       {/* Header */}
