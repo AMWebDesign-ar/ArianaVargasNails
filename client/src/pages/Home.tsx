@@ -81,31 +81,19 @@ function MobileMenu({
         <div className="flex flex-col gap-1 p-4">
           {[
             { href: "#services", label: "Servicios" },
-            { href: "#gallery", label: "Galería" },
-            { href: "#studio", label: "Estudio" },
             { href: "#turnos", label: "Turnos" },
-          ].map((item) => (
+          ].map((item, i) => (
             <a
               key={item.label}
               href={item.href}
               onClick={onClose}
-              className="rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-colors"
+              className="rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-all duration-300"
+              style={{ animationDelay: `${i * 60}ms` }}
               data-testid={`link-mobile-nav-${item.label.toLowerCase()}`}
             >
               {item.label}
             </a>
           ))}
-
-          <a
-            href={whatsappLink()}
-            target="_blank"
-            rel="noreferrer"
-            onClick={onClose}
-            className="mt-3 flex items-center justify-center rounded-xl bg-[#1C1C1C] px-5 py-3 text-sm font-medium text-[#FAFAFA] active:opacity-80"
-            data-testid="button-mobile-reservar"
-          >
-            Reservar por WhatsApp
-          </a>
         </div>
       </nav>
     </div>
@@ -193,13 +181,13 @@ export default function Home() {
                 className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight"
                 data-testid="text-hero-title"
               >
-                <span className="block text-[29px] sm:text-[30px] md:text-[32px] font-normal text-black/65 tracking-[0.02em]">
+                <span className="block text-[29px] sm:text-[30px] md:text-[32px] font-normal text-black/65 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
                   Tu estilo
                 </span>
-                <span className="block mt-1 text-[39px] sm:text-[41px] md:text-[45px] font-medium text-black/80">
+                <span className="block mt-1 text-[39px] sm:text-[41px] md:text-[45px] font-medium text-black/80 animate-fade-up" style={{ animationDelay: '0.3s' }}>
                   empieza en
                 </span>
-                <span className="block mt-1 text-[47px] sm:text-[49px] md:text-[52px] font-semibold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent">
+                <span className="block mt-1 text-[47px] sm:text-[49px] md:text-[52px] font-semibold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent animate-fade-up" style={{ animationDelay: '0.5s' }}>
                   tus manos
                 </span>
               </h1>
@@ -207,17 +195,19 @@ export default function Home() {
               <img
                 src="/brand/logo_square_transparent.png"
                 alt="Ariana Vargas Nails"
-                className="mt-6 sm:mt-8 w-40 h-40 sm:w-56 sm:h-56 md:w-68 md:h-68 object-cover rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_0_20px_rgba(214,182,182,0.45),0_0_40px_rgba(201,160,160,0.25)] animate-pulse-expand p-1"
+                className="mt-6 sm:mt-8 w-40 h-40 sm:w-56 sm:h-56 md:w-68 md:h-68 object-cover rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_0_20px_rgba(214,182,182,0.45),0_0_40px_rgba(201,160,160,0.25)] animate-pulse-expand animate-scale-in p-1"
+                style={{ animationDelay: '0.6s, 0s' }}
                 data-testid="img-hero-logo"
               />
 
               <p
-                className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70"
+                className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70 animate-fade-up"
+                style={{ animationDelay: '0.8s' }}
                 data-testid="text-hero-subtitle"
               >
                 Turnos con reserva previa
               </p>
-              <p className="mt-0.5 flex items-center gap-1.5 text-sm text-black/60" data-testid="text-hero-location">
+              <p className="mt-0.5 flex items-center gap-1.5 text-sm text-black/60 animate-fade-up" style={{ animationDelay: '0.9s' }} data-testid="text-hero-location">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                   <circle cx="12" cy="10" r="3" />
@@ -225,7 +215,7 @@ export default function Home() {
                 Zona Güemes · Mar del Plata
               </p>
 
-              <div className="mt-5 sm:mt-7 flex flex-col items-center gap-3">
+              <div className="mt-5 sm:mt-7 flex flex-col items-center gap-3 animate-fade-up" style={{ animationDelay: '1s' }}>
                 <a
                   href={whatsappLink()}
                   target="_blank"
