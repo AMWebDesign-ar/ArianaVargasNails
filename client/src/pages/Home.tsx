@@ -55,7 +55,7 @@ function MobileMenu({
         data-testid="nav-mobile-menu"
       >
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-4">
-          <span className="text-sm font-medium tracking-[0.15em] [font-family:var(--font-serif)]">{BRAND.name}</span>
+          <span className="text-base font-medium tracking-[0.15em] [font-family:var(--font-serif)]">{BRAND.name}</span>
           <button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-black/60 hover:text-black active:bg-black/5"
@@ -90,7 +90,7 @@ function MobileMenu({
               href={item.href}
               {...(item.external ? { target: "_blank", rel: "noreferrer" } : {})}
               onClick={onClose}
-              className={`rounded-xl px-4 py-4 text-base font-medium text-black/80 active:bg-black/5 transition-all duration-300 hover:bg-[#D6B6B6]/15 hover:text-black hover:translate-x-2 hover:scale-[1.02] hover:shadow-sm ${item.label === "Turnos" ? "animate-shimmer font-semibold" : ""}`}
+              className={`rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-all duration-300 hover:bg-[#D6B6B6]/15 hover:text-black hover:translate-x-2 hover:scale-[1.02] hover:shadow-sm ${item.label === "Turnos" ? "animate-shimmer font-semibold" : ""}`}
               style={{ animationDelay: `${i * 60}ms` }}
               data-testid={`link-mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
