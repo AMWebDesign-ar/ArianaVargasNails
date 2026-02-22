@@ -213,6 +213,14 @@ export default function Home() {
                 </a>
 
                 <a
+                  href="#services"
+                  className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                  data-testid="button-hero-servicios"
+                >
+                  Servicios
+                </a>
+
+                <a
                   href="#gallery"
                   className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
                   data-testid="button-hero-gallery"
