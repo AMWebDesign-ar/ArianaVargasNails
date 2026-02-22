@@ -209,11 +209,11 @@ export default function Home() {
                 </span>
               </h1>
 
-              <div className="relative z-10 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_20px_50px_rgba(0,0,0,0.1),0_10px_30px_rgba(214,182,182,0.15)] animate-pulse-expand animate-scale-in p-0 overflow-hidden bg-white flex items-center justify-center">
+              <div className="relative z-10 w-36 h-36 sm:w-52 sm:h-52 md:w-64 md:h-64 rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_20px_50px_rgba(0,0,0,0.1),0_10px_30px_rgba(214,182,182,0.15)] animate-pulse-expand animate-scale-in p-0 overflow-hidden bg-white flex items-center justify-center">
                 <img
                   src="/brand/logo_nuevo.png"
                   alt="Ariana Vargas Nails"
-                  className="w-full h-full object-contain scale-[1.05]"
+                  className="w-full h-full object-contain scale-[1.25]"
                   data-testid="img-hero-logo"
                 />
               </div>
