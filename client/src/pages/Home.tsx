@@ -193,13 +193,6 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="grid items-center gap-8 md:gap-10 md:grid-cols-2">
               <div>
-                <p
-                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1.5 text-[11px] sm:text-xs text-black/70"
-                  data-testid="text-hero-location"
-                >
-                  Atención en estudio · {BRAND.city} ({BRAND.area})
-                </p>
-
                 <h1
                   className="mt-4 sm:mt-5 text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight [font-family:var(--font-playfair)]"
                   data-testid="text-hero-title"
