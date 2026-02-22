@@ -216,6 +216,13 @@ export default function Home() {
               >
                 Turnos con reserva previa
               </p>
+              <p className="mt-2 flex items-center gap-1.5 text-sm text-black/60" data-testid="text-hero-location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Zona Güemes · Mar del Plata
+              </p>
 
               <div className="mt-5 sm:mt-7 flex flex-col gap-3 sm:flex-row">
                 <a
