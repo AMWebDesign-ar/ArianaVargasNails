@@ -83,7 +83,7 @@ function MobileMenu({
         <div className="flex flex-col gap-3 p-5 pt-10">
           {[
             { href: "#services", label: "Servicios", action: "services" },
-            { href: "#gallery", label: "Ver trabajos" },
+            { href: BRAND.instagram, label: "Ver trabajos", external: true },
             { href: BRAND.mapsUrl, label: "Ubicación", external: true },
             { href: "#turnos", label: "Turnos" },
           ].map((item: { href: string; label: string; external?: boolean; action?: string }, i) => (
