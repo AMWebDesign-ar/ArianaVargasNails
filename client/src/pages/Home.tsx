@@ -207,7 +207,7 @@ export default function Home() {
               <img
                 src="/brand/logo_square_transparent.png"
                 alt="Ariana Vargas Nails"
-                className="mt-6 sm:mt-8 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-cover rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_0_20px_rgba(214,182,182,0.45),0_0_40px_rgba(201,160,160,0.25)] animate-pulse-expand p-1"
+                className="mt-6 sm:mt-8 w-40 h-40 sm:w-56 sm:h-56 md:w-68 md:h-68 object-cover rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_0_20px_rgba(214,182,182,0.45),0_0_40px_rgba(201,160,160,0.25)] animate-pulse-expand p-1"
                 data-testid="img-hero-logo"
               />
 
