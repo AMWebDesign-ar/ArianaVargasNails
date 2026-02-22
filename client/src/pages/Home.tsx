@@ -210,7 +210,7 @@ export default function Home() {
               </h1>
 
               <img
-                src="/brand/logo_square_transparent.png"
+                src="/brand/logo_nuevo.png"
                 alt="Ariana Vargas Nails"
                 className="relative z-10 w-40 h-40 sm:w-56 sm:h-56 md:w-68 md:h-68 object-cover rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_20px_50px_rgba(0,0,0,0.1),0_10px_30px_rgba(214,182,182,0.15)] animate-pulse-expand animate-scale-in p-1"
                 style={{ animationDelay: '0.6s, 0s' }}
