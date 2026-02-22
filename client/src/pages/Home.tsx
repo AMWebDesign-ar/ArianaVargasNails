@@ -108,7 +108,7 @@ export default function Home() {
   const [servicesOpen, setServicesOpen] = useState(false);
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-[#FAFAFA] to-[#F3F0ED]">
       {/* Header */}
       <header
         className="sticky top-0 z-40 border-b border-black/5 bg-[#FAFAFA]/70 backdrop-blur-lg"
@@ -328,6 +328,6 @@ export default function Home() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
