@@ -194,13 +194,13 @@ export default function Home() {
                 data-testid="text-hero-title"
               >
                 <span className="block text-3xl sm:text-4xl md:text-5xl font-medium text-black/50">
-                  Tu momento,
+                  Tu estilo
                 </span>
                 <span className="block mt-1 text-4xl sm:text-5xl md:text-6xl font-semibold text-black/70">
-                  Tu estilo,
+                  empieza en
                 </span>
                 <span className="block mt-1 text-5xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent">
-                  Tus uñas
+                  tus manos
                 </span>
               </h1>
 
