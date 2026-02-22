@@ -90,7 +90,7 @@ function MobileMenu({
               href={item.href}
               {...(item.external ? { target: "_blank", rel: "noreferrer" } : {})}
               onClick={onClose}
-              className="rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-all duration-300"
+              className="rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-all duration-300 hover:bg-[#D6B6B6]/15 hover:text-black hover:translate-x-2 hover:scale-[1.02] hover:shadow-sm"
               style={{ animationDelay: `${i * 60}ms` }}
               data-testid={`link-mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
