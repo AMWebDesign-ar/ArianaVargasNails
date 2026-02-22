@@ -57,10 +57,10 @@ function MobileMenu({
         data-testid="nav-mobile-menu"
       >
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-4">
-          <span className="text-base font-medium tracking-[0.15em] [font-family:var(--font-serif)]">{BRAND.name}</span>
+          <span className="text-[12px] font-light tracking-[0.25em] uppercase text-black/40 [font-family:var(--font-serif)]">{BRAND.name}</span>
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-black/60 hover:text-black active:bg-black/5"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-black/40 hover:text-black active:bg-black/5"
             aria-label="Cerrar menú"
             data-testid="button-close-mobile-menu"
           >
@@ -132,17 +132,17 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setMenuOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-black/70 active:bg-black/5 md:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-xl text-black/50 active:bg-black/5 md:hidden"
               aria-label="Abrir menú"
               data-testid="button-open-mobile-menu"
             >
               <svg
-                width="22"
-                height="22"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
@@ -153,7 +153,7 @@ export default function Home() {
             </button>
 
             <a href="#top" className="min-w-0" data-testid="link-logo">
-              <div className="text-sm font-medium tracking-[0.12em] [font-family:var(--font-serif)] truncate">
+              <div className="text-[13px] font-light tracking-[0.25em] uppercase text-black/40 [font-family:var(--font-serif)] truncate">
                 {BRAND.name}
               </div>
             </a>
