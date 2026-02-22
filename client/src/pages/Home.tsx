@@ -198,9 +198,7 @@ export default function Home() {
                 className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70"
                 data-testid="text-hero-subtitle"
               >
-                Reservá tu turno por WhatsApp en segundos. Te acompaño a elegir
-                la mejor opción según tu estilo, con un acabado prolijo y
-                elegante.
+                Turnos con reserva previa
               </p>
 
               <div className="mt-5 sm:mt-7 flex flex-col gap-3 sm:flex-row">
