@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BRAND, whatsappLink } from "@/config/brand";
+import heroNailsBg from "@assets/beso_turco_1771736671340.png";
 import { SERVICES } from "@/config/services";
 import { GALLERY } from "@/config/gallery";
 import { ServiceCard } from "@/components/ServiceCard";
@@ -178,6 +179,12 @@ export default function Home() {
       <main id="top">
         {/* HERO */}
         <section className="relative overflow-hidden" data-testid="section-hero">
+          <img
+            src={heroNailsBg}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none"
+            aria-hidden="true"
+          />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
