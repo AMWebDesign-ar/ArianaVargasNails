@@ -237,10 +237,16 @@ export default function Home() {
                   href={whatsappLink()}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-xl bg-[#B07070] px-8 py-5 sm:px-10 sm:py-4 text-base font-bold text-white shadow-[0_0_12px_rgba(176,112,112,0.45),0_0_24px_rgba(214,182,182,0.25)] hover:shadow-[0_0_18px_rgba(176,112,112,0.6),0_0_32px_rgba(214,182,182,0.35)] hover:opacity-95 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40 transition-shadow duration-300"
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3),0_0_0_1px_rgba(255,255,255,0.1)_inset] hover:shadow-[0_15px_30px_rgba(176,112,112,0.4),0_0_0_2px_rgba(255,255,255,0.2)_inset] hover:scale-[1.03] active:scale-95 transition-all duration-500 group overflow-hidden"
                   data-testid="button-hero-whatsapp"
                 >
-                  Reservar turno ahora
+                  <span className="relative z-10 flex items-center gap-2">
+                    Reservar turno ahora
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 animate-pulse">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </a>
 
                 <div className="mt-1.5 flex flex-col sm:flex-row gap-3">
