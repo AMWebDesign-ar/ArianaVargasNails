@@ -246,7 +246,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-24 sm:mt-32 border-t border-black/5 bg-white/40 backdrop-blur-sm" data-testid="footer">
+      <footer className="mt-40 sm:mt-52 border-t border-black/5 bg-white/40 backdrop-blur-sm" data-testid="footer">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
           <div className="flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
