@@ -237,23 +237,6 @@ export default function Home() {
                   </a>
                 </div>
 
-                <div className="mt-6 sm:mt-8 grid max-w-xl grid-cols-1 sm:grid-cols-3 gap-3">
-                  {[
-                    { t: "Higiene", d: "Prolijidad en cada detalle" },
-                    { t: "Calidad", d: "Materiales seleccionados" },
-                    { t: "Cuidado", d: "Atención personalizada" },
-                  ].map((b) => (
-                    <div
-                      key={b.t}
-                      className="rounded-2xl border border-black/5 bg-white p-4 shadow-sm"
-                    >
-                      <div className="text-sm font-semibold">{b.t}</div>
-                      <div className="mt-1 text-xs leading-5 text-black/60">
-                        {b.d}
-                      </div>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               {/* Visual - hidden on very small screens, shown from sm */}
