@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { BRAND, whatsappLink } from "@/config/brand";
 import heroNailsBg from "@assets/beso_turco_1771736671340.png";
 import { SERVICES } from "@/config/services";
@@ -238,14 +239,14 @@ export default function Home() {
                 </a>
 
                 <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up" style={{ animationDelay: '1.1s' }}>
-                  <button
-                    onClick={() => setServicesOpen(true)}
-                    className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_15px_30px_rgba(176,112,112,0.25)] hover:-translate-y-1.5 active:scale-95 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
-                    data-testid="button-hero-servicios"
-                  >
-                    <span className="relative z-10 transition-colors duration-700 group-hover:text-white">Ver Servicios</span>
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#B07070] to-[#8b5e58] translate-y-full group-hover:translate-y-0 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                  </button>
+                    <button
+                      onClick={() => setServicesOpen(true)}
+                      className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_12px_25px_rgba(176,112,112,0.2)] hover:-translate-y-1 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+                      data-testid="button-hero-servicios"
+                    >
+                      <span className="relative z-10 transition-colors duration-700 group-hover:text-white">Ver Servicios</span>
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#B07070] to-[#8b5e58] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                    </button>
                 </div>
               </div>
             </div>
@@ -289,46 +290,82 @@ export default function Home() {
       <WhatsAppFloatingButton />
 
       {/* Services Popup */}
-      {servicesOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-500" data-testid="services-popup">
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-md animate-fade-in"
-            onClick={() => setServicesOpen(false)}
-            data-testid="services-popup-overlay"
-          />
-          <div className="relative w-full max-w-md rounded-2xl bg-white/95 backdrop-blur-xl p-6 shadow-2xl animate-scale-in">
-            <button
+      <AnimatePresence>
+        {servicesOpen && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setServicesOpen(false)}
-              className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full text-black/60 hover:bg-black/5"
-              aria-label="Cerrar"
-              data-testid="button-close-services"
+              className="absolute inset-0 bg-black/40 backdrop-blur-md"
+              data-testid="services-popup-overlay"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-lg overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              data-testid="services-popup"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
+              <div className="flex flex-col max-h-[85vh]">
+                <div className="flex items-center justify-between border-b border-black/5 px-6 py-5">
+                  <h3 className="text-lg font-bold tracking-[0.1em] uppercase [font-family:var(--font-serif)] text-black/80">
+                    Nuestros Servicios
+                  </h3>
+                  <button
+                    onClick={() => setServicesOpen(false)}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-black/40 hover:bg-black/10 hover:text-black transition-colors"
+                    aria-label="Cerrar"
+                    data-testid="button-close-services-top"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
 
-            <h3 className="text-lg font-semibold [font-family:var(--font-serif)]">Servicios</h3>
+                <div className="overflow-y-auto px-6 py-6 custom-scrollbar pb-24">
+                  <div className="grid gap-4">
+                    {SERVICES.map((service, i) => (
+                      <motion.div
+                        key={service.name}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.05 + 0.1 }}
+                        className="group relative overflow-hidden rounded-2xl border border-black/5 bg-[#FAFAFA] p-5 transition-all hover:border-[#D6B6B6]/30 hover:shadow-md"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h4 className="text-sm font-bold tracking-wide text-black/80">{service.name}</h4>
+                            <p className="mt-1 text-xs leading-relaxed text-black/50">{service.description}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
 
-            <div className="mt-4 grid gap-3">
-              {SERVICES.map((s) => (
-                <a
-                  key={s.name}
-                  href={whatsappLink(s.name)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative rounded-xl border border-black/10 bg-white/70 p-4 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(214,182,182,0.25)] hover:border-[#D6B6B6]/40"
-                  data-testid={`popup-service-${s.name.toLowerCase().replace(/\s+/g, "-")}`}
-                >
-                  <div className="text-sm font-bold text-black/90 group-hover:text-[#a3716b] transition-colors">{s.name}</div>
-                  <div className="mt-1 text-xs leading-5 text-black/70 font-medium">{s.description}</div>
-                </a>
-              ))}
-            </div>
+                <div className="absolute bottom-6 right-6 z-10">
+                  <button
+                    onClick={() => setServicesOpen(false)}
+                    className="flex h-12 items-center gap-2 rounded-full bg-[#B07070] px-6 text-[11px] font-bold uppercase tracking-[0.2em] text-white shadow-lg shadow-[#B07070]/30 active:scale-90 transition-all"
+                    data-testid="button-close-services-bottom"
+                  >
+                    Cerrar
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="ml-1">
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }
