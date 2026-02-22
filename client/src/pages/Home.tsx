@@ -38,20 +38,20 @@ function MobileMenu({
 }) {
   return (
     <div
-      className={`fixed inset-0 z-50 transition-all duration-300 md:hidden ${
+      className={`fixed inset-0 z-50 transition-all duration-500 md:hidden ${
         open
           ? "visible opacity-100"
           : "invisible opacity-0 pointer-events-none"
       }`}
     >
       <div
-        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/30 backdrop-blur-md transition-opacity duration-500"
         onClick={onClose}
         data-testid="button-mobile-menu-overlay"
       />
 
       <nav
-        className={`absolute right-0 top-0 h-full w-64 bg-white/90 backdrop-blur-lg shadow-xl transition-transform duration-300 ${
+        className={`absolute right-0 top-0 h-full w-64 bg-white/90 backdrop-blur-xl shadow-2xl transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
         data-testid="nav-mobile-menu"
@@ -306,13 +306,13 @@ export default function Home() {
 
       {/* Services Popup */}
       {servicesOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" data-testid="services-popup">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-500" data-testid="services-popup">
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-md animate-fade-in"
             onClick={() => setServicesOpen(false)}
             data-testid="services-popup-overlay"
           />
-          <div className="relative w-full max-w-md rounded-2xl bg-white/95 backdrop-blur-lg p-6 shadow-xl">
+          <div className="relative w-full max-w-md rounded-2xl bg-white/95 backdrop-blur-xl p-6 shadow-2xl animate-scale-in">
             <button
               onClick={() => setServicesOpen(false)}
               className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full text-black/60 hover:bg-black/5"
