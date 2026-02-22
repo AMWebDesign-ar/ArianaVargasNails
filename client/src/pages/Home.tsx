@@ -226,33 +226,25 @@ export default function Home() {
 
         {/* SERVICES */}
         <section id="services" className="mx-auto max-w-6xl px-4 py-10 sm:py-14" data-testid="section-servicios">
-          <div className="flex flex-wrap items-end justify-between gap-4 sm:gap-6">
-            <div>
-              <h2
-                className="[font-family:var(--font-playfair)] text-2xl sm:text-3xl font-semibold tracking-tight"
-                data-testid="text-servicios-title"
-              >
-                Servicios
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-black/70">
-                Elegí el servicio que buscás y reservá con un mensaje listo para
-                enviar por WhatsApp.
-              </p>
-            </div>
-            <a
-              href={whatsappLink()}
-              target="_blank"
-              rel="noreferrer"
-              className="hidden rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black/80 hover:bg-black/[0.03] md:inline-flex"
-              data-testid="button-consultar-disponibilidad"
-            >
-              Consultar disponibilidad
-            </a>
-          </div>
+          <h2
+            className="[font-family:var(--font-playfair)] text-2xl sm:text-3xl font-semibold tracking-tight"
+            data-testid="text-servicios-title"
+          >
+            Servicios
+          </h2>
 
-          <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-5 md:grid-cols-2">
+          <div className="mt-6 sm:mt-8 flex flex-wrap justify-center gap-3">
             {SERVICES.map((s) => (
-              <ServiceCard key={s.name} service={s} />
+              <a
+                key={s.name}
+                href={whatsappLink(s.name)}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                data-testid={`button-service-${s.name.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                {s.name}
+              </a>
             ))}
           </div>
         </section>
