@@ -198,7 +198,7 @@ export default function Home() {
                 <span className="block mt-1 text-4xl sm:text-5xl md:text-6xl font-semibold text-black/70">
                   Tu estilo,
                 </span>
-                <span className="block mt-1 text-5xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#D6B6B6] via-[#c9a0a0] to-[#b8847e] bg-clip-text text-transparent">
+                <span className="block mt-1 text-5xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent">
                   Tus uñas
                 </span>
               </h1>
