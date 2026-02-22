@@ -267,8 +267,8 @@ export default function Home() {
                 height={40}
                 className="rounded-full"
               />
-              <div>
-                <div className="text-sm font-semibold">{BRAND.name}</div>
+              <div className="text-sm font-medium tracking-[0.12em] [font-family:var(--font-serif)] truncate">
+                {BRAND.name}
               </div>
             </div>
 
