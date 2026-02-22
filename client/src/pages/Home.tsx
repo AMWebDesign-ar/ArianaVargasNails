@@ -182,10 +182,18 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
               <h1
-                className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-none tracking-tight [font-family:var(--font-playfair)]"
+                className="[font-family:var(--font-playfair)] leading-[1.1] tracking-tight"
                 data-testid="text-hero-title"
               >
-                Tu momento, tu estilo, tus uñas
+                <span className="block text-3xl sm:text-4xl md:text-5xl font-medium text-black/50">
+                  Tu momento,
+                </span>
+                <span className="block mt-1 text-4xl sm:text-5xl md:text-6xl font-semibold text-black/70">
+                  tu estilo,
+                </span>
+                <span className="block mt-1 text-5xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#D6B6B6] via-[#c9a0a0] to-[#b8847e] bg-clip-text text-transparent">
+                  tus uñas
+                </span>
               </h1>
 
               <img
