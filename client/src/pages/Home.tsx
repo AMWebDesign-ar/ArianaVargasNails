@@ -59,7 +59,7 @@ function MobileMenu({
         data-testid="nav-mobile-menu"
       >
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-3">
-          <span className="text-[12px] font-light tracking-[0.22em] leading-tight uppercase text-black/70 [font-family:var(--font-serif)] max-w-[180px]">{BRAND.name}</span>
+          <span className="text-[12px] font-light tracking-[0.22em] leading-tight uppercase text-black/70 [font-family:var(--font-serif)] max-w-[180px] drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">{BRAND.name}</span>
           <button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-black/40 hover:text-black active:bg-black/5"
@@ -154,7 +154,7 @@ export default function Home() {
             </button>
 
             <a href="#top" className="min-w-0" data-testid="link-logo">
-              <div className="text-[13px] font-light tracking-[0.25em] uppercase text-black/70 [font-family:var(--font-serif)] truncate">
+              <div className="text-[13px] font-light tracking-[0.25em] uppercase text-black/70 [font-family:var(--font-serif)] truncate drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">
                 {BRAND.name}
               </div>
             </a>
@@ -263,9 +263,9 @@ export default function Home() {
                 alt={`${BRAND.name} logo`}
                 width={40}
                 height={40}
-                className="rounded-full object-cover"
+                className="rounded-full object-cover shadow-[0_0_15px_rgba(176,112,112,0.4)]"
               />
-              <div className="text-sm font-medium tracking-[0.12em] [font-family:var(--font-serif)] truncate">
+              <div className="text-sm font-medium tracking-[0.12em] [font-family:var(--font-serif)] truncate drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">
                 {BRAND.name}
               </div>
             </div>
