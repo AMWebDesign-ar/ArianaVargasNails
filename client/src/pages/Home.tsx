@@ -327,11 +327,11 @@ export default function Home() {
                   href={whatsappLink(s.name)}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-xl border border-black/10 bg-white/70 p-4 hover:bg-white transition-colors"
+                  className="group relative rounded-xl border border-black/10 bg-white/70 p-4 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(214,182,182,0.25)] hover:border-[#D6B6B6]/40"
                   data-testid={`popup-service-${s.name.toLowerCase().replace(/\s+/g, "-")}`}
                 >
-                  <div className="text-sm font-semibold">{s.name}</div>
-                  <div className="mt-1 text-xs leading-5 text-black/60">{s.description}</div>
+                  <div className="text-sm font-bold text-black/90 group-hover:text-[#a3716b] transition-colors">{s.name}</div>
+                  <div className="mt-1 text-xs leading-5 text-black/70 font-medium">{s.description}</div>
                 </a>
               ))}
             </div>
