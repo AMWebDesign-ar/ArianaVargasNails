@@ -204,8 +204,8 @@ export default function Home() {
                   className="mt-4 sm:mt-5 text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight [font-family:var(--font-playfair)]"
                   data-testid="text-hero-title"
                 >
-                  Uñas impecables,
-                  <br /> prolijas y duraderas
+                  Tu momento, tu estilo,
+                  <br /> tus uñas
                 </h1>
 
                 <p
