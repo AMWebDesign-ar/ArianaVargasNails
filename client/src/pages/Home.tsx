@@ -48,7 +48,7 @@ function MobileMenu({
       />
 
       <nav
-        className={`absolute right-0 top-0 h-full w-64 bg-[#FAFAFA] shadow-xl transition-transform duration-300 ${
+        className={`absolute right-0 top-0 h-full w-64 bg-white/90 backdrop-blur-lg shadow-xl transition-transform duration-300 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
         data-testid="nav-mobile-menu"
@@ -118,7 +118,7 @@ export default function Home() {
     <>
       {/* Header */}
       <header
-        className="sticky top-0 z-40 border-b border-black/5 bg-[#FAFAFA]/80 backdrop-blur"
+        className="sticky top-0 z-40 border-b border-black/5 bg-white/60 backdrop-blur-lg"
         data-testid="header"
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
@@ -452,7 +452,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-[#FAFAFA] p-5 sm:p-6">
+              <div className="rounded-2xl bg-white/50 p-5 sm:p-6">
                 <div className="text-sm font-semibold">Mensaje sugerido</div>
                 <div className="mt-3 rounded-2xl border border-black/10 bg-white p-4 text-sm leading-6 text-black/70">
                   Hola Ari!<br />
@@ -479,7 +479,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-black/5 bg-[#FAFAFA]" data-testid="footer">
+      <footer className="border-t border-black/5 bg-white/40 backdrop-blur-sm" data-testid="footer">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
           <div className="flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
