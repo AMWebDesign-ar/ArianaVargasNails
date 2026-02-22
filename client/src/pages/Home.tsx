@@ -206,7 +206,7 @@ export default function Home() {
                   href={whatsappLink()}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-xl bg-[#1C1C1C] px-5 py-3.5 sm:py-3 text-sm font-medium text-[#FAFAFA] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                  className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
                   data-testid="button-hero-whatsapp"
                 >
                   Reservar
