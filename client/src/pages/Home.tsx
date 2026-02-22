@@ -201,7 +201,7 @@ export default function Home() {
                 <span className="block text-[32px] sm:text-[34px] md:text-[36px] font-normal text-black/80 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
                   Tu estilo
                 </span>
-                <span className="block mt-1 text-[42px] sm:text-[44px] md:text-[48px] font-medium text-black/95 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+                <span className="block mt-1 text-[42px] sm:text-[44px] md:text-[48px] font-medium text-black animate-fade-up" style={{ animationDelay: '0.3s' }}>
                   empieza en
                 </span>
                 <span className="block mt-1 text-[50px] sm:text-[52px] md:text-[56px] font-bold bg-gradient-to-r from-[#8b5e58] via-[#7a4d47] to-[#5a3a35] bg-clip-text text-transparent drop-shadow-sm animate-fade-up" style={{ animationDelay: '0.5s' }}>
