@@ -259,9 +259,6 @@ export default function Home() {
               />
               <div>
                 <div className="text-sm font-semibold">{BRAND.name}</div>
-                <div className="text-xs text-black/60">
-                  {BRAND.city} · {BRAND.area}
-                </div>
               </div>
             </div>
 
