@@ -139,7 +139,7 @@ export default function Home() {
             </button>
 
             <a href="#top" className="min-w-0" data-testid="link-logo">
-              <div className="text-sm font-semibold tracking-tight truncate">
+              <div className="text-sm font-medium tracking-[0.12em] [font-family:var(--font-serif)] truncate">
                 {BRAND.name}
               </div>
             </a>
