@@ -56,8 +56,8 @@ function MobileMenu({
         }`}
         data-testid="nav-mobile-menu"
       >
-        <div className="flex items-center justify-between border-b border-black/5 px-5 py-4">
-          <span className="text-[12px] font-light tracking-[0.25em] uppercase text-black/50 [font-family:var(--font-serif)]">{BRAND.name}</span>
+        <div className="flex items-center justify-between border-b border-black/5 px-5 py-3">
+          <span className="text-[12px] font-light tracking-[0.22em] leading-tight uppercase text-black/70 [font-family:var(--font-serif)] max-w-[180px]">{BRAND.name}</span>
           <button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-black/40 hover:text-black active:bg-black/5"
@@ -153,7 +153,7 @@ export default function Home() {
             </button>
 
             <a href="#top" className="min-w-0" data-testid="link-logo">
-              <div className="text-[13px] font-light tracking-[0.25em] uppercase text-black/50 [font-family:var(--font-serif)] truncate">
+              <div className="text-[13px] font-light tracking-[0.25em] uppercase text-black/70 [font-family:var(--font-serif)] truncate">
                 {BRAND.name}
               </div>
             </a>
