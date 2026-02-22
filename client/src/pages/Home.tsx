@@ -193,7 +193,7 @@ export default function Home() {
                 className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight"
                 data-testid="text-hero-title"
               >
-                <span className="block text-3xl sm:text-4xl md:text-5xl font-light text-black/50 tracking-[0.02em]">
+                <span className="block text-3xl sm:text-4xl md:text-5xl font-normal text-black/50 tracking-[0.02em]">
                   Tu estilo
                 </span>
                 <span className="block mt-1 text-4xl sm:text-5xl md:text-6xl font-medium text-black/70">
