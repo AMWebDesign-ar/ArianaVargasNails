@@ -209,7 +209,7 @@ export default function Home() {
                 </span>
               </h1>
 
-              <div className="relative z-10 w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] md:w-[210px] md:h-[210px] rounded-full border border-[#D6B6B6]/40 shadow-[0_45px_100px_rgba(0,0,0,0.03),0_20px_60px_rgba(214,182,182,0.05)] animate-pulse-expand animate-scale-in p-0 overflow-hidden bg-white flex items-center justify-center">
+              <div className="relative z-10 w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] rounded-full border border-[#D6B6B6]/25 shadow-[0_45px_100px_rgba(0,0,0,0.03),0_20px_60px_rgba(214,182,182,0.05)] animate-pulse-expand animate-scale-in p-0 overflow-hidden bg-white flex items-center justify-center">
                 <img
                   src="/brand/logo_nuevo.png"
                   alt="Ariana Vargas Nails"
