@@ -195,16 +195,16 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
               <h1
-                className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight mt-3 sm:mt-0"
+                className="[font-family:var(--font-serif)] leading-[1.1] tracking-tight mt-3 sm:mt-0"
                 data-testid="text-hero-title"
               >
-                <span className="block text-[29px] sm:text-[30px] md:text-[32px] font-normal text-black/75 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
+                <span className="block text-[32px] sm:text-[34px] md:text-[36px] font-normal text-black/80 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
                   Tu estilo
                 </span>
-                <span className="block mt-1 text-[39px] sm:text-[41px] md:text-[45px] font-medium text-black/85 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+                <span className="block mt-1 text-[42px] sm:text-[44px] md:text-[48px] font-medium text-black/90 animate-fade-up" style={{ animationDelay: '0.3s' }}>
                   empieza en
                 </span>
-                <span className="block mt-1 text-[47px] sm:text-[49px] md:text-[52px] font-semibold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent animate-fade-up" style={{ animationDelay: '0.5s' }}>
+                <span className="block mt-1 text-[50px] sm:text-[52px] md:text-[56px] font-bold bg-gradient-to-r from-[#8b5e58] via-[#7a4d47] to-[#5a3a35] bg-clip-text text-transparent drop-shadow-sm animate-fade-up" style={{ animationDelay: '0.5s' }}>
                   tus manos
                 </span>
               </h1>
@@ -218,14 +218,14 @@ export default function Home() {
               />
 
               <p
-                className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70 animate-fade-up"
+                className="mt-4 sm:mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-black/80 font-medium animate-fade-up"
                 style={{ animationDelay: '0.8s' }}
                 data-testid="text-hero-subtitle"
               >
                 Turnos con reserva previa
               </p>
-              <p className="mt-0.5 flex items-center gap-1.5 text-sm text-black/60 animate-fade-up" style={{ animationDelay: '0.9s' }} data-testid="text-hero-location">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+              <p className="mt-2 flex items-center gap-2 text-sm sm:text-base text-black/70 font-medium animate-fade-up" style={{ animationDelay: '0.9s' }} data-testid="text-hero-location">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#B07070]">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>

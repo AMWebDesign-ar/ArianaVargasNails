@@ -249,14 +249,18 @@
   }
 
   body {
-    @apply font-sans antialiased text-foreground;
+    @apply font-sans antialiased text-black/90;
     background: linear-gradient(135deg, #FDE8EC 0%, #E8DEF8 25%, #D4E8F7 50%, #FFF9E6 75%, #FDE8EC 100%);
     background-attachment: fixed;
     min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
+    @apply text-black/90 tracking-tight;
   }
 }
 
