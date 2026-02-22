@@ -19,7 +19,7 @@ function NavLink({
     <a
       href={href}
       onClick={onClick}
-      className="relative text-[11px] font-bold tracking-[0.2em] uppercase text-black/70 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-[#B07070] hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/20 rounded-lg px-2.5 py-1.5 group overflow-hidden"
+      className="relative text-[11px] font-bold tracking-[0.2em] uppercase text-black/50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-[#B07070] hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/20 rounded-lg px-2.5 py-1.5 group overflow-hidden"
       data-testid={`link-nav-${label.toLowerCase()}`}
     >
       <span className="relative z-10">{label}</span>
