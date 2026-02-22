@@ -193,13 +193,13 @@ export default function Home() {
                 className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight"
                 data-testid="text-hero-title"
               >
-                <span className="block text-[25px] sm:text-[26px] md:text-[28px] font-normal text-black/65 tracking-[0.02em]">
+                <span className="block text-[29px] sm:text-[30px] md:text-[32px] font-normal text-black/65 tracking-[0.02em]">
                   Tu estilo
                 </span>
-                <span className="block mt-1 text-[34px] sm:text-[36px] md:text-[39px] font-medium text-black/70">
+                <span className="block mt-1 text-[39px] sm:text-[41px] md:text-[45px] font-medium text-black/70">
                   empieza en
                 </span>
-                <span className="block mt-1 text-[41px] sm:text-[43px] md:text-[45px] font-semibold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent">
+                <span className="block mt-1 text-[47px] sm:text-[49px] md:text-[52px] font-semibold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent">
                   tus manos
                 </span>
               </h1>
