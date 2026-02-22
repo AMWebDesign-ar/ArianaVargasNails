@@ -55,7 +55,7 @@ function MobileMenu({
         data-testid="nav-mobile-menu"
       >
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-4">
-          <span className="text-sm font-semibold">{BRAND.name}</span>
+          <span className="text-sm font-medium tracking-[0.15em] [font-family:var(--font-serif)]">{BRAND.name}</span>
           <button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-black/60 hover:text-black active:bg-black/5"
