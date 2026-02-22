@@ -30,9 +30,11 @@ function NavLink({
 function MobileMenu({
   open,
   onClose,
+  onOpenServices,
 }: {
   open: boolean;
   onClose: () => void;
+  onOpenServices: () => void;
 }) {
   return (
     <div
@@ -80,17 +82,25 @@ function MobileMenu({
 
         <div className="flex flex-col gap-3 p-5 pt-10">
           {[
-            { href: "#services", label: "Servicios" },
+            { href: "#services", label: "Servicios", action: "services" },
             { href: "#gallery", label: "Ver trabajos" },
             { href: BRAND.mapsUrl, label: "Ubicación", external: true },
             { href: "#turnos", label: "Turnos" },
-          ].map((item: { href: string; label: string; external?: boolean }, i) => (
+          ].map((item: { href: string; label: string; external?: boolean; action?: string }, i) => (
             <a
               key={item.label}
-              href={item.href}
+              href={item.action ? undefined : item.href}
               {...(item.external ? { target: "_blank", rel: "noreferrer" } : {})}
-              onClick={onClose}
-              className={`rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-all duration-300 hover:bg-[#D6B6B6]/15 hover:text-black hover:translate-x-2 hover:scale-[1.02] hover:shadow-sm ${item.label === "Turnos" ? "animate-shimmer font-semibold" : ""}`}
+              onClick={(e) => {
+                if (item.action === "services") {
+                  e.preventDefault();
+                  onClose();
+                  onOpenServices();
+                } else {
+                  onClose();
+                }
+              }}
+              className={`rounded-xl px-4 py-3 text-sm font-medium text-black/80 active:bg-black/5 transition-all duration-300 hover:bg-[#D6B6B6]/15 hover:text-black hover:translate-x-2 hover:scale-[1.02] hover:shadow-sm cursor-pointer ${item.label === "Turnos" ? "animate-shimmer font-semibold" : ""}`}
               style={{ animationDelay: `${i * 60}ms` }}
               data-testid={`link-mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
@@ -164,7 +174,7 @@ export default function Home() {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} onOpenServices={() => setServicesOpen(true)} />
 
       {/* Main */}
       <main id="top">
