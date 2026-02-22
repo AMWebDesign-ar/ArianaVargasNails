@@ -190,7 +190,7 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
               <h1
-                className="[font-family:var(--font-playfair)] leading-[1.0] tracking-tight"
+                className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight"
                 data-testid="text-hero-title"
               >
                 <span className="block text-3xl sm:text-4xl md:text-5xl font-light text-black/50 tracking-[0.02em]">
@@ -333,7 +333,7 @@ export default function Home() {
               </svg>
             </button>
 
-            <h3 className="text-lg font-semibold [font-family:var(--font-playfair)]">Servicios</h3>
+            <h3 className="text-lg font-semibold [font-family:var(--font-serif)]">Servicios</h3>
 
             <div className="mt-4 grid gap-3">
               {SERVICES.map((s) => (
