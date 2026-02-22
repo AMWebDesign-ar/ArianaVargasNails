@@ -265,26 +265,6 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              <a
-                href={BRAND.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-xl border border-black/10 bg-white px-4 py-2.5 sm:py-2 text-sm font-medium text-black/80 hover:bg-black/[0.03]"
-                data-testid="link-footer-instagram"
-              >
-                Instagram
-              </a>
-              <a
-                href={whatsappLink()}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-xl bg-[#1C1C1C] px-4 py-2.5 sm:py-2 text-sm font-medium text-[#FAFAFA] hover:opacity-90"
-                data-testid="link-footer-whatsapp"
-              >
-                WhatsApp
-              </a>
-            </div>
           </div>
 
           <div className="mt-6 sm:mt-8 text-xs text-black/50">
