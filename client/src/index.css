@@ -24,8 +24,12 @@
   }
 
   .hover-lift:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-8px);
     @apply shadow-2xl;
+  }
+
+  .hover-glow:hover {
+    @apply shadow-[0_0_25px_rgba(214,182,182,0.4)];
   }
 }
 
