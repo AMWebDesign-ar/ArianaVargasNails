@@ -159,10 +159,10 @@ export default function Home() {
             </a>
           </div>
 
-          <nav className="hidden items-center gap-2 md:flex">
+          <nav className="hidden items-center gap-6 md:flex">
             <NavLink href="#services" label="Servicios" />
-            <NavLink href="#gallery" label="Galería" />
-            <NavLink href="#studio" label="Estudio" />
+            <NavLink href={BRAND.instagram} label="Galería" />
+            <NavLink href={BRAND.mapsUrl} label="Ubicación" />
             <NavLink href="#turnos" label="Turnos" />
           </nav>
 
@@ -238,7 +238,7 @@ export default function Home() {
                   href={whatsappLink()}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3),0_0_0_1px_rgba(255,255,255,0.1)_inset] hover:shadow-[0_15px_30px_rgba(176,112,112,0.4),0_0_0_2px_rgba(255,255,255,0.2)_inset] hover:scale-[1.03] active:scale-95 transition-all duration-500 group overflow-hidden"
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3)] hover:shadow-[0_20px_40px_rgba(176,112,112,0.4)] hover:-translate-y-1 active:scale-95 transition-all duration-500 group overflow-hidden"
                   data-testid="button-hero-whatsapp"
                 >
                   <span className="relative z-10 flex items-center gap-2">
@@ -250,7 +250,7 @@ export default function Home() {
                 <div className="mt-1.5 flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => setServicesOpen(true)}
-                  className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                  className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] hover:-translate-y-0.5 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
                   data-testid="button-hero-servicios"
                 >
                   Servicios
