@@ -2,11 +2,11 @@ export const brand = {
   name: "Ariana Vargas Nails",
   tagline: "Uñas que hablan por vos",
   city: "Mar del Plata",
-  area: "Zona Aldrey",
+  area: "Gascón 1967",
   hours: "Lunes a Sábado · 9 a 19 h",
   instagram: "https://www.instagram.com/arianavargasnails/",
   whatsappNumber: "WHATSAPP_NUMBER",
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Zona+Aldrey+Mar+del+Plata",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Gascón+1967+Mar+del+Plata",
   logo: {
     circle: "/brand/logo_circle_transparent.png",
     square: "/brand/logo_square_transparent.png",
