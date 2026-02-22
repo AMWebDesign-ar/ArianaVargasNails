@@ -5,7 +5,7 @@ export const brand = {
   area: "Gascón 1967",
   hours: "Lunes a Sábado · 9 a 19 h",
   instagram: "https://www.instagram.com/arianavargasnails/",
-  whatsappNumber: "WHATSAPP_NUMBER",
+  whatsappNumber: "5492235268877",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Gascón+1967+Mar+del+Plata",
   logo: {
     circle: "/brand/logo_circle_transparent.png",
