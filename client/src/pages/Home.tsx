@@ -185,7 +185,7 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none"
             aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-white/55" />
+          <div className="absolute inset-0 bg-white/30" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
