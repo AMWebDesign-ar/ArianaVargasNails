@@ -184,10 +184,10 @@ export default function Home() {
                 className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight mt-3 sm:mt-0"
                 data-testid="text-hero-title"
               >
-                <span className="block text-[29px] sm:text-[30px] md:text-[32px] font-normal text-black/65 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
+                <span className="block text-[29px] sm:text-[30px] md:text-[32px] font-normal text-black/75 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
                   Tu estilo
                 </span>
-                <span className="block mt-1 text-[39px] sm:text-[41px] md:text-[45px] font-medium text-black/80 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+                <span className="block mt-1 text-[39px] sm:text-[41px] md:text-[45px] font-medium text-black/85 animate-fade-up" style={{ animationDelay: '0.3s' }}>
                   empieza en
                 </span>
                 <span className="block mt-1 text-[47px] sm:text-[49px] md:text-[52px] font-semibold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent animate-fade-up" style={{ animationDelay: '0.5s' }}>
