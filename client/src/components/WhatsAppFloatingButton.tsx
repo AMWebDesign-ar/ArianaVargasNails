@@ -2,7 +2,7 @@ import { BRAND, whatsappLink } from "@/config/brand";
 
 export function WhatsAppFloatingButton() {
   return (
-    <div className="fixed bottom-24 right-5 z-50 flex flex-col items-center gap-4 sm:bottom-24 sm:right-6">
+    <div className="fixed bottom-32 right-6 z-50 flex flex-col items-center gap-5 sm:bottom-24 sm:right-8">
       <a
         href={BRAND.instagram}
         target="_blank"

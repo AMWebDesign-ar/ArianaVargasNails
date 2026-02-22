@@ -223,7 +223,7 @@ export default function Home() {
                 Zona Güemes · Mar del Plata
               </p>
 
-                <div className="mt-5 sm:mt-7 flex flex-col items-center gap-6 animate-fade-up" style={{ animationDelay: '1s' }}>
+                <div className="mt-8 sm:mt-12 flex flex-col items-center gap-10 animate-fade-up" style={{ animationDelay: '1s' }}>
                 <a
                   href={whatsappLink()}
                   target="_blank"
