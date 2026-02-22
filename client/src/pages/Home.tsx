@@ -268,11 +268,11 @@ export default function Home() {
           <div className="flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <img
-                src="/brand/logo_circle_transparent.png"
+                src="/brand/logo_nuevo.png"
                 alt={`${BRAND.name} logo`}
                 width={40}
                 height={40}
-                className="rounded-full"
+                className="rounded-full object-cover"
               />
               <div className="text-sm font-medium tracking-[0.12em] [font-family:var(--font-serif)] truncate">
                 {BRAND.name}
