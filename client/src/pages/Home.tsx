@@ -113,6 +113,7 @@ function MobileMenu({
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   return (
     <>
@@ -212,13 +213,13 @@ export default function Home() {
                   Reservar
                 </a>
 
-                <a
-                  href="#services"
+                <button
+                  onClick={() => setServicesOpen(true)}
                   className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
                   data-testid="button-hero-servicios"
                 >
                   Servicios
-                </a>
+                </button>
 
                 <a
                   href="#gallery"
@@ -499,6 +500,48 @@ export default function Home() {
 
       {/* WhatsApp Floating */}
       <WhatsAppFloatingButton />
+
+      {/* Services Popup */}
+      {servicesOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" data-testid="services-popup">
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setServicesOpen(false)}
+            data-testid="services-popup-overlay"
+          />
+          <div className="relative w-full max-w-md rounded-2xl bg-white/95 backdrop-blur-lg p-6 shadow-xl">
+            <button
+              onClick={() => setServicesOpen(false)}
+              className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full text-black/60 hover:bg-black/5"
+              aria-label="Cerrar"
+              data-testid="button-close-services"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            <h3 className="text-lg font-semibold [font-family:var(--font-playfair)]">Servicios</h3>
+
+            <div className="mt-4 grid gap-3">
+              {SERVICES.map((s) => (
+                <a
+                  key={s.name}
+                  href={whatsappLink(s.name)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl border border-black/10 bg-white/70 p-4 hover:bg-white transition-colors"
+                  data-testid={`popup-service-${s.name.toLowerCase().replace(/\s+/g, "-")}`}
+                >
+                  <div className="text-sm font-semibold">{s.name}</div>
+                  <div className="mt-1 text-xs leading-5 text-black/60">{s.description}</div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
