@@ -182,65 +182,66 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/30 to-white" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
-          <div className="relative mx-auto max-w-6xl px-4 py-8 sm:py-12 md:py-16">
-            <div className="flex flex-col items-center text-center">
-              <h1
-                className="[font-family:var(--font-serif)] leading-[1.1] tracking-tight mt-1 sm:mt-0 mb-[-2px] sm:mb-[-4px]"
-                data-testid="text-hero-title"
-              >
-                <span className="block text-[32px] sm:text-[34px] md:text-[36px] font-normal text-black/90 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
-                  Tu estilo
-                </span>
-                <span className="block mt-1 text-[42px] sm:text-[44px] md:text-[48px] font-medium text-black animate-fade-up" style={{ animationDelay: '0.3s' }}>
-                  empieza en
-                </span>
-                <span className="block mt-1 text-[50px] sm:text-[52px] md:text-[56px] font-extrabold bg-gradient-to-r from-[#c4a4a0] via-[#8b5e58] to-[#a67c77] bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(176,112,112,0.3)] animate-fade-up" style={{ animationDelay: '0.5s' }}>
-                  tus manos
-                </span>
-              </h1>
-
-              <div className="relative z-10 w-[140px] h-[140px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] rounded-full border border-[#D6B6B6]/25 shadow-[0_45px_100px_rgba(0,0,0,0.03),0_20px_60px_rgba(214,182,182,0.05)] animate-pulse-expand animate-scale-in p-0 overflow-hidden bg-white flex items-center justify-center">
-                <img
-                  src="/brand/logo_nuevo.png"
-                  alt="Ariana Vargas Nails"
-                  className="w-full h-full object-contain scale-[1.6] translate-y-[6.8%]"
-                  data-testid="img-hero-logo"
-                />
-              </div>
-
-              <p
-                className="mt-4 sm:mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-black/80 font-medium animate-fade-up"
-                style={{ animationDelay: '0.8s' }}
-                data-testid="text-hero-subtitle"
-              >
-                Turnos con reserva previa
-              </p>
-              <p className="mt-2 flex items-center gap-2 text-sm sm:text-base text-black/70 font-medium animate-fade-up" style={{ animationDelay: '0.9s' }} data-testid="text-hero-location">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#B07070]">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-                Zona Güemes · Mar del Plata
-              </p>
-
-                <div className="mt-8 sm:mt-12 flex flex-col items-center gap-10 animate-fade-up" style={{ animationDelay: '1s' }}>
-                <a
-                  href={whatsappLink()}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3)] hover:shadow-[0_25px_50px_rgba(176,112,112,0.5)] hover:-translate-y-1.5 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group overflow-hidden"
-                  data-testid="button-hero-whatsapp"
+            <div className="relative mx-auto max-w-6xl px-4 py-2 sm:py-8">
+              <div className="flex flex-col items-center text-center px-4 py-2 sm:py-8">
+                <h1
+                  className="[font-family:var(--font-serif)] leading-[1.1] tracking-tight mb-2 sm:mb-8"
+                  data-testid="text-hero-title"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
-                    Reservar turno ahora
+                  <span className="block text-[22px] xs:text-[24px] sm:text-[34px] md:text-[36px] font-normal text-black/90 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
+                    Tu estilo
                   </span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                </a>
+                  <span className="block mt-0.5 text-[30px] xs:text-[34px] sm:text-[44px] md:text-[48px] font-medium text-black animate-fade-up" style={{ animationDelay: '0.3s' }}>
+                    empieza en
+                  </span>
+                  <span className="block mt-0.5 text-[38px] xs:text-[42px] sm:text-[52px] md:text-[56px] font-extrabold bg-gradient-to-r from-[#c4a4a0] via-[#8b5e58] to-[#a67c77] bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(176,112,112,0.3)] animate-fade-up" style={{ animationDelay: '0.5s' }}>
+                    tus manos
+                  </span>
+                </h1>
 
-                <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up" style={{ animationDelay: '1.1s' }}>
+                <div className="relative z-10 w-[100px] h-[100px] xs:w-[120px] h-[120px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] rounded-full border border-[#D6B6B6]/25 shadow-[0_45px_100px_rgba(0,0,0,0.03),0_20px_60px_rgba(214,182,182,0.05)] animate-pulse-expand animate-scale-in p-0 overflow-hidden bg-white flex items-center justify-center mb-4 sm:mb-10">
+                  <img
+                    src="/brand/logo_nuevo.png"
+                    alt="Ariana Vargas Nails"
+                    className="w-full h-full object-contain scale-[1.6] translate-y-[6.8%]"
+                    data-testid="img-hero-logo"
+                  />
+                </div>
+
+                <div className="flex flex-col items-center gap-3 sm:gap-6 w-full max-w-[280px] sm:max-w-none">
+                  <div className="space-y-0.5 sm:space-y-1 animate-fade-up" style={{ animationDelay: '0.8s' }}>
+                    <p
+                      className="text-xs sm:text-lg leading-relaxed text-black/80 font-medium"
+                      data-testid="text-hero-subtitle"
+                    >
+                      Turnos con reserva previa
+                    </p>
+                    <p className="flex items-center justify-center gap-2 text-[10px] sm:text-base text-black/70 font-medium" data-testid="text-hero-location">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#B07070]">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      Zona Güemes · Mar del Plata
+                    </p>
+                  </div>
+
+                  <div className="mt-1 sm:mt-6 flex flex-col items-center gap-3 w-full">
+                  <a
+                    href={whatsappLink()}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3)] hover:shadow-[0_25px_50px_rgba(176,112,112,0.5)] hover:-translate-y-1.5 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group overflow-hidden"
+                    data-testid="button-hero-whatsapp"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      Reservar turno ahora
+                    </span>
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                  </a>
+
                   <button
                     onClick={() => setServicesOpen(true)}
-                    className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_15px_30px_rgba(176,112,112,0.25)] hover:-translate-y-1.5 active:scale-95 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+                    className="w-full sm:w-auto group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_15px_30px_rgba(176,112,112,0.25)] hover:-translate-y-1.5 active:scale-95 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
                     data-testid="button-hero-servicios"
                   >
                     <span className="relative z-10 transition-colors duration-700 group-hover:text-white">Ver Servicios</span>
