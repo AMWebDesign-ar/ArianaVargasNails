@@ -234,14 +234,7 @@ export default function Home() {
 
         {/* SERVICES */}
         <section id="services" className="mx-auto max-w-6xl px-4 py-10 sm:py-14" data-testid="section-servicios">
-          <h2
-            className="[font-family:var(--font-playfair)] text-2xl sm:text-3xl font-semibold tracking-tight"
-            data-testid="text-servicios-title"
-          >
-            Servicios
-          </h2>
-
-          <div className="mt-6 sm:mt-8 flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             {SERVICES.map((s) => (
               <a
                 key={s.name}
