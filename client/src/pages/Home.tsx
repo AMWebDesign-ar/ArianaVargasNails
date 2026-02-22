@@ -57,7 +57,7 @@ function MobileMenu({
         data-testid="nav-mobile-menu"
       >
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-4">
-          <span className="text-[12px] font-light tracking-[0.25em] uppercase text-black/40 [font-family:var(--font-serif)]">{BRAND.name}</span>
+          <span className="text-[12px] font-light tracking-[0.25em] uppercase text-black/50 [font-family:var(--font-serif)]">{BRAND.name}</span>
           <button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-black/40 hover:text-black active:bg-black/5"
@@ -153,7 +153,7 @@ export default function Home() {
             </button>
 
             <a href="#top" className="min-w-0" data-testid="link-logo">
-              <div className="text-[13px] font-light tracking-[0.25em] uppercase text-black/40 [font-family:var(--font-serif)] truncate">
+              <div className="text-[13px] font-light tracking-[0.25em] uppercase text-black/50 [font-family:var(--font-serif)] truncate">
                 {BRAND.name}
               </div>
             </a>
@@ -192,10 +192,10 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/30 to-white" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
-          <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
+          <div className="relative mx-auto max-w-6xl px-4 py-8 sm:py-12 md:py-16">
             <div className="flex flex-col items-center text-center">
               <h1
-                className="[font-family:var(--font-serif)] leading-[1.1] tracking-tight mt-3 sm:mt-0"
+                className="[font-family:var(--font-serif)] leading-[1.1] tracking-tight mt-1 sm:mt-0"
                 data-testid="text-hero-title"
               >
                 <span className="block text-[32px] sm:text-[34px] md:text-[36px] font-normal text-black/80 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
