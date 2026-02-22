@@ -122,21 +122,9 @@ export default function Home() {
         data-testid="header"
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-          <a href="#top" className="flex items-center gap-2.5 min-w-0" data-testid="link-logo">
-            <img
-              src="/brand/logo_circle_transparent.png"
-              alt={`${BRAND.name} logo`}
-              width={40}
-              height={40}
-              className="rounded-full shrink-0"
-            />
-            <div className="leading-tight min-w-0">
-              <div className="text-sm font-semibold tracking-tight truncate">
-                {BRAND.name}
-              </div>
-              <div className="text-[11px] text-black/60 truncate">
-                {BRAND.city} · {BRAND.area}
-              </div>
+          <a href="#top" className="min-w-0" data-testid="link-logo">
+            <div className="text-sm font-semibold tracking-tight truncate">
+              {BRAND.name}
             </div>
           </a>
 
