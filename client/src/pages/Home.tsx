@@ -182,7 +182,7 @@ export default function Home() {
           <img
             src={heroNailsBg}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none animate-pulse-expand origin-center"
             aria-hidden="true"
           />
           <div className="absolute inset-0 bg-white/30" />
