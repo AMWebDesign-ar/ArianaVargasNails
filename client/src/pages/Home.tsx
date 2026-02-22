@@ -100,7 +100,7 @@ function MobileMenu({
                   onClose();
                 }
               }}
-              className={`relative overflow-hidden rounded-xl px-5 py-4 text-base font-bold tracking-[0.1em] uppercase text-black/90 active:bg-black/5 transition-all duration-300 ease-out hover:bg-[#D6B6B6]/20 hover:text-[#B07070] hover:translate-x-2 hover:scale-[1.02] cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-700 before:ease-in-out ${item.label === "Turnos" ? "animate-shimmer text-[#B07070]" : ""}`}
+              className={`relative overflow-hidden rounded-xl px-4 py-3 text-sm font-bold tracking-[0.12em] uppercase text-black/95 active:bg-black/5 transition-all duration-300 ease-out hover:bg-[#D6B6B6]/15 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-700 before:ease-in-out ${item.label === "Turnos" ? "animate-shimmer text-[#B07070]" : ""}`}
               style={{ 
                 animationDelay: `${i * 120 + 200}ms`, 
                 animationFillMode: 'forwards',
