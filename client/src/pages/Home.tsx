@@ -193,13 +193,13 @@ export default function Home() {
                 className="[font-family:var(--font-playfair)] leading-[1.1] tracking-tight"
                 data-testid="text-hero-title"
               >
-                <span className="block text-3xl sm:text-4xl md:text-5xl font-medium text-black/50">
+                <span className="block text-3xl sm:text-4xl md:text-5xl font-light text-black/50">
                   Tu estilo
                 </span>
-                <span className="block mt-1 text-4xl sm:text-5xl md:text-6xl font-semibold text-black/70">
+                <span className="block mt-1 text-4xl sm:text-5xl md:text-6xl font-medium text-black/70">
                   empieza en
                 </span>
-                <span className="block mt-1 text-5xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent">
+                <span className="block mt-1 text-5xl sm:text-6xl md:text-7xl font-semibold bg-gradient-to-r from-[#a3716b] via-[#8b5e58] to-[#7a4d47] bg-clip-text text-transparent">
                   tus manos
                 </span>
               </h1>
