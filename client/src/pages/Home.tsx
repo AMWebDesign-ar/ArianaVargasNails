@@ -181,7 +181,7 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
               <h1
-                className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight"
+                className="[font-family:var(--font-serif)] leading-[1.0] tracking-tight mt-3 sm:mt-0"
                 data-testid="text-hero-title"
               >
                 <span className="block text-[29px] sm:text-[30px] md:text-[32px] font-normal text-black/65 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
