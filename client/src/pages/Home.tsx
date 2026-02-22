@@ -191,71 +191,48 @@ export default function Home() {
         <section className="relative overflow-hidden" data-testid="section-hero">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
-            <div className="grid items-center gap-8 md:gap-10 md:grid-cols-2">
-              <div>
-                <h1
-                  className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-none tracking-tight [font-family:var(--font-playfair)]"
-                  data-testid="text-hero-title"
+            <div className="flex flex-col items-center text-center">
+              <img
+                src="/brand/logo_square_transparent.png"
+                alt="Ariana Vargas Nails"
+                className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain"
+                data-testid="img-hero-logo"
+              />
+
+              <h1
+                className="mt-6 sm:mt-8 text-4xl sm:text-5xl md:text-6xl font-semibold leading-none tracking-tight [font-family:var(--font-playfair)]"
+                data-testid="text-hero-title"
+              >
+                Tu momento, tu estilo, tus uñas
+              </h1>
+
+              <p
+                className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70"
+                data-testid="text-hero-subtitle"
+              >
+                Reservá tu turno por WhatsApp en segundos. Te acompaño a elegir
+                la mejor opción según tu estilo, con un acabado prolijo y
+                elegante.
+              </p>
+
+              <div className="mt-5 sm:mt-7 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={whatsappLink()}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-xl bg-[#1C1C1C] px-5 py-3.5 sm:py-3 text-sm font-medium text-[#FAFAFA] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                  data-testid="button-hero-whatsapp"
                 >
-                  Tu momento, tu estilo, tus uñas
-                </h1>
+                  Reservar por WhatsApp
+                </a>
 
-                <p
-                  className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70"
-                  data-testid="text-hero-subtitle"
+                <a
+                  href="#gallery"
+                  className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                  data-testid="button-hero-gallery"
                 >
-                  Reservá tu turno por WhatsApp en segundos. Te acompaño a elegir
-                  la mejor opción según tu estilo, con un acabado prolijo y
-                  elegante.
-                </p>
-
-                <div className="mt-5 sm:mt-7 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href={whatsappLink()}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center rounded-xl bg-[#1C1C1C] px-5 py-3.5 sm:py-3 text-sm font-medium text-[#FAFAFA] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
-                    data-testid="button-hero-whatsapp"
-                  >
-                    Reservar por WhatsApp
-                  </a>
-
-                  <a
-                    href="#gallery"
-                    className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
-                    data-testid="button-hero-gallery"
-                  >
-                    Ver trabajos
-                  </a>
-                </div>
-
-              </div>
-
-              {/* Visual - hidden on very small screens, shown from sm */}
-              <div className="relative hidden sm:block">
-                <div className="rounded-[28px] border border-black/10 bg-white p-3 shadow-sm">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#E6DCD2]">
-                    <img
-                      src="/brand/logo_square_transparent.png"
-                      alt="Ariana Vargas Nails"
-                      className="absolute inset-0 w-full h-full object-contain p-10 opacity-90"
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-4 text-sm text-black/60">
-                  Seguime en{" "}
-                  <a
-                    className="font-medium text-black underline underline-offset-4"
-                    href={BRAND.instagram}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-testid="link-hero-instagram"
-                  >
-                    Instagram
-                  </a>{" "}
-                  para ver trabajos y novedades.
-                </div>
+                  Ver trabajos
+                </a>
               </div>
             </div>
           </div>
