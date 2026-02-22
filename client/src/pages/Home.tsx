@@ -194,11 +194,10 @@ export default function Home() {
             <div className="grid items-center gap-8 md:gap-10 md:grid-cols-2">
               <div>
                 <h1
-                  className="mt-4 sm:mt-5 text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight [font-family:var(--font-playfair)]"
+                  className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-none tracking-tight [font-family:var(--font-playfair)]"
                   data-testid="text-hero-title"
                 >
-                  Tu momento, tu estilo,
-                  <br /> tus uñas
+                  Tu momento, tu estilo, tus uñas
                 </h1>
 
                 <p
