@@ -111,7 +111,7 @@ export default function Home() {
     <>
       {/* Header */}
       <header
-        className="sticky top-0 z-40 border-b border-black/5 bg-white/60 backdrop-blur-lg"
+        className="sticky top-0 z-40 border-b border-black/5 bg-[#FAFAFA]/70 backdrop-blur-lg"
         data-testid="header"
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
