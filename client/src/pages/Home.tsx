@@ -234,17 +234,18 @@ export default function Home() {
 
         {/* SERVICES */}
         <section id="services" className="mx-auto max-w-6xl px-4 py-10 sm:py-14" data-testid="section-servicios">
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
             {SERVICES.map((s) => (
               <a
                 key={s.name}
                 href={whatsappLink(s.name)}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-5 py-3.5 sm:py-3 text-sm font-medium text-black/80 hover:bg-black/[0.03] focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
-                data-testid={`button-service-${s.name.toLowerCase().replace(/\s+/g, "-")}`}
+                className="rounded-2xl border border-black/10 bg-white/70 p-5 shadow-sm hover:bg-white/90 transition-colors focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+                data-testid={`card-service-${s.name.toLowerCase().replace(/\s+/g, "-")}`}
               >
-                {s.name}
+                <div className="text-sm font-semibold">{s.name}</div>
+                <div className="mt-2 text-xs leading-5 text-black/60">{s.description}</div>
               </a>
             ))}
           </div>
