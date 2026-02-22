@@ -247,7 +247,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="mt-0 sm:mt-14 border-t border-black/5 bg-white/40 backdrop-blur-sm" data-testid="footer">
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+        <div className="mx-auto max-w-6xl px-4 pt-24 pb-8 sm:pt-16 sm:pb-10">
           <div className="flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <img
