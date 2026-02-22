@@ -213,7 +213,7 @@ export default function Home() {
                 <img
                   src="/brand/logo_nuevo.png"
                   alt="Ariana Vargas Nails"
-                  className="w-[85%] h-[85%] object-contain"
+                  className="w-full h-full object-contain scale-[1.02]"
                   data-testid="img-hero-logo"
                 />
               </div>
