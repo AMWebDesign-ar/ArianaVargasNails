@@ -13,8 +13,8 @@ export const brand = {
   },
   developerCredit: {
     enabled: true,
-    name: "AM Web Studio",
-    text: "Sitio desarrollado por AM Web Studio",
+    name: "AM Web Design",
+    text: "Sitio desarrollado por AM Web Design",
     url: "https://www.instagram.com/am.webstudio/",
   },
 };
