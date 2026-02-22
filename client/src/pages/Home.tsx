@@ -180,19 +180,19 @@ export default function Home() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
-              <img
-                src="/brand/logo_square_transparent.png"
-                alt="Ariana Vargas Nails"
-                className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain"
-                data-testid="img-hero-logo"
-              />
-
               <h1
-                className="mt-6 sm:mt-8 text-4xl sm:text-5xl md:text-6xl font-semibold leading-none tracking-tight [font-family:var(--font-playfair)]"
+                className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-none tracking-tight [font-family:var(--font-playfair)]"
                 data-testid="text-hero-title"
               >
                 Tu momento, tu estilo, tus uñas
               </h1>
+
+              <img
+                src="/brand/logo_square_transparent.png"
+                alt="Ariana Vargas Nails"
+                className="mt-6 sm:mt-8 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain"
+                data-testid="img-hero-logo"
+              />
 
               <p
                 className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70"
