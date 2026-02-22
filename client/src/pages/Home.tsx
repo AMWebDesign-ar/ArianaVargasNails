@@ -190,7 +190,7 @@ export default function Home() {
           <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14 md:py-20">
             <div className="flex flex-col items-center text-center">
               <h1
-                className="[font-family:var(--font-playfair)] leading-[1.1] tracking-tight"
+                className="[font-family:var(--font-playfair)] leading-[1.0] tracking-tight"
                 data-testid="text-hero-title"
               >
                 <span className="block text-3xl sm:text-4xl md:text-5xl font-light text-black/50 tracking-[0.02em]">
