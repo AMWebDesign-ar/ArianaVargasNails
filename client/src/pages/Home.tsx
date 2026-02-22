@@ -203,12 +203,15 @@ export default function Home() {
                 </span>
               </h1>
 
-              <img
-                src="/brand/logo_square_transparent.png"
-                alt="Ariana Vargas Nails"
-                className="mt-6 sm:mt-8 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain animate-pulse-expand"
-                data-testid="img-hero-logo"
-              />
+              <div className="mt-6 sm:mt-8 relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full border-2 border-[#D6B6B6]/60 shadow-[0_0_25px_rgba(214,182,182,0.45),0_0_50px_rgba(201,160,160,0.25)] animate-pulse-expand" />
+                <img
+                  src="/brand/logo_square_transparent.png"
+                  alt="Ariana Vargas Nails"
+                  className="w-full h-full object-contain relative z-10"
+                  data-testid="img-hero-logo"
+                />
+              </div>
 
               <p
                 className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-6 sm:leading-7 text-black/70"
