@@ -237,15 +237,14 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </a>
 
-                <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-up" style={{ animationDelay: '1.1s' }}>
+                <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up" style={{ animationDelay: '1.1s' }}>
                   <button
                     onClick={() => setServicesOpen(true)}
-                    className="group relative inline-flex items-center justify-center rounded-2xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-10 py-4 text-[11px] font-bold tracking-[0.25em] uppercase text-[#B07070] shadow-[0_10px_30px_rgba(214,182,182,0.15)] hover:shadow-[0_15px_35px_rgba(176,112,112,0.25)] hover:-translate-y-1.5 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+                    className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_12px_25px_rgba(176,112,112,0.2)] hover:-translate-y-1 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
                     data-testid="button-hero-servicios"
                   >
-                    <span className="relative z-10 transition-colors duration-700 group-hover:text-white">Explorar Servicios</span>
+                    <span className="relative z-10 transition-colors duration-700 group-hover:text-white">Ver Servicios</span>
                     <div className="absolute inset-0 bg-gradient-to-br from-[#B07070] to-[#8b5e58] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.2),transparent_70%)]" />
                   </button>
                 </div>
               </div>
