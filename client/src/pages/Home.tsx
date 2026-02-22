@@ -83,37 +83,37 @@ function MobileMenu({
           </button>
         </div>
 
-        <div className="flex flex-col gap-2 p-5 pt-8">
-          {[
-            { href: "#services", label: "Servicios", action: "services" },
-            { href: BRAND.instagram, label: "Ver trabajos", external: true },
-            { href: BRAND.mapsUrl, label: "Ubicación", external: true },
-          ].map((item: { href: string; label: string; external?: boolean; action?: string }, i) => (
-            <a
-              key={item.label}
-              href={item.action ? undefined : item.href}
-              {...(item.external ? { target: "_blank", rel: "noreferrer" } : {})}
-              onClick={(e) => {
-                if (item.action === "services") {
-                  e.preventDefault();
-                  onClose();
-                  onOpenServices();
-                } else {
-                  onClose();
-                }
-              }}
-              className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out ${item.label === "Turnos" ? "animate-shimmer text-[#B07070]" : ""}`}
-              style={{ 
-                animationDelay: `${i * 120 + 200}ms`, 
-                animationFillMode: 'forwards',
-                fontFamily: 'var(--font-serif)'
-              }}
-              data-testid={`link-mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
+            <div className="flex flex-col gap-2 p-5 pt-8">
+              {[
+                { href: "#services", label: "Servicios", action: "services" },
+                { href: BRAND.instagram, label: "Ver trabajos", external: true },
+                { href: BRAND.mapsUrl, label: "Ubicación", external: true },
+              ].map((item, i) => (
+                <button
+                  key={item.label}
+                  onClick={(e) => {
+                    if (item.action === "services") {
+                      onOpenServices();
+                      onClose();
+                    } else if (item.external) {
+                      window.open(item.href, "_blank", "noreferrer");
+                      onClose();
+                    } else {
+                      onClose();
+                    }
+                  }}
+                  className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out`}
+                  style={{ 
+                    animationDelay: `${i * 120 + 200}ms`, 
+                    animationFillMode: 'forwards',
+                    fontFamily: 'var(--font-serif)'
+                  }}
+                  data-testid={`link-mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
       </nav>
     </div>
   );
