@@ -258,14 +258,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4 pt-20 pb-12 sm:pt-14 sm:pb-12">
           <div className="flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <img
-                src="/brand/logo_nuevo.png"
-                alt={`${BRAND.name} logo`}
-                width={40}
-                height={40}
-                className="rounded-full object-cover shadow-[0_0_15px_rgba(176,112,112,0.4)]"
-              />
-              <div className="text-sm font-medium tracking-[0.12em] [font-family:var(--font-serif)] truncate drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">
+              <div className="text-sm font-medium tracking-[0.25em] uppercase [font-family:var(--font-serif)] truncate drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">
                 {BRAND.name}
               </div>
             </div>
