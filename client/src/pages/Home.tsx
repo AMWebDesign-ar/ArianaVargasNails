@@ -166,7 +166,7 @@ export default function Home() {
             href={whatsappLink()}
             target="_blank"
             rel="noreferrer"
-            className="hidden sm:inline-flex items-center justify-center rounded-xl bg-[#1C1C1C] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+            className="hidden sm:inline-flex items-center justify-center rounded-full bg-[#B07070] px-6 py-2.5 text-sm font-medium text-[#FAFAFA] shadow-[0_4px_12px_rgba(176,112,112,0.3)] hover:shadow-[0_6px_16px_rgba(176,112,112,0.4)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
             data-testid="button-header-reservar"
           >
             Reservar
