@@ -199,7 +199,7 @@ export default function Home() {
               <img
                 src="/brand/logo_square_transparent.png"
                 alt="Ariana Vargas Nails"
-                className="mt-6 sm:mt-8 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain"
+                className="mt-6 sm:mt-8 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain animate-pulse-expand"
                 data-testid="img-hero-logo"
               />
 
