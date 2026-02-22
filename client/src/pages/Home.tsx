@@ -122,30 +122,7 @@ export default function Home() {
         data-testid="header"
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-          <a href="#top" className="min-w-0" data-testid="link-logo">
-            <div className="text-sm font-semibold tracking-tight truncate">
-              {BRAND.name}
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-2 md:flex">
-            <NavLink href="#services" label="Servicios" />
-            <NavLink href="#gallery" label="Galería" />
-            <NavLink href="#studio" label="Estudio" />
-            <NavLink href="#turnos" label="Turnos" />
-          </nav>
-
           <div className="flex items-center gap-2">
-            <a
-              href={whatsappLink()}
-              target="_blank"
-              rel="noreferrer"
-              className="hidden sm:inline-flex items-center justify-center rounded-xl bg-[#1C1C1C] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
-              data-testid="button-header-reservar"
-            >
-              Reservar
-            </a>
-
             <button
               onClick={() => setMenuOpen(true)}
               className="flex h-10 w-10 items-center justify-center rounded-xl text-black/70 active:bg-black/5 md:hidden"
@@ -167,7 +144,30 @@ export default function Home() {
                 <line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
+
+            <a href="#top" className="min-w-0" data-testid="link-logo">
+              <div className="text-sm font-semibold tracking-tight truncate">
+                {BRAND.name}
+              </div>
+            </a>
           </div>
+
+          <nav className="hidden items-center gap-2 md:flex">
+            <NavLink href="#services" label="Servicios" />
+            <NavLink href="#gallery" label="Galería" />
+            <NavLink href="#studio" label="Estudio" />
+            <NavLink href="#turnos" label="Turnos" />
+          </nav>
+
+          <a
+            href={whatsappLink()}
+            target="_blank"
+            rel="noreferrer"
+            className="hidden sm:inline-flex items-center justify-center rounded-xl bg-[#1C1C1C] px-4 py-2.5 text-sm font-medium text-[#FAFAFA] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/40"
+            data-testid="button-header-reservar"
+          >
+            Reservar
+          </a>
         </div>
       </header>
 
