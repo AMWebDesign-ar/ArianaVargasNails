@@ -182,7 +182,7 @@ export default function Home() {
           <img
             src={heroNailsBg}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none"
             aria-hidden="true"
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
