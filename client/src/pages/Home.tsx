@@ -87,7 +87,6 @@ function MobileMenu({
             { href: "#services", label: "Servicios", action: "services" },
             { href: BRAND.instagram, label: "Ver trabajos", external: true },
             { href: BRAND.mapsUrl, label: "Ubicación", external: true },
-            { href: "#turnos", label: "Turnos" },
           ].map((item: { href: string; label: string; external?: boolean; action?: string }, i) => (
             <a
               key={item.label}
@@ -161,12 +160,11 @@ export default function Home() {
             </a>
           </div>
 
-          <nav className="hidden items-center gap-6 md:flex">
-            <NavLink href="#services" label="Servicios" />
-            <NavLink href={BRAND.instagram} label="Galería" />
-            <NavLink href={BRAND.mapsUrl} label="Ubicación" />
-            <NavLink href="#turnos" label="Turnos" />
-          </nav>
+              <nav className="hidden items-center gap-6 md:flex">
+                <NavLink href="#services" label="Servicios" />
+                <NavLink href={BRAND.instagram} label="Galería" />
+                <NavLink href={BRAND.mapsUrl} label="Ubicación" />
+              </nav>
         </div>
       </header>
 
