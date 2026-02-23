@@ -122,14 +122,16 @@ function MobileMenu({
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   useEffect(() => {
-    if (servicesOpen || menuOpen) {
+    if (servicesOpen || menuOpen || calendarOpen) {
       window.history.pushState({ modal: "open" }, "");
       
       const handlePopState = () => {
         setServicesOpen(false);
         setMenuOpen(false);
+        setCalendarOpen(false);
       };
 
       window.addEventListener("popstate", handlePopState);
@@ -244,18 +246,16 @@ export default function Home() {
               </p>
 
                 <div className="mt-8 sm:mt-12 flex flex-col items-center gap-6 animate-fade-up" style={{ animationDelay: '1s' }}>
-                <a
-                  href={whatsappLink()}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  onClick={() => setCalendarOpen(true)}
                   className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3)] hover:shadow-[0_25px_50px_rgba(176,112,112,0.5)] hover:-translate-y-1.5 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group overflow-hidden"
-                  data-testid="button-hero-whatsapp"
+                  data-testid="button-hero-calendar"
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     Reservar turno ahora
                   </span>
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                </a>
+                </button>
 
                 <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up" style={{ animationDelay: '1.1s' }}>
                     <button
@@ -309,6 +309,56 @@ export default function Home() {
       <WhatsAppFloatingButton />
 
       {/* Services Popup */}
+      <AnimatePresence>
+        {calendarOpen && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setCalendarOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-md"
+              data-testid="calendar-popup-overlay"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-4xl overflow-hidden rounded-[32px] bg-white shadow-2xl h-[85vh] flex flex-col"
+              data-testid="calendar-popup"
+            >
+              <div className="flex items-center justify-between border-b border-black/5 px-6 py-4">
+                <h3 className="text-lg font-bold tracking-[0.1em] uppercase [font-family:var(--font-serif)] text-black/80">
+                  Reservar Turno
+                </h3>
+                <button
+                  onClick={() => setCalendarOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-black/40 hover:bg-black/10 hover:text-black transition-colors"
+                  aria-label="Cerrar"
+                  data-testid="button-close-calendar"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+              <div className="flex-1 w-full bg-[#FAFAFA] relative">
+                <iframe
+                  src={BRAND.calendarUrl}
+                  style={{ border: 0 }}
+                  className="absolute inset-0 w-full h-full"
+                  frameBorder="0"
+                  scrolling="no"
+                  title="Google Calendar"
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {servicesOpen && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
