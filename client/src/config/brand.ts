@@ -6,7 +6,7 @@ export const brand = {
   hours: "Lunes a Sábado · 9 a 19 h",
   instagram: "https://www.instagram.com/arianavargasnails/",
   whatsappNumber: "5492235268877",
-  calendarUrl: "https://calendar.google.com/calendar/embed?src=arianavargasnails%40gmail.com&ctz=America%2FArgentina%2FBuenos_Aires",
+  calendarUrl: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2ZXT4vhETBEjJp1-tloDW93U9U20Dj26t6kYXSFg-4WOmqeacCfKcMJXfhjWOtEGd1IZErpUB4?gv=true",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Gascón+1967+Mar+del+Plata",
   logo: {
     circle: "/brand/logo_circle_transparent.png",
