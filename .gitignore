@@ -1,7 +1,12 @@
 node_modules
-.env
-.env.*
 dist
 build
-.local
 .next
+
+.env
+.env.*
+!.env.example
+
+.local
+.DS_Store
+*.tar.gz
