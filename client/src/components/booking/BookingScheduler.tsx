@@ -93,161 +93,143 @@ export default function BookingScheduler({ onClose }: Props) {
 
   return (
   <div className="h-full overflow-y-auto bg-[#fffafc]">
-    {/* <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-2">
-        <div>
-          <h3 className="text-lg font-bold uppercase tracking-[0.1em] text-[#6f4e5f]">
-            Reservar turno
-          </h3>
-          <p className="text-sm text-[#8f6f7e]">
-            Elegí servicio, fecha y horario disponible
+    <div className="grid gap-4 p-3 sm:gap-5 sm:p-5 lg:grid-cols-2">
+      <div className="space-y-4">
+        <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
+          <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
+            Servicio
+          </label>
+          <select
+            value={serviceId}
+            onChange={(e) => setServiceId(e.target.value)}
+            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+          >
+            {services.map((service) => (
+              <option key={service.id} value={service.id}>
+                {service.name} ({service.duration} min)
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
+          <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
+            Fecha
+          </label>
+          <input
+            type="date"
+            value={date}
+            min={format(new Date(), "yyyy-MM-dd")}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+          />
+          <p className="mt-2 text-xs text-[#8f6f7e]">
+            No se permiten reservas con menos de 24 hs de anticipación.
           </p>
         </div>
 
-        <button
-          onClick={onClose}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#edd6e0] bg-white text-[#8d6677]"
-        >
-          ×
-        </button>
-      </div> */}
+        <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
+          <h4 className="mb-2 text-sm font-semibold text-[#6f4e5f]">
+            Horarios disponibles
+          </h4>
 
-      <div className="grid flex-1 gap-6 overflow-y-auto p-6 lg:grid-cols-2">
-        <div className="space-y-5">
-          <div className="rounded-3xl border border-[#f0dfe6] bg-white p-5">
-            <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
-              Servicio
-            </label>
-            <select
-              value={serviceId}
-              onChange={(e) => setServiceId(e.target.value)}
-              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 outline-none"
-            >
-              {services.map((service) => (
-                <option key={service.id} value={service.id}>
-                  {service.name} ({service.duration} min)
-                </option>
-              ))}
-            </select>
-          </div>
+          {loadingSlots ? (
+            <p className="text-sm text-[#8f6f7e]">Cargando horarios...</p>
+          ) : slots.length === 0 ? (
+            <p className="text-sm text-[#8f6f7e]">
+              No hay horarios disponibles para esa fecha.
+            </p>
+          ) : (
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {slots.map((slot) => {
+                const active = selectedSlot?.start === slot.start;
 
-          <div className="rounded-3xl border border-[#f0dfe6] bg-white p-5">
-            <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
-              Fecha
-            </label>
-            <input
-              type="date"
-              value={date}
-              min={format(new Date(), "yyyy-MM-dd")}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 outline-none"
-            />
-            <p className="mt-2 text-xs text-[#8f6f7e]">
-              No se permiten reservas con menos de 24 hs de anticipación.
+                return (
+                  <button
+                    key={slot.start}
+                    type="button"
+                    onClick={() => setSelectedSlot(slot)}
+                    className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
+                      active
+                        ? "border-[#d86c93] bg-[#d86c93] text-white"
+                        : "border-[#ead8e1] bg-[#fffafc] text-[#6f4e5f] hover:border-[#d9a8bb]"
+                    }`}
+                  >
+                    {slot.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5"
+      >
+        <h4 className="mb-3 text-sm font-semibold text-[#6f4e5f]">
+          Tus datos
+        </h4>
+
+        <div className="space-y-3">
+          <input
+            type="text"
+            placeholder="Nombre y apellido"
+            value={clientName}
+            onChange={(e) => setClientName(e.target.value)}
+            required
+            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            value={clientEmail}
+            onChange={(e) => setClientEmail(e.target.value)}
+            required
+            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+          />
+
+          <input
+            type="tel"
+            placeholder="WhatsApp / Teléfono"
+            value={clientPhone}
+            onChange={(e) => setClientPhone(e.target.value)}
+            required
+            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+          />
+
+          <textarea
+            placeholder="Notas adicionales (opcional)"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            rows={4}
+            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+          />
+
+          <div className="rounded-2xl bg-[#fff5f8] p-3 text-sm text-[#6f4e5f]">
+            <p>
+              <strong>Servicio:</strong> {selectedService?.name ?? "-"}
+            </p>
+            <p>
+              <strong>Duración:</strong> {selectedService?.duration ?? "-"} min
+            </p>
+            <p>
+              <strong>Horario:</strong> {selectedSlot?.label ?? "Seleccioná uno"}
             </p>
           </div>
 
-          <div className="rounded-3xl border border-[#f0dfe6] bg-white p-5">
-            <h4 className="mb-3 text-sm font-medium text-[#6f4e5f]">
-              Horarios disponibles
-            </h4>
-
-            {loadingSlots ? (
-              <p className="text-sm text-[#8f6f7e]">Cargando horarios...</p>
-            ) : slots.length === 0 ? (
-              <p className="text-sm text-[#8f6f7e]">
-                No hay horarios disponibles para esa fecha.
-              </p>
-            ) : (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {slots.map((slot) => {
-                  const active = selectedSlot?.start === slot.start;
-
-                  return (
-                    <button
-                      key={slot.start}
-                      type="button"
-                      onClick={() => setSelectedSlot(slot)}
-                      className={`rounded-2xl border px-4 py-3 text-sm font-medium transition ${
-                        active
-                          ? "border-[#d86c93] bg-[#d86c93] text-white"
-                          : "border-[#ead8e1] bg-[#fffafc] text-[#6f4e5f] hover:border-[#d9a8bb]"
-                      }`}
-                    >
-                      {slot.label}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          <button
+            type="submit"
+            disabled={!selectedSlot || submitting}
+            className="w-full rounded-2xl bg-[#d86c93] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {submitting ? "Reservando..." : "Confirmar turno"}
+          </button>
         </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className="rounded-3xl border border-[#f0dfe6] bg-white p-5"
-        >
-          <h4 className="mb-4 text-sm font-medium text-[#6f4e5f]">
-            Tus datos
-          </h4>
-
-          <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Nombre y apellido"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-              required
-              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 outline-none"
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              value={clientEmail}
-              onChange={(e) => setClientEmail(e.target.value)}
-              required
-              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 outline-none"
-            />
-
-            <input
-              type="tel"
-              placeholder="WhatsApp / Teléfono"
-              value={clientPhone}
-              onChange={(e) => setClientPhone(e.target.value)}
-              required
-              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 outline-none"
-            />
-
-            <textarea
-              placeholder="Notas adicionales (opcional)"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={4}
-              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 outline-none"
-            />
-
-            <div className="rounded-2xl bg-[#fff5f8] p-4 text-sm text-[#6f4e5f]">
-              <p>
-                <strong>Servicio:</strong> {selectedService?.name ?? "-"}
-              </p>
-              <p>
-                <strong>Duración:</strong> {selectedService?.duration ?? "-"} min
-              </p>
-              <p>
-                <strong>Horario:</strong> {selectedSlot?.label ?? "Seleccioná uno"}
-              </p>
-            </div>
-
-            <button
-              type="submit"
-              disabled={!selectedSlot || submitting}
-              className="w-full rounded-2xl bg-[#d86c93] px-4 py-3 font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {submitting ? "Reservando..." : "Confirmar turno"}
-            </button>
-          </div>
-        </form>
-      </div>
+      </form>
     </div>
-  );
+  </div>
+);
 }
