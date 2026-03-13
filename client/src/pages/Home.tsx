@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BRAND, whatsappLink } from "@/config/brand";
-import heroNailsBg from "@assets/beso_turco_1771736671340.png";
+import heroNailsBg from "@/public/brand/nails.png";
 import { SERVICES } from "@/config/services";
 import { GALLERY } from "@/config/gallery";
 import { ServiceCard } from "@/components/ServiceCard";
