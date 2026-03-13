@@ -20,12 +20,12 @@ function NavLink({
     <a
       href={href}
       onClick={onClick}
-      className="relative text-[11px] font-bold tracking-[0.2em] uppercase text-black/50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-[#B07070] hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/20 rounded-lg px-2.5 py-1.5 group overflow-hidden"
+      className="relative text-[11px] font-bold tracking-[0.2em] uppercase text-black/50 transition-all duration-700 ease-smooth hover:text-[#B07070] hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/20 rounded-lg px-2.5 py-1.5 group overflow-hidden"
       data-testid={`link-nav-${label.toLowerCase()}`}
     >
       <span className="relative z-10">{label}</span>
-      <span className="absolute bottom-0 left-0 h-[1px] w-0 bg-gradient-to-r from-transparent via-[#B07070] to-transparent transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-full" />
-      <div className="absolute inset-0 bg-[#B07070]/5 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-lg" />
+      <span className="absolute bottom-0 left-0 h-[1px] w-0 bg-gradient-to-r from-transparent via-[#B07070] to-transparent transition-all duration-700 ease-smooth group-hover:w-full" />
+      <div className="absolute inset-0 bg-[#B07070]/5 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 ease-smooth rounded-lg" />
     </a>
   );
 }
@@ -102,7 +102,7 @@ function MobileMenu({
                       onClose();
                     }
                   }}
-                  className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out`}
+                  className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-smooth hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out`}
                   style={{ 
                     animationDelay: `${i * 120 + 200}ms`, 
                     animationFillMode: 'forwards',
@@ -248,23 +248,23 @@ export default function Home() {
                 <div className="mt-8 sm:mt-12 flex flex-col items-center gap-6 animate-fade-up" style={{ animationDelay: '1s' }}>
                 <button
                   onClick={() => setCalendarOpen(true)}
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3)] hover:shadow-[0_25px_50px_rgba(176,112,112,0.5)] hover:-translate-y-1.5 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group overflow-hidden"
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3)] hover:shadow-[0_25px_50px_rgba(176,112,112,0.5)] hover:-translate-y-1.5 active:scale-95 transition-all duration-700 ease-smooth group overflow-hidden"
                   data-testid="button-hero-calendar"
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     Reservar turno ahora
                   </span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-smooth" />
                 </button>
 
                 <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up" style={{ animationDelay: '1.1s' }}>
                     <button
                       onClick={() => setServicesOpen(true)}
-                      className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_12px_25px_rgba(176,112,112,0.2)] hover:-translate-y-1 active:scale-95 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+                      className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_12px_25px_rgba(176,112,112,0.2)] hover:-translate-y-1 active:scale-95 transition-all duration-700 ease-smooth overflow-hidden"
                       data-testid="button-hero-servicios"
                     >
                       <span className="relative z-10 transition-colors duration-700 group-hover:text-white">Ver Servicios</span>
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#B07070] to-[#8b5e58] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#B07070] to-[#8b5e58] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-smooth" />
                     </button>
                 </div>
               </div>
