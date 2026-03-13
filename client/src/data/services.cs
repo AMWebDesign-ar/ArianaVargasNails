@@ -25,4 +25,4 @@ export const services: ServiceItem[] = [
     duration: 120,
     description: "Servicio de 120 minutos.",
   },
-];
+];//
