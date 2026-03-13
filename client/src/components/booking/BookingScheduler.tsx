@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { services } from "@/data/services";
 
+
 type TimeSlot = {
   start: string;
   end: string;
@@ -92,8 +93,8 @@ export default function BookingScheduler({ onClose }: Props) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-[#fffafc]">
-      <div className="flex items-center justify-between border-b border-[#f0dfe6] px-6 py-4">
+  <div className="h-full overflow-y-auto bg-[#fffafc]">
+    <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-2">
         <div>
           <h3 className="text-lg font-bold uppercase tracking-[0.1em] text-[#6f4e5f]">
             Reservar turno

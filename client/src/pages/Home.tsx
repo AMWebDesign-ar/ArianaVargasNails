@@ -312,26 +312,27 @@ export default function Home() {
       {/* Services Popup */}
       <AnimatePresence>
   {calendarOpen && (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-6">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={() => setCalendarOpen(false)}
-        className="absolute inset-0 bg-[#6f4e5f]/25 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-md"
         data-testid="calendar-popup-overlay"
       />
+      
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-[32px] border border-[#e8d7df] bg-[#fffafc] shadow-[0_20px_60px_rgba(111,78,95,0.18)]"
+        className="relative flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-[32px] bg-white shadow-2xl"
         data-testid="calendar-popup"
       >
-        <div className="flex items-center justify-between border-b border-[#f0dfe6] bg-gradient-to-r from-[#fff7fa] via-[#fdf2f7] to-[#f8eefc] px-6 py-4">
+        <div className="flex items-center justify-between border-b border-[#f0dfe6] bg-gradient-to-r from-[#fff7fa] via-[#fdf2f7] to-[#f8eefc] px-4 py-4 sm:px-6">
           <div>
-            <h3 className="text-lg font-bold uppercase tracking-[0.1em] [font-family:var(--font-serif)] text-[#6f4e5f]">
+            <h3 className="text-base font-bold uppercase tracking-[0.1em] [font-family:var(--font-serif)] text-[#6f4e5f] sm:text-lg">
               Reservar turno
             </h3>
             <p className="mt-1 text-sm text-[#8f6f7e]">
@@ -361,7 +362,7 @@ export default function Home() {
           </button>
         </div>
 
-        <div className="flex-1 w-full bg-[#FAFAFA] relative">
+        <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#fff7fa]">
           <BookingScheduler onClose={() => setCalendarOpen(false)} />
         </div>
       </motion.div>
