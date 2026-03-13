@@ -6,6 +6,7 @@ import { SERVICES } from "@/config/services";
 import { GALLERY } from "@/config/gallery";
 import { ServiceCard } from "@/components/ServiceCard";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
+import BookingScheduler from "@/components/booking/BookingScheduler";
 
 function NavLink({
   href,
@@ -360,15 +361,8 @@ export default function Home() {
           </button>
         </div>
 
-        <div className="relative flex-1 w-full bg-[#fff7fa]">
-          <iframe
-            src={BRAND.calendarUrl}
-            style={{ border: 0 }}
-            className="absolute inset-0 h-full w-full"
-            frameBorder="0"
-            scrolling="no"
-            title="Google Calendar"
-          />
+        <div className="flex-1 w-full bg-[#FAFAFA] relative">
+          <BookingScheduler onClose={() => setCalendarOpen(false)} />
         </div>
       </motion.div>
     </div>
