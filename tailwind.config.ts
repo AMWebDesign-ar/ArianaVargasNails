@@ -5,6 +5,9 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      transitionTimingFunction: {
+      smooth: "cubic-bezier(0.16,1,0.3,1)",
+    },
       borderRadius: {
         lg: ".5625rem", /* 9px */
         md: ".375rem", /* 6px */
