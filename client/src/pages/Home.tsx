@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BRAND, whatsappLink } from "@/config/brand";
-import heroNailsBg from "@/public/brand/nails.png";
+const heroNailsBg = "/brand/nails.png";
 import { SERVICES } from "@/config/services";
 import { GALLERY } from "@/config/gallery";
 import { ServiceCard } from "@/components/ServiceCard";
@@ -310,54 +310,70 @@ export default function Home() {
 
       {/* Services Popup */}
       <AnimatePresence>
-        {calendarOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setCalendarOpen(false)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-md"
-              data-testid="calendar-popup-overlay"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl overflow-hidden rounded-[32px] bg-white shadow-2xl h-[85vh] flex flex-col"
-              data-testid="calendar-popup"
-            >
-              <div className="flex items-center justify-between border-b border-black/5 px-6 py-4">
-                <h3 className="text-lg font-bold tracking-[0.1em] uppercase [font-family:var(--font-serif)] text-black/80">
-                  Reservar Turno
-                </h3>
-                <button
-                  onClick={() => setCalendarOpen(false)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-black/40 hover:bg-black/10 hover:text-black transition-colors"
-                  aria-label="Cerrar"
-                  data-testid="button-close-calendar"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              </div>
-              <div className="flex-1 w-full bg-[#FAFAFA] relative">
-                <iframe
-                  src={BRAND.calendarUrl}
-                  style={{ border: 0 }}
-                  className="absolute inset-0 w-full h-full"
-                  frameBorder="0"
-                  scrolling="no"
-                  title="Google Calendar"
-                />
-              </div>
-            </motion.div>
+  {calendarOpen && (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-6">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={() => setCalendarOpen(false)}
+        className="absolute inset-0 bg-[#6f4e5f]/25 backdrop-blur-sm"
+        data-testid="calendar-popup-overlay"
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-[32px] border border-[#e8d7df] bg-[#fffafc] shadow-[0_20px_60px_rgba(111,78,95,0.18)]"
+        data-testid="calendar-popup"
+      >
+        <div className="flex items-center justify-between border-b border-[#f0dfe6] bg-gradient-to-r from-[#fff7fa] via-[#fdf2f7] to-[#f8eefc] px-6 py-4">
+          <div>
+            <h3 className="text-lg font-bold uppercase tracking-[0.1em] [font-family:var(--font-serif)] text-[#6f4e5f]">
+              Reservar turno
+            </h3>
+            <p className="mt-1 text-sm text-[#8f6f7e]">
+              Elegí tu servicio, día y horario disponible
+            </p>
           </div>
-        )}
-      </AnimatePresence>
+
+          <button
+            onClick={() => setCalendarOpen(false)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#edd6e0] bg-white text-[#8d6677] transition-colors hover:bg-[#fdf0f5] hover:text-[#6f4e5f]"
+            aria-label="Cerrar"
+            data-testid="button-close-calendar"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="relative flex-1 w-full bg-[#fff7fa]">
+          <iframe
+            src={BRAND.calendarUrl}
+            style={{ border: 0 }}
+            className="absolute inset-0 h-full w-full"
+            frameBorder="0"
+            scrolling="no"
+            title="Google Calendar"
+          />
+        </div>
+      </motion.div>
+    </div>
+  )}
+</AnimatePresence>
 
       <AnimatePresence>
         {servicesOpen && (
