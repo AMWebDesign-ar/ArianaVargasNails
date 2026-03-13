@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { services } from "@/data/services";
 
-
 type TimeSlot = {
   start: string;
   end: string;
@@ -94,7 +93,7 @@ export default function BookingScheduler({ onClose }: Props) {
 
   return (
   <div className="h-full overflow-y-auto bg-[#fffafc]">
-    <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-2">
+    {/* <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-2">
         <div>
           <h3 className="text-lg font-bold uppercase tracking-[0.1em] text-[#6f4e5f]">
             Reservar turno
@@ -110,7 +109,7 @@ export default function BookingScheduler({ onClose }: Props) {
         >
           ×
         </button>
-      </div>
+      </div> */}
 
       <div className="grid flex-1 gap-6 overflow-y-auto p-6 lg:grid-cols-2">
         <div className="space-y-5">
