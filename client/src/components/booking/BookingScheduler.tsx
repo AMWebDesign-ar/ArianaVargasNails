@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { services } from "@/data/services";
-
 type TimeSlot = {
   start: string;
   end: string;
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export default function BookingScheduler({ onClose }: Props) {
-  const [serviceId, setServiceId] = useState(services[0]?.id ?? "");
+  const [serviceId, setServiceId] = useState("");
   const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
@@ -32,8 +31,12 @@ export default function BookingScheduler({ onClose }: Props) {
     [serviceId]
   );
 
-  useEffect(() => {
-    if (!serviceId || !date) return;
+useEffect(() => {
+  if (!serviceId || !date) {
+    setSlots([]);
+    setSelectedSlot(null);
+    return;
+  }
 
     async function loadAvailability() {
       setLoadingSlots(true);
@@ -104,12 +107,16 @@ export default function BookingScheduler({ onClose }: Props) {
             onChange={(e) => setServiceId(e.target.value)}
             className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
           >
+            <option value="" disabled>
+              Seleccionar servicio
+            </option>
+
             {services.map((service) => (
               <option key={service.id} value={service.id}>
                 {service.name} ({service.duration} min)
               </option>
             ))}
-          </select>
+          </select> 
         </div>
 
         <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
