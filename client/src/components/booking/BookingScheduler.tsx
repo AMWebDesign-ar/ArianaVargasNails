@@ -1,8 +1,7 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { services } from "@/data/services";
 import { addDays, format } from "date-fns";
+import { services } from "../../data/services";
+
 type TimeSlot = {
   start: string;
   end: string;
@@ -15,7 +14,6 @@ type Props = {
 
 export default function BookingScheduler({ onClose }: Props) {
   const [serviceId, setServiceId] = useState("");
-  //const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [date, setDate] = useState("");
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
@@ -28,29 +26,75 @@ export default function BookingScheduler({ onClose }: Props) {
   const [notes, setNotes] = useState("");
 
   const selectedService = useMemo(
-  () => services.find((s) => s.id === serviceId),
-  [serviceId]
-);
+    () => services.find((s) => s.id === serviceId),
+    [serviceId]
+  );
 
-const minDate = format(new Date(), "yyyy-MM-dd");
+  const minDate = format(new Date(), "yyyy-MM-dd");
 
-useEffect(() => {
-  if (!serviceId || !date) {
-    setSlots([]);
-    setSelectedSlot(null);
-    return;
+  async function findFirstAvailableDate(selectedServiceId: string) {
+    for (let i = 0; i < 30; i++) {
+      const candidate = format(addDays(new Date(), i), "yyyy-MM-dd");
+
+      try {
+        const res = await fetch(
+          `/api/availability?date=${candidate}&serviceId=${selectedServiceId}`
+        );
+        const data = await res.json();
+
+        if (data.slots && data.slots.length > 0) {
+          return candidate;
+        }
+      } catch (error) {
+        console.error("Error buscando primera fecha disponible:", error);
+      }
+    }
+
+    return "";
   }
 
-  async function loadAvailability() {
+  useEffect(() => {
+    if (!serviceId) {
+      setDate("");
+      setSlots([]);
+      setSelectedSlot(null);
+      return;
+    }
+
+    async function preloadFirstDate() {
+      const firstDate = await findFirstAvailableDate(serviceId);
+
+      if (firstDate) {
+        setDate(firstDate);
+      } else {
+        setDate("");
+        setSlots([]);
+        setSelectedSlot(null);
+      }
+    }
+
+    preloadFirstDate();
+  }, [serviceId]);
+
+  useEffect(() => {
+    if (!serviceId || !date) {
+      setSlots([]);
+      setSelectedSlot(null);
+      return;
+    }
+
+    async function loadAvailability() {
       setLoadingSlots(true);
       setSelectedSlot(null);
 
       try {
-        const res = await fetch(`/api/availability?date=${date}&serviceId=${serviceId}`);
+        const res = await fetch(
+          `/api/availability?date=${date}&serviceId=${serviceId}`
+        );
         const data = await res.json();
         setSlots(data.slots ?? []);
       } catch (error) {
-        console.error(error);
+        console.error("Error cargando disponibilidad:", error);
         setSlots([]);
       } finally {
         setLoadingSlots(false);
@@ -58,42 +102,7 @@ useEffect(() => {
     }
 
     loadAvailability();
-
-    async function findFirstAvailableDate(selectedServiceId: string) {
-  for (let i = 0; i < 30; i++) {
-    const candidate = format(addDays(new Date(), i), "yyyy-MM-dd");
-
-    const res = await fetch(
-      `/api/availability?date=${candidate}&serviceId=${selectedServiceId}`
-    );
-    const data = await res.json();
-
-    if (data.slots && data.slots.length > 0) {
-      return candidate;
-    }
-  }
-
-  return "";
-}
-
-useEffect(() => {
-  if (!serviceId) return;
-
-  async function preloadFirstDate() {
-    const firstDate = await findFirstAvailableDate(serviceId);
-    if (firstDate) {
-      setDate(firstDate);
-    } else {
-      setDate("");
-      setSlots([]);
-      setSelectedSlot(null);
-    }
-  }
-
-  preloadFirstDate();
-}, [serviceId]);
-    
-}, [serviceId, date]);
+  }, [serviceId, date]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -105,7 +114,9 @@ useEffect(() => {
     try {
       const res = await fetch("/api/book", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           serviceId: selectedService.id,
           serviceName: selectedService.name,
@@ -120,12 +131,14 @@ useEffect(() => {
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error || "Error al reservar");
+      if (!res.ok) {
+        throw new Error(data.error || "Error al reservar");
+      }
 
       alert("Turno reservado con éxito");
       onClose();
     } catch (error) {
-      console.error(error);
+      console.error("Error reservando:", error);
       alert("No se pudo reservar el turno");
     } finally {
       setSubmitting(false);
@@ -133,210 +146,180 @@ useEffect(() => {
   }
 
   return (
-  <div className="h-full overflow-y-auto bg-[#fffafc]">
-    <div className="grid gap-4 p-3 sm:gap-5 sm:p-5 lg:grid-cols-2">
-      <div className="space-y-4">
-        <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
-          <label
-  htmlFor="service"
-  className="mb-2 block text-sm font-medium text-[#6f4e5f]"
->
-  Servicio
-</label>
-<select
-  id="service"
-  value={serviceId}
-  onChange={(e) => setServiceId(e.target.value)}
-  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
->
-  <option value="" disabled>
-    Seleccionar servicio
-  </option>
-  {services.map((service) => (
-    <option key={service.id} value={service.id}>
-      {service.name} ({service.duration} min)
-    </option>
-  ))}
-</select>
-        </div>
+    <div className="h-full overflow-y-auto bg-[#fffafc]">
+      <div className="grid gap-4 p-3 sm:gap-5 sm:p-5 lg:grid-cols-2">
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
+            <label
+              htmlFor="service"
+              className="mb-2 block text-sm font-medium text-[#6f4e5f]"
+            >
+              Servicio
+            </label>
+            <select
+              id="service"
+              value={serviceId}
+              onChange={(e) => setServiceId(e.target.value)}
+              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+            >
+              <option value="" disabled>
+                Seleccionar servicio
+              </option>
+              {services.map((service) => (
+                <option key={service.id} value={service.id}>
+                  {service.name} ({service.duration} min)
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
-          <label
-  htmlFor="booking-date"
-  className="mb-2 block text-sm font-medium text-[#6f4e5f]"
->
-  Fecha
-</label>
-<input
-  id="booking-date"
-  type="date"
-  value={date}
-  min={minDate}
-  onChange={(e) => setDate(e.target.value)}
-  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-/>
-
-<label htmlFor="client-name" className="sr-only">
-  Nombre y apellido
-</label>
-<input
-  id="client-name"
-  type="text"
-  placeholder="Nombre y apellido"
-  value={clientName}
-  onChange={(e) => setClientName(e.target.value)}
-  required
-  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-/>
-
-<label htmlFor="client-email" className="sr-only">
-  Email
-</label>
-<input
-  id="client-email"
-  type="email"
-  placeholder="Email"
-  value={clientEmail}
-  onChange={(e) => setClientEmail(e.target.value)}
-  required
-  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-/>
-
-<label htmlFor="client-phone" className="sr-only">
-  WhatsApp o Teléfono
-</label>
-<input
-  id="client-phone"
-  type="tel"
-  placeholder="WhatsApp / Teléfono"
-  value={clientPhone}
-  onChange={(e) => setClientPhone(e.target.value)}
-  required
-  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-/>
-
-<label htmlFor="client-notes" className="sr-only">
-  Notas adicionales
-</label>
-<textarea
-  id="client-notes"
-  placeholder="Notas adicionales (opcional)"
-  value={notes}
-  onChange={(e) => setNotes(e.target.value)}
-  rows={4}
-  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-/>
-          <p className="mt-2 text-xs text-[#8f6f7e]">
-            No se permiten reservas con menos de 24 hs de anticipación.
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
-          <h4 className="mb-2 text-sm font-semibold text-[#6f4e5f]">
-            Horarios disponibles
-          </h4>
-
-          {!serviceId ? (
-  <p className="text-sm text-[#8f6f7e]">
-    Seleccioná primero un servicio.
-  </p>
-) : loadingSlots ? (
-  <p className="text-sm text-[#8f6f7e]">Cargando horarios...</p>
-) : slots.length === 0 ? (
-  <p className="text-sm text-[#8f6f7e]">
-    No hay horarios disponibles para esa fecha.
-  </p>
-) : (
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {slots.map((slot) => {
-                const active = selectedSlot?.start === slot.start;
-
-                return (
-                  <button
-                    key={slot.start}
-                    type="button"
-                    onClick={() => setSelectedSlot(slot)}
-                    className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
-                      active
-                        ? "border-[#d86c93] bg-[#d86c93] text-white"
-                        : "border-[#ead8e1] bg-[#fffafc] text-[#6f4e5f] hover:border-[#d9a8bb]"
-                    }`}
-                  >
-                    {slot.label}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <form
-        onSubmit={handleSubmit}
-        className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5"
-      >
-        <h4 className="mb-3 text-sm font-semibold text-[#6f4e5f]">
-          Tus datos
-        </h4>
-
-        <div className="space-y-3">
-          <input
-            type="text"
-            placeholder="Nombre y apellido"
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            required
-            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-          />
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={clientEmail}
-            onChange={(e) => setClientEmail(e.target.value)}
-            required
-            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-          />
-
-          <input
-            type="tel"
-            placeholder="WhatsApp / Teléfono"
-            value={clientPhone}
-            onChange={(e) => setClientPhone(e.target.value)}
-            required
-            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-          />
-
-          <textarea
-            placeholder="Notas adicionales (opcional)"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            rows={4}
-            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-          />
-
-          <div className="rounded-2xl bg-[#fff5f8] p-3 text-sm text-[#6f4e5f]">
-            <p>
-              <strong>Servicio:</strong> {selectedService?.name ?? "-"}
-            </p>
-            <p>
-              <strong>Duración:</strong> {selectedService?.duration ?? "-"} min
-            </p>
-            <p>
-              <strong>Horario:</strong> {selectedSlot?.label ?? "Seleccioná uno"}
+          <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
+            <label
+              htmlFor="booking-date"
+              className="mb-2 block text-sm font-medium text-[#6f4e5f]"
+            >
+              Fecha
+            </label>
+            <input
+              id="booking-date"
+              type="date"
+              value={date}
+              min={minDate}
+              onChange={(e) => setDate(e.target.value)}
+              disabled={!serviceId}
+              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3] disabled:opacity-50"
+            />
+            <p className="mt-2 text-xs text-[#8f6f7e]">
+              No se permiten reservas con menos de 24 hs de anticipación.
             </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={!selectedSlot || submitting}
-            className="w-full rounded-2xl bg-[#d86c93] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {submitting ? "Reservando..." : "Confirmar turno"}
-          </button>
+          <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
+            <h4 className="mb-2 text-sm font-semibold text-[#6f4e5f]">
+              Horarios disponibles
+            </h4>
+
+            {!serviceId ? (
+              <p className="text-sm text-[#8f6f7e]">
+                Seleccioná primero un servicio.
+              </p>
+            ) : !date ? (
+              <p className="text-sm text-[#8f6f7e]">
+                Buscando la fecha más cercana disponible...
+              </p>
+            ) : loadingSlots ? (
+              <p className="text-sm text-[#8f6f7e]">Cargando horarios...</p>
+            ) : slots.length === 0 ? (
+              <p className="text-sm text-[#8f6f7e]">
+                No hay horarios disponibles para esa fecha.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {slots.map((slot) => {
+                  const active = selectedSlot?.start === slot.start;
+
+                  return (
+                    <button
+                      key={slot.start}
+                      type="button"
+                      onClick={() => setSelectedSlot(slot)}
+                      className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
+                        active
+                          ? "border-[#d86c93] bg-[#d86c93] text-white"
+                          : "border-[#ead8e1] bg-[#fffafc] text-[#6f4e5f] hover:border-[#d9a8bb]"
+                      }`}
+                    >
+                      {slot.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
-      </form>
+
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5"
+        >
+          <h4 className="mb-3 text-sm font-semibold text-[#6f4e5f]">
+            Tus datos
+          </h4>
+
+          <div className="space-y-3">
+            <label htmlFor="client-name" className="sr-only">
+              Nombre y apellido
+            </label>
+            <input
+              id="client-name"
+              type="text"
+              placeholder="Nombre y apellido"
+              value={clientName}
+              onChange={(e) => setClientName(e.target.value)}
+              required
+              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+            />
+
+            <label htmlFor="client-email" className="sr-only">
+              Email
+            </label>
+            <input
+              id="client-email"
+              type="email"
+              placeholder="Email"
+              value={clientEmail}
+              onChange={(e) => setClientEmail(e.target.value)}
+              required
+              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+            />
+
+            <label htmlFor="client-phone" className="sr-only">
+              WhatsApp o Teléfono
+            </label>
+            <input
+              id="client-phone"
+              type="tel"
+              placeholder="WhatsApp / Teléfono"
+              value={clientPhone}
+              onChange={(e) => setClientPhone(e.target.value)}
+              required
+              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+            />
+
+            <label htmlFor="client-notes" className="sr-only">
+              Notas adicionales
+            </label>
+            <textarea
+              id="client-notes"
+              placeholder="Notas adicionales (opcional)"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={4}
+              className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+            />
+
+            <div className="rounded-2xl bg-[#fff5f8] p-3 text-sm text-[#6f4e5f]">
+              <p>
+                <strong>Servicio:</strong> {selectedService?.name ?? "-"}
+              </p>
+              <p>
+                <strong>Duración:</strong> {selectedService?.duration ?? "-"} min
+              </p>
+              <p>
+                <strong>Horario:</strong> {selectedSlot?.label ?? "Seleccioná uno"}
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              disabled={!selectedSlot || submitting}
+              className="w-full rounded-2xl bg-[#d86c93] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {submitting ? "Reservando..." : "Confirmar turno"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-);
+  );
 }
