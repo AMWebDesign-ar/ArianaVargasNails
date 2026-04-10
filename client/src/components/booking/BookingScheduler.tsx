@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { format } from "date-fns";
 import { services } from "@/data/services";
+import { addDays, format } from "date-fns";
 type TimeSlot = {
   start: string;
   end: string;
@@ -15,7 +15,8 @@ type Props = {
 
 export default function BookingScheduler({ onClose }: Props) {
   const [serviceId, setServiceId] = useState("");
-  const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  //const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [date, setDate] = useState("");
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [loadingSlots, setLoadingSlots] = useState(false);
@@ -38,7 +39,7 @@ useEffect(() => {
     return;
   }
 
-    async function loadAvailability() {
+  async function loadAvailability() {
       setLoadingSlots(true);
       setSelectedSlot(null);
 
@@ -55,7 +56,42 @@ useEffect(() => {
     }
 
     loadAvailability();
-  }, [serviceId, date]);
+
+    async function findFirstAvailableDate(selectedServiceId: string) {
+  for (let i = 0; i < 30; i++) {
+    const candidate = format(addDays(new Date(), i), "yyyy-MM-dd");
+
+    const res = await fetch(
+      `/api/availability?date=${candidate}&serviceId=${selectedServiceId}`
+    );
+    const data = await res.json();
+
+    if (data.slots && data.slots.length > 0) {
+      return candidate;
+    }
+  }
+
+  return "";
+}
+
+useEffect(() => {
+  if (!serviceId) return;
+
+  async function preloadFirstDate() {
+    const firstDate = await findFirstAvailableDate(serviceId);
+    if (firstDate) {
+      setDate(firstDate);
+    } else {
+      setDate("");
+      setSlots([]);
+      setSelectedSlot(null);
+    }
+  }
+
+  preloadFirstDate();
+}, [serviceId]);
+    
+}, [serviceId, date]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -103,20 +139,20 @@ useEffect(() => {
             Servicio
           </label>
           <select
-            value={serviceId}
-            onChange={(e) => setServiceId(e.target.value)}
-            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-          >
-            <option value="" disabled>
-              Seleccionar servicio
-            </option>
+  value={serviceId}
+  onChange={(e) => setServiceId(e.target.value)}
+  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+>
+  <option value="" disabled>
+  Seleccionar servicio
+</option>
 
-            {services.map((service) => (
-              <option key={service.id} value={service.id}>
-                {service.name} ({service.duration} min)
-              </option>
-            ))}
-          </select> 
+  {services.map((service) => (
+    <option key={service.id} value={service.id}>
+      {service.name} ({service.duration} min)
+    </option>
+  ))}
+</select> 
         </div>
 
         <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
@@ -140,13 +176,17 @@ useEffect(() => {
             Horarios disponibles
           </h4>
 
-          {loadingSlots ? (
-            <p className="text-sm text-[#8f6f7e]">Cargando horarios...</p>
-          ) : slots.length === 0 ? (
-            <p className="text-sm text-[#8f6f7e]">
-              No hay horarios disponibles para esa fecha.
-            </p>
-          ) : (
+          {!serviceId ? (
+  <p className="text-sm text-[#8f6f7e]">
+    Seleccioná primero un servicio.
+  </p>
+) : loadingSlots ? (
+  <p className="text-sm text-[#8f6f7e]">Cargando horarios...</p>
+) : slots.length === 0 ? (
+  <p className="text-sm text-[#8f6f7e]">
+    No hay horarios disponibles para esa fecha.
+  </p>
+) : (
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {slots.map((slot) => {
                 const active = selectedSlot?.start === slot.start;
