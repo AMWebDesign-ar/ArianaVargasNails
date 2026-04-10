@@ -25,12 +25,22 @@ export default function BookingScheduler({ onClose }: Props) {
   const [clientPhone, setClientPhone] = useState("");
   const [notes, setNotes] = useState("");
 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const selectedService = useMemo(
     () => services.find((s) => s.id === serviceId),
     [serviceId]
   );
 
   const minDate = format(new Date(), "yyyy-MM-dd");
+
+  const isFormValid =
+    !!serviceId &&
+    !!selectedSlot &&
+    clientName.trim() !== "" &&
+    clientEmail.trim() !== "" &&
+    clientPhone.trim() !== "";
 
   async function findFirstAvailableDate(selectedServiceId: string) {
     for (let i = 0; i < 30; i++) {
@@ -40,9 +50,10 @@ export default function BookingScheduler({ onClose }: Props) {
         const res = await fetch(
           `/api/availability?date=${candidate}&serviceId=${selectedServiceId}`
         );
+
         const data = await res.json();
 
-        if (data.slots && data.slots.length > 0) {
+        if (res.ok && data.slots && data.slots.length > 0) {
           return candidate;
         }
       } catch (error) {
@@ -58,18 +69,34 @@ export default function BookingScheduler({ onClose }: Props) {
       setDate("");
       setSlots([]);
       setSelectedSlot(null);
+      setSuccessMessage("");
+      setErrorMessage("");
       return;
     }
 
     async function preloadFirstDate() {
-      const firstDate = await findFirstAvailableDate(serviceId);
+      setLoadingSlots(true);
+      setErrorMessage("");
+      setSuccessMessage("");
+      setSelectedSlot(null);
 
-      if (firstDate) {
-        setDate(firstDate);
-      } else {
+      try {
+        const firstDate = await findFirstAvailableDate(serviceId);
+
+        if (firstDate) {
+          setDate(firstDate);
+        } else {
+          setDate("");
+          setSlots([]);
+          setSelectedSlot(null);
+        }
+      } catch (error) {
+        console.error("Error precargando fecha:", error);
         setDate("");
         setSlots([]);
         setSelectedSlot(null);
+      } finally {
+        setLoadingSlots(false);
       }
     }
 
@@ -85,17 +112,30 @@ export default function BookingScheduler({ onClose }: Props) {
 
     async function loadAvailability() {
       setLoadingSlots(true);
+      setErrorMessage("");
+      setSuccessMessage("");
       setSelectedSlot(null);
 
       try {
         const res = await fetch(
           `/api/availability?date=${date}&serviceId=${serviceId}`
         );
+
         const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "No se pudo consultar disponibilidad.");
+        }
+
         setSlots(data.slots ?? []);
       } catch (error) {
         console.error("Error cargando disponibilidad:", error);
         setSlots([]);
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "No se pudo consultar disponibilidad."
+        );
       } finally {
         setLoadingSlots(false);
       }
@@ -107,7 +147,18 @@ export default function BookingScheduler({ onClose }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!selectedService || !selectedSlot) return;
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    if (!selectedService || !selectedSlot) {
+      setErrorMessage("Seleccioná un servicio y un horario.");
+      return;
+    }
+
+    if (!clientName.trim() || !clientEmail.trim() || !clientPhone.trim()) {
+      setErrorMessage("Completá todos los campos obligatorios.");
+      return;
+    }
 
     setSubmitting(true);
 
@@ -122,24 +173,36 @@ export default function BookingScheduler({ onClose }: Props) {
           serviceName: selectedService.name,
           start: selectedSlot.start,
           end: selectedSlot.end,
-          clientName,
-          clientEmail,
-          clientPhone,
-          notes,
+          clientName: clientName.trim(),
+          clientEmail: clientEmail.trim(),
+          clientPhone: clientPhone.trim(),
+          notes: notes.trim(),
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Error al reservar");
+        throw new Error(data.error || "No se pudo reservar el turno.");
       }
 
-      alert("Turno reservado con éxito");
-      onClose();
+      setSuccessMessage("Turno reservado con éxito 💅");
+
+      setClientName("");
+      setClientEmail("");
+      setClientPhone("");
+      setNotes("");
+      setSelectedSlot(null);
+
+      setTimeout(() => {
+        onClose();
+      }, 1800);
     } catch (error) {
-      console.error("Error reservando:", error);
-      alert("No se pudo reservar el turno");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No se pudo reservar el turno."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -156,6 +219,7 @@ export default function BookingScheduler({ onClose }: Props) {
             >
               Servicio
             </label>
+
             <select
               id="service"
               value={serviceId}
@@ -165,6 +229,7 @@ export default function BookingScheduler({ onClose }: Props) {
               <option value="" disabled>
                 Seleccionar servicio
               </option>
+
               {services.map((service) => (
                 <option key={service.id} value={service.id}>
                   {service.name} ({service.duration} min)
@@ -180,6 +245,7 @@ export default function BookingScheduler({ onClose }: Props) {
             >
               Fecha
             </label>
+
             <input
               id="booking-date"
               type="date"
@@ -189,9 +255,16 @@ export default function BookingScheduler({ onClose }: Props) {
               disabled={!serviceId}
               className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3] disabled:opacity-50"
             />
+
             <p className="mt-2 text-xs text-[#8f6f7e]">
               No se permiten reservas con menos de 24 hs de anticipación.
             </p>
+
+            {serviceId && date && (
+              <p className="mt-2 text-xs text-[#8f6f7e]">
+                Mostrando la fecha más cercana disponible.
+              </p>
+            )}
           </div>
 
           <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
@@ -225,8 +298,8 @@ export default function BookingScheduler({ onClose }: Props) {
                       onClick={() => setSelectedSlot(slot)}
                       className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
                         active
-                          ? "border-[#d86c93] bg-[#d86c93] text-white"
-                          : "border-[#ead8e1] bg-[#fffafc] text-[#6f4e5f] hover:border-[#d9a8bb]"
+                          ? "border-[#d86c93] bg-[#d86c93] text-white shadow-md"
+                          : "border-[#ead8e1] bg-[#fffafc] text-[#6f4e5f] hover:border-[#d9a8bb] hover:bg-[#fff0f5]"
                       }`}
                     >
                       {slot.label}
@@ -245,6 +318,18 @@ export default function BookingScheduler({ onClose }: Props) {
           <h4 className="mb-3 text-sm font-semibold text-[#6f4e5f]">
             Tus datos
           </h4>
+
+          {successMessage && (
+            <div className="mb-4 rounded-2xl border border-[#cfe7d4] bg-[#edf9f0] p-3 text-sm font-medium text-[#2f6b3f]">
+              {successMessage}
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="mb-4 rounded-2xl border border-[#f3c8d8] bg-[#fff1f6] p-3 text-sm font-medium text-[#8c5a6d]">
+              {errorMessage}
+            </div>
+          )}
 
           <div className="space-y-3">
             <label htmlFor="client-name" className="sr-only">
@@ -312,7 +397,7 @@ export default function BookingScheduler({ onClose }: Props) {
 
             <button
               type="submit"
-              disabled={!selectedSlot || submitting}
+              disabled={!isFormValid || submitting}
               className="w-full rounded-2xl bg-[#d86c93] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {submitting ? "Reservando..." : "Confirmar turno"}
