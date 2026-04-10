@@ -28,9 +28,11 @@ export default function BookingScheduler({ onClose }: Props) {
   const [notes, setNotes] = useState("");
 
   const selectedService = useMemo(
-    () => services.find((s) => s.id === serviceId),
-    [serviceId]
-  );
+  () => services.find((s) => s.id === serviceId),
+  [serviceId]
+);
+
+const minDate = format(new Date(), "yyyy-MM-dd");
 
 useEffect(() => {
   if (!serviceId || !date) {
@@ -135,37 +137,95 @@ useEffect(() => {
     <div className="grid gap-4 p-3 sm:gap-5 sm:p-5 lg:grid-cols-2">
       <div className="space-y-4">
         <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
-          <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
-            Servicio
-          </label>
-          <select
+          <label
+  htmlFor="service"
+  className="mb-2 block text-sm font-medium text-[#6f4e5f]"
+>
+  Servicio
+</label>
+<select
+  id="service"
   value={serviceId}
   onChange={(e) => setServiceId(e.target.value)}
   className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
 >
   <option value="" disabled>
-  Seleccionar servicio
-</option>
-
+    Seleccionar servicio
+  </option>
   {services.map((service) => (
     <option key={service.id} value={service.id}>
       {service.name} ({service.duration} min)
     </option>
   ))}
-</select> 
+</select>
         </div>
 
         <div className="rounded-2xl border border-[#f0dfe6] bg-white p-4 sm:p-5">
-          <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
-            Fecha
-          </label>
-          <input
-            type="date"
-            value={date}
-            min={format(new Date(), "yyyy-MM-dd")}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
-          />
+          <label
+  htmlFor="booking-date"
+  className="mb-2 block text-sm font-medium text-[#6f4e5f]"
+>
+  Fecha
+</label>
+<input
+  id="booking-date"
+  type="date"
+  value={date}
+  min={minDate}
+  onChange={(e) => setDate(e.target.value)}
+  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+/>
+
+<label htmlFor="client-name" className="sr-only">
+  Nombre y apellido
+</label>
+<input
+  id="client-name"
+  type="text"
+  placeholder="Nombre y apellido"
+  value={clientName}
+  onChange={(e) => setClientName(e.target.value)}
+  required
+  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+/>
+
+<label htmlFor="client-email" className="sr-only">
+  Email
+</label>
+<input
+  id="client-email"
+  type="email"
+  placeholder="Email"
+  value={clientEmail}
+  onChange={(e) => setClientEmail(e.target.value)}
+  required
+  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+/>
+
+<label htmlFor="client-phone" className="sr-only">
+  WhatsApp o Teléfono
+</label>
+<input
+  id="client-phone"
+  type="tel"
+  placeholder="WhatsApp / Teléfono"
+  value={clientPhone}
+  onChange={(e) => setClientPhone(e.target.value)}
+  required
+  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+/>
+
+<label htmlFor="client-notes" className="sr-only">
+  Notas adicionales
+</label>
+<textarea
+  id="client-notes"
+  placeholder="Notas adicionales (opcional)"
+  value={notes}
+  onChange={(e) => setNotes(e.target.value)}
+  rows={4}
+  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-3 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+/>
           <p className="mt-2 text-xs text-[#8f6f7e]">
             No se permiten reservas con menos de 24 hs de anticipación.
           </p>
