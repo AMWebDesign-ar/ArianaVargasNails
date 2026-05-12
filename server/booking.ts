@@ -1,8 +1,14 @@
-import { addMinutes, format, isBefore, parseISO } from "date-fns";
+import { addMinutes, isBefore, parseISO } from "date-fns";
 
 export type BusyRange = {
   start: string;
   end: string;
+};
+
+type TimeSlot = {
+  start: string;
+  end: string;
+  label: string;
 };
 
 const SLOT_INTERVAL = 15;
@@ -15,8 +21,20 @@ const OPEN_DAYS = [2, 3, 4, 5, 6];
 const START_HOUR = 8;
 const END_HOUR = 20;
 
-export function generateDailySlots(date: string, duration: number) {
-  const slots: { start: string; end: string; label: string }[] = [];
+function minutesToLabel(totalMinutes: number) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function buildArgentinaDate(date: string, totalMinutes: number) {
+  const label = minutesToLabel(totalMinutes);
+  return new Date(`${date}T${label}:00-03:00`);
+}
+
+export function generateDailySlots(date: string, duration: number): TimeSlot[] {
+  const slots: TimeSlot[] = [];
 
   const day = new Date(`${date}T00:00:00-03:00`).getDay();
 
@@ -25,54 +43,37 @@ export function generateDailySlots(date: string, duration: number) {
     return [];
   }
 
-  const dayStart = new Date(
-    `${date}T${String(START_HOUR).padStart(2, "0")}:00:00-03:00`
-  );
+  const startMinutes = START_HOUR * 60;
+  const endMinutes = END_HOUR * 60;
 
-  const dayEnd = new Date(
-    `${date}T${String(END_HOUR).padStart(2, "0")}:00:00-03:00`
-  );
+  let cursorMinutes = startMinutes;
 
-  let cursor = new Date(dayStart);
-
-  while (true) {
-    const slotStart = new Date(cursor);
+  while (cursorMinutes + duration <= endMinutes) {
+    const slotStart = buildArgentinaDate(date, cursorMinutes);
     const slotEnd = addMinutes(slotStart, duration);
-
-    if (slotEnd > dayEnd) {
-      break;
-    }
 
     slots.push({
       start: slotStart.toISOString(),
       end: slotEnd.toISOString(),
-      label: format(slotStart, "HH:mm"),
+      label: minutesToLabel(cursorMinutes),
     });
 
-    cursor = addMinutes(cursor, SLOT_INTERVAL);
+    cursorMinutes += SLOT_INTERVAL;
   }
 
   return slots;
 }
 
-export function applyMinNotice(
-  slots: { start: string; end: string; label: string }[]
-) {
+export function applyMinNotice(slots: TimeSlot[]) {
   const now = new Date();
-
-  const minDate = new Date(
-    now.getTime() + MIN_NOTICE_HOURS * 60 * 60 * 1000
-  );
+  const minDate = new Date(now.getTime() + MIN_NOTICE_HOURS * 60 * 60 * 1000);
 
   return slots.filter((slot) => {
     return !isBefore(parseISO(slot.start), minDate);
   });
 }
 
-export function filterBusySlots(
-  slots: { start: string; end: string; label: string }[],
-  busy: BusyRange[]
-) {
+export function filterBusySlots(slots: TimeSlot[], busy: BusyRange[]) {
   return slots.filter((slot) => {
     const slotStart = parseISO(slot.start).getTime();
     const slotEnd = parseISO(slot.end).getTime();
