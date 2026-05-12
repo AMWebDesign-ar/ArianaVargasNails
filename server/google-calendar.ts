@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-const calendarId = process.env.GOOGLE_CALENDAR_ID;
+const calendarId = process.env.GOOGLE_CALENDAR_ID as string;
 
 if (!calendarId) {
   throw new Error("Falta GOOGLE_CALENDAR_ID en variables de entorno.");
