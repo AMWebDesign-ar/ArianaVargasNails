@@ -7,19 +7,33 @@ export type ServiceItem = {
 
 export const services: ServiceItem[] = [
   {
-    id: "belleza-pies-semipermanente",
-    name: "Belleza de Pies Semipermanente",
+    id: "nivelacion-semi-permanente",
+    name: "Nivelación / Semi-Permanente",
+    duration: 50,
+    description: "Servicio de 50 minutos",
+  },
+  {
+    id: "esculpida",
+    name: "Esculpida",
+    duration: 90,
+    description: "Servicio de 90 minutos",
+  },
+  {
+    id: "capping-poligel",
+    name: "Capping / Poligel",
     duration: 75,
     description: "Servicio de 75 minutos",
   },
   {
-    id: "kapping-gel",
-    name: "Kapping Gel",
-    duration: 75,
+    id: "pedicuria-semi-permanente",
+    name: "Pedicuría c/Semi-Permanente",
+    duration: 90,
+    description: "Servicio de 90 minutos",
   },
   {
-    id: "soft-gel",
-    name: "Soft Gel",
-    duration: 120,
+    id: "belleza-semi-permanente",
+    name: "Belleza y Semi-Permanente",
+    duration: 45,
+    description: "Servicio de 45 minutos",
   },
 ];
