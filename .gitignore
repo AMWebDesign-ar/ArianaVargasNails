@@ -11,3 +11,9 @@ build
 .local
 .DS_Store
 *.tar.gz
+
+test
+test-results
+coverage
+logs
+*.log               
