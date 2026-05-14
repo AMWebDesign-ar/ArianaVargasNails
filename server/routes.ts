@@ -13,10 +13,10 @@ type BusyRange = {
   start: string;
   end: string;
 };
-
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
+import { sendBookingConfirmationEmails } from "./email";
 
 export async function registerRoutes(_server: Server, _app: Express) {
   // Dejamos esta función por compatibilidad con tu index actual.
@@ -113,14 +113,38 @@ export function registerBookingRoutes(app: Express) {
       }
 
       const event = await createBookingEvent({
-        serviceName: String(serviceName),
-        start: String(start),
-        end: String(end),
-        clientName: String(clientName),
-        clientEmail: String(clientEmail),
-        clientPhone: String(clientPhone),
-        notes: notes ? String(notes) : "",
-      });
+  serviceName: String(serviceName),
+  start: String(start),
+  end: String(end),
+  clientName: String(clientName),
+  clientEmail: String(clientEmail),
+  clientPhone: String(clientPhone),
+  notes: notes ? String(notes) : "",
+});
+
+let emailResult = null;
+
+try {
+  emailResult = await sendBookingConfirmationEmails({
+    serviceName: String(serviceName),
+    start: String(start),
+    end: String(end),
+    clientName: String(clientName),
+    clientEmail: String(clientEmail),
+    clientPhone: String(clientPhone),
+    notes: notes ? String(notes) : "",
+    eventId: event.id || undefined,
+  });
+} catch (emailError) {
+  console.error("email confirmation error:", emailError);
+}
+
+return res.json({
+  ok: true,
+  message: "Reserva creada correctamente",
+  eventId: event.id,
+  email: emailResult,
+});
 
       return res.json({
         ok: true,

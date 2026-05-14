@@ -1,0 +1,275 @@
+import { Resend } from "resend";
+
+type BookingEmailParams = {
+  serviceName: string;
+  start: string;
+  end: string;
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  notes?: string;
+  eventId?: string;
+};
+
+type EmailSendResult = {
+  clientEmailId?: string;
+  adminEmailId?: string;
+  errors: string[];
+};
+
+const TIME_ZONE = "America/Argentina/Buenos_Aires";
+
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Falta RESEND_API_KEY en variables de entorno.");
+  }
+
+  return new Resend(apiKey);
+}
+
+function getFromEmail() {
+  return (
+    process.env.RESEND_FROM_EMAIL ||
+    "Ariana Vargas Nails <onboarding@resend.dev>"
+  );
+}
+
+function getAdminEmail() {
+  return process.env.BOOKING_ADMIN_EMAIL || "";
+}
+
+function getLocation() {
+  return process.env.BOOKING_LOCATION || "Gascón 1967, Mar del Plata";
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatDate(value: string) {
+  const date = new Date(value);
+
+  return new Intl.DateTimeFormat("es-AR", {
+    timeZone: TIME_ZONE,
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+}
+
+function formatTime(value: string) {
+  const date = new Date(value);
+
+  return new Intl.DateTimeFormat("es-AR", {
+    timeZone: TIME_ZONE,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
+function buildClientHtml(params: BookingEmailParams) {
+  const serviceName = escapeHtml(params.serviceName);
+  const clientName = escapeHtml(params.clientName);
+  const clientPhone = escapeHtml(params.clientPhone);
+  const notes = params.notes ? escapeHtml(params.notes) : "";
+  const date = formatDate(params.start);
+  const startTime = formatTime(params.start);
+  const endTime = formatTime(params.end);
+  const location = escapeHtml(getLocation());
+
+  return `
+  <div style="margin:0;padding:0;background:#fff7fa;font-family:Arial,Helvetica,sans-serif;color:#5f4050;">
+    <div style="max-width:620px;margin:0 auto;padding:28px 18px;">
+      <div style="background:#ffffff;border:1px solid #f0dfe6;border-radius:24px;padding:28px;box-shadow:0 12px 30px rgba(176,112,112,0.12);">
+        <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#b07070;">
+          Ariana Vargas Nails
+        </p>
+
+        <h1 style="margin:0 0 16px;font-size:26px;line-height:1.25;color:#6f4e5f;">
+          Turno confirmado 💅
+        </h1>
+
+        <p style="margin:0 0 22px;font-size:16px;line-height:1.6;color:#7a5a68;">
+          Hola ${clientName}, tu turno fue reservado correctamente.
+        </p>
+
+        <div style="background:#fff1f6;border:1px solid #f3c8d8;border-radius:18px;padding:18px;margin:22px 0;">
+          <p style="margin:0 0 10px;font-size:15px;"><strong>Servicio:</strong> ${serviceName}</p>
+          <p style="margin:0 0 10px;font-size:15px;"><strong>Fecha:</strong> ${date}</p>
+          <p style="margin:0 0 10px;font-size:15px;"><strong>Horario:</strong> ${startTime} a ${endTime}</p>
+          <p style="margin:0 0 10px;font-size:15px;"><strong>Dirección:</strong> ${location}</p>
+          <p style="margin:0;font-size:15px;"><strong>Teléfono registrado:</strong> ${clientPhone}</p>
+        </div>
+
+        ${
+          notes
+            ? `<div style="background:#fffafc;border:1px solid #f0dfe6;border-radius:18px;padding:16px;margin:18px 0;">
+                <p style="margin:0;font-size:14px;line-height:1.5;"><strong>Notas:</strong> ${notes}</p>
+              </div>`
+            : ""
+        }
+
+        <p style="margin:22px 0 0;font-size:14px;line-height:1.6;color:#8f6f7e;">
+          Si necesitás modificar o cancelar el turno, respondé este email o escribinos por WhatsApp.
+        </p>
+
+        <p style="margin:22px 0 0;font-size:14px;line-height:1.6;color:#8f6f7e;">
+          Gracias por elegirnos,<br />
+          <strong>Ariana Vargas Nails</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function buildClientText(params: BookingEmailParams) {
+  return [
+    "Ariana Vargas Nails",
+    "",
+    "Turno confirmado",
+    "",
+    `Hola ${params.clientName}, tu turno fue reservado correctamente.`,
+    "",
+    `Servicio: ${params.serviceName}`,
+    `Fecha: ${formatDate(params.start)}`,
+    `Horario: ${formatTime(params.start)} a ${formatTime(params.end)}`,
+    `Dirección: ${getLocation()}`,
+    `Teléfono registrado: ${params.clientPhone}`,
+    params.notes ? `Notas: ${params.notes}` : "",
+    "",
+    "Si necesitás modificar o cancelar el turno, respondé este email o escribinos por WhatsApp.",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function buildAdminHtml(params: BookingEmailParams) {
+  const serviceName = escapeHtml(params.serviceName);
+  const clientName = escapeHtml(params.clientName);
+  const clientEmail = escapeHtml(params.clientEmail);
+  const clientPhone = escapeHtml(params.clientPhone);
+  const notes = params.notes ? escapeHtml(params.notes) : "";
+  const date = formatDate(params.start);
+  const startTime = formatTime(params.start);
+  const endTime = formatTime(params.end);
+
+  return `
+  <div style="font-family:Arial,Helvetica,sans-serif;color:#333;background:#fafafa;padding:24px;">
+    <div style="max-width:620px;margin:0 auto;background:white;border:1px solid #eee;border-radius:18px;padding:24px;">
+      <h1 style="margin:0 0 16px;font-size:22px;">Nuevo turno reservado</h1>
+
+      <p><strong>Servicio:</strong> ${serviceName}</p>
+      <p><strong>Fecha:</strong> ${date}</p>
+      <p><strong>Horario:</strong> ${startTime} a ${endTime}</p>
+
+      <hr style="border:none;border-top:1px solid #eee;margin:20px 0;" />
+
+      <p><strong>Cliente:</strong> ${clientName}</p>
+      <p><strong>Email:</strong> ${clientEmail}</p>
+      <p><strong>Teléfono:</strong> ${clientPhone}</p>
+      ${notes ? `<p><strong>Notas:</strong> ${notes}</p>` : ""}
+
+      ${
+        params.eventId
+          ? `<p style="font-size:12px;color:#777;">Google Event ID: ${escapeHtml(params.eventId)}</p>`
+          : ""
+      }
+    </div>
+  </div>
+  `;
+}
+
+function buildAdminText(params: BookingEmailParams) {
+  return [
+    "Nuevo turno reservado",
+    "",
+    `Servicio: ${params.serviceName}`,
+    `Fecha: ${formatDate(params.start)}`,
+    `Horario: ${formatTime(params.start)} a ${formatTime(params.end)}`,
+    "",
+    `Cliente: ${params.clientName}`,
+    `Email: ${params.clientEmail}`,
+    `Teléfono: ${params.clientPhone}`,
+    params.notes ? `Notas: ${params.notes}` : "",
+    params.eventId ? `Google Event ID: ${params.eventId}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+async function sendEmail(params: {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}) {
+  const resend = getResendClient();
+
+  const { data, error } = await resend.emails.send({
+    from: getFromEmail(),
+    to: [params.to],
+    subject: params.subject,
+    html: params.html,
+    text: params.text,
+  });
+
+  if (error) {
+    throw new Error(JSON.stringify(error));
+  }
+
+  return data?.id;
+}
+
+export async function sendBookingConfirmationEmails(
+  params: BookingEmailParams
+): Promise<EmailSendResult> {
+  const errors: string[] = [];
+  let clientEmailId: string | undefined;
+  let adminEmailId: string | undefined;
+
+  try {
+    clientEmailId = await sendEmail({
+      to: params.clientEmail,
+      subject: `Turno confirmado - ${params.serviceName}`,
+      html: buildClientHtml(params),
+      text: buildClientText(params),
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Error enviando email al cliente";
+    errors.push(`cliente: ${message}`);
+  }
+
+  const adminEmail = getAdminEmail();
+
+  if (adminEmail) {
+    try {
+      adminEmailId = await sendEmail({
+        to: adminEmail,
+        subject: `Nuevo turno - ${params.serviceName} - ${params.clientName}`,
+        html: buildAdminHtml(params),
+        text: buildAdminText(params),
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error enviando email interno";
+      errors.push(`admin: ${message}`);
+    }
+  }
+
+  return {
+    clientEmailId,
+    adminEmailId,
+    errors,
+  };
+}

@@ -186,7 +186,7 @@ export default function BookingScheduler({ onClose }: Props) {
         throw new Error(data.error || "No se pudo reservar el turno.");
       }
 
-      setSuccessMessage("Turno reservado con éxito 💅");
+      setSuccessMessage("Turno reservado con éxito 💅 Te enviamos la confirmación por email.");
 
       setClientName("");
       setClientEmail("");
