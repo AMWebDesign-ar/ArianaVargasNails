@@ -216,12 +216,13 @@ async function sendEmail(params: {
   const resend = getResendClient();
 
   const { data, error } = await resend.emails.send({
-    from: getFromEmail(),
-    to: [params.to],
-    subject: params.subject,
-    html: params.html,
-    text: params.text,
-  });
+  from: getFromEmail(),
+  to: [params.to],
+  subject: params.subject,
+  html: params.html,
+  text: params.text,
+  replyTo: process.env.BOOKING_ADMIN_EMAIL || undefined,
+});
 
   if (error) {
     throw new Error(JSON.stringify(error));
