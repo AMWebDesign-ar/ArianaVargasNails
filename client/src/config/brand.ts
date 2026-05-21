@@ -3,7 +3,7 @@ export const brand = {
   tagline: "Uñas que hablan por vos",
   city: "Mar del Plata",
   area: "Gascón 1967",
-  hours: "Lunes a Sábado · 9 a 19 h",
+  hours: "Martes a Sábado · 8 a 20hs",
   instagram: "https://www.instagram.com/arianavargasnails/",
   whatsappNumber: "5492235268877",
   calendarUrl: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2ZXT4vhETBEjJp1-tloDW93U9U20Dj26t6kYXSFg-4WOmqeacCfKcMJXfhjWOtEGd1IZErpUB4?gv=true",
@@ -14,9 +14,9 @@ export const brand = {
   },
   developerCredit: {
     enabled: true,
-    name: "AM Web Design",
-    text: "Sitio desarrollado por AM Web Design",
-    url: "https://www.instagram.com/am.webstudio/",
+    name: "AM Design Lab",
+    text: "Sitio desarrollado por AM Design Lab",
+    url: "https://amdesignlab.com.ar/",
   },
 };
 
