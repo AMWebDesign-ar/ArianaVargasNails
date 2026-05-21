@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BRAND, whatsappLink } from "@/config/brand";
-const heroNailsBg = "/brand/nails.png";
+import { BRAND } from "@/config/brand";
 import { SERVICES } from "@/config/services";
-import { GALLERY } from "@/config/gallery";
-import { ServiceCard } from "@/components/ServiceCard";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import BookingScheduler from "@/components/booking/BookingScheduler";
+
+const heroNailsBg = "/brand/nails.png";
 
 function NavLink({
   href,
@@ -17,10 +16,19 @@ function NavLink({
   label: string;
   onClick?: () => void;
 }) {
+  const isExternal = href.startsWith("http");
+
   return (
     <a
       href={href}
-      onClick={onClick}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noreferrer" : undefined}
+      onClick={(e) => {
+        if (onClick) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
       className="relative text-[11px] font-bold tracking-[0.2em] uppercase text-black/50 transition-all duration-700 ease-smooth hover:text-[#B07070] hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#D6B6B6]/20 rounded-lg px-2.5 py-1.5 group overflow-hidden"
       data-testid={`link-nav-${label.toLowerCase()}`}
     >
@@ -40,6 +48,27 @@ function MobileMenu({
   onClose: () => void;
   onOpenServices: () => void;
 }) {
+  const mobileItems = [
+    {
+      href: "#services",
+      label: "Servicios",
+      action: "services",
+      delayClass: "[animation-delay:200ms]",
+    },
+    {
+      href: BRAND.instagram,
+      label: "Ver trabajos",
+      external: true,
+      delayClass: "[animation-delay:320ms]",
+    },
+    {
+      href: BRAND.mapsUrl,
+      label: "Ubicación",
+      external: true,
+      delayClass: "[animation-delay:440ms]",
+    },
+  ];
+
   return (
     <div
       className={`fixed inset-0 z-50 transition-all duration-500 md:hidden ${
@@ -61,8 +90,12 @@ function MobileMenu({
         data-testid="nav-mobile-menu"
       >
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-3">
-          <span className="text-[12px] font-light tracking-[0.22em] leading-tight uppercase text-black/70 [font-family:var(--font-serif)] max-w-[180px] drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">{BRAND.name}</span>
+          <span className="text-[12px] font-light tracking-[0.22em] leading-tight uppercase text-black/70 [font-family:var(--font-serif)] max-w-[180px] drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">
+            {BRAND.name}
+          </span>
+
           <button
+            type="button"
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-black/40 hover:text-black active:bg-black/5"
             aria-label="Cerrar menú"
@@ -84,37 +117,35 @@ function MobileMenu({
           </button>
         </div>
 
-            <div className="flex flex-col gap-2 p-5 pt-8">
-              {[
-                { href: "#services", label: "Servicios", action: "services" },
-                { href: BRAND.instagram, label: "Ver trabajos", external: true },
-                { href: BRAND.mapsUrl, label: "Ubicación", external: true },
-              ].map((item, i) => (
-                <button
-                  key={item.label}
-                  onClick={(e) => {
-                    if (item.action === "services") {
-                      onOpenServices();
-                      onClose();
-                    } else if (item.external) {
-                      window.open(item.href, "_blank", "noreferrer");
-                      onClose();
-                    } else {
-                      onClose();
-                    }
-                  }}
-                  className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-smooth hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out`}
-                  style={{ 
-                    animationDelay: `${i * 120 + 200}ms`, 
-                    animationFillMode: 'forwards',
-                    fontFamily: 'var(--font-serif)'
-                  }}
-                  data-testid={`link-mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
+        <div className="flex flex-col gap-2 p-5 pt-8">
+          {mobileItems.map((item) => (
+            <button
+              type="button"
+              key={item.label}
+              onClick={() => {
+                if (item.action === "services") {
+                  onOpenServices();
+                  onClose();
+                  return;
+                }
+
+                if (item.external) {
+                  window.open(item.href, "_blank", "noreferrer");
+                  onClose();
+                  return;
+                }
+
+                onClose();
+              }}
+              className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-smooth hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out [animation-fill-mode:forwards] [font-family:var(--font-serif)] ${item.delayClass}`}
+              data-testid={`link-mobile-nav-${item.label
+                .toLowerCase()
+                .replace(/\s+/g, "-")}`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
       </nav>
     </div>
   );
@@ -128,7 +159,7 @@ export default function Home() {
   useEffect(() => {
     if (servicesOpen || menuOpen || calendarOpen) {
       window.history.pushState({ modal: "open" }, "");
-      
+
       const handlePopState = () => {
         setServicesOpen(false);
         setMenuOpen(false);
@@ -136,14 +167,16 @@ export default function Home() {
       };
 
       window.addEventListener("popstate", handlePopState);
+
       return () => {
         window.removeEventListener("popstate", handlePopState);
+
         if (window.history.state?.modal === "open") {
           window.history.back();
         }
       };
     }
-  }, [servicesOpen, menuOpen]);
+  }, [servicesOpen, menuOpen, calendarOpen]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FAFAFA] to-[#F3F0ED]">
@@ -153,8 +186,9 @@ export default function Home() {
         data-testid="header"
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={() => setMenuOpen(true)}
               className="flex h-10 w-10 items-center justify-center rounded-xl text-black/50 active:bg-black/5 md:hidden"
               aria-label="Abrir menú"
@@ -182,15 +216,13 @@ export default function Home() {
               </div>
             </a>
           </div>
+
           <nav className="hidden items-center gap-6 md:flex">
-            <button
-              type="button"
+            <NavLink
+              href="#services"
+              label="Servicios"
               onClick={() => setServicesOpen(true)}
-              className="text-sm font-medium text-[#6f4e5f] transition-colors hover:text-[#B07070]"
-              data-testid="nav-services-button"
-            >
-              Servicios
-            </button>
+            />
 
             <NavLink href={BRAND.instagram} label="Galería" />
             <NavLink href={BRAND.mapsUrl} label="Ubicación" />
@@ -198,7 +230,11 @@ export default function Home() {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} onOpenServices={() => setServicesOpen(true)} />
+      <MobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onOpenServices={() => setServicesOpen(true)}
+      />
 
       {/* Main */}
       <main id="top">
@@ -210,21 +246,25 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none animate-pulse-expand origin-center"
             aria-hidden="true"
           />
+
           <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/30 to-white" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(214,182,182,0.25),transparent_55%)]" />
+
           <div className="relative mx-auto max-w-6xl px-4 py-8 sm:py-12 md:py-16">
             <div className="flex flex-col items-center text-center">
               <h1
                 className="[font-family:var(--font-serif)] leading-[1.1] tracking-tight mt-1 sm:mt-0 mb-[-2px] sm:mb-[-4px]"
                 data-testid="text-hero-title"
               >
-                <span className="block text-[32px] sm:text-[34px] md:text-[36px] font-normal text-black/90 tracking-[0.02em] animate-fade-up" style={{ animationDelay: '0.1s' }}>
+                <span className="block text-[32px] sm:text-[34px] md:text-[36px] font-normal text-black/90 tracking-[0.02em] animate-fade-up [animation-delay:0.1s]">
                   Tu estilo
                 </span>
-                <span className="block mt-1 text-[42px] sm:text-[44px] md:text-[48px] font-medium text-black animate-fade-up" style={{ animationDelay: '0.3s' }}>
+
+                <span className="block mt-1 text-[42px] sm:text-[44px] md:text-[48px] font-medium text-black animate-fade-up [animation-delay:0.3s]">
                   empieza en
                 </span>
-                <span className="block mt-1 text-[50px] sm:text-[52px] md:text-[56px] font-extrabold bg-gradient-to-r from-[#c4a4a0] via-[#8b5e58] to-[#a67c77] bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(176,112,112,0.3)] animate-fade-up" style={{ animationDelay: '0.5s' }}>
+
+                <span className="block mt-1 text-[50px] sm:text-[52px] md:text-[56px] font-extrabold bg-gradient-to-r from-[#c4a4a0] via-[#8b5e58] to-[#a67c77] bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(176,112,112,0.3)] animate-fade-up [animation-delay:0.5s]">
                   tus manos
                 </span>
               </h1>
@@ -239,22 +279,36 @@ export default function Home() {
               </div>
 
               <p
-                className="mt-4 sm:mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-black/80 font-medium animate-fade-up"
-                style={{ animationDelay: '0.8s' }}
+                className="mt-4 sm:mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-black/80 font-medium animate-fade-up [animation-delay:0.8s]"
                 data-testid="text-hero-subtitle"
               >
                 Turnos con reserva previa
               </p>
-              <p className="mt-2 flex items-center gap-2 text-sm sm:text-base text-black/70 font-medium animate-fade-up" style={{ animationDelay: '0.9s' }} data-testid="text-hero-location">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#B07070]">
+
+              <p
+                className="mt-2 flex items-center gap-2 text-sm sm:text-base text-black/70 font-medium animate-fade-up [animation-delay:0.9s]"
+                data-testid="text-hero-location"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="shrink-0 text-[#B07070]"
+                >
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
                 Zona Güemes · Mar del Plata
               </p>
 
-                <div className="mt-8 sm:mt-12 flex flex-col items-center gap-6 animate-fade-up" style={{ animationDelay: '1s' }}>
+              <div className="mt-8 sm:mt-12 flex flex-col items-center gap-6 animate-fade-up [animation-delay:1s]">
                 <button
+                  type="button"
                   onClick={() => setCalendarOpen(true)}
                   className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#B07070] to-[#C99696] px-10 py-4 text-base font-bold text-white shadow-[0_10px_20px_rgba(176,112,112,0.3)] hover:shadow-[0_25px_50px_rgba(176,112,112,0.5)] hover:-translate-y-1.5 active:scale-95 transition-all duration-700 ease-smooth group overflow-hidden"
                   data-testid="button-hero-calendar"
@@ -265,24 +319,29 @@ export default function Home() {
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-smooth" />
                 </button>
 
-                <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up" style={{ animationDelay: '1.1s' }}>
-                    <button
-                      onClick={() => setServicesOpen(true)}
-                      className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_12px_25px_rgba(176,112,112,0.2)] hover:-translate-y-1 active:scale-95 transition-all duration-700 ease-smooth overflow-hidden"
-                      data-testid="button-hero-servicios"
-                    >
-                      <span className="relative z-10 transition-colors duration-700 group-hover:text-white">Ver Servicios</span>
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#B07070] to-[#8b5e58] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-smooth" />
-                    </button>
+                <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up [animation-delay:1.1s]">
+                  <button
+                    type="button"
+                    onClick={() => setServicesOpen(true)}
+                    className="group relative inline-flex items-center justify-center rounded-xl border border-[#B07070]/20 bg-white/40 backdrop-blur-md px-8 py-3.5 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B07070] shadow-[0_8px_20px_rgba(214,182,182,0.1)] hover:shadow-[0_12px_25px_rgba(176,112,112,0.2)] hover:-translate-y-1 active:scale-95 transition-all duration-700 ease-smooth overflow-hidden"
+                    data-testid="button-hero-servicios"
+                  >
+                    <span className="relative z-10 transition-colors duration-700 group-hover:text-white">
+                      Ver Servicios
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#B07070] to-[#8b5e58] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-smooth" />
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
       </main>
 
-              <footer className="mt-12 sm:mt-24 border-t border-black/5 bg-white/40 backdrop-blur-sm" data-testid="footer">
+      <footer
+        className="mt-12 sm:mt-24 border-t border-black/5 bg-white/40 backdrop-blur-sm"
+        data-testid="footer"
+      >
         <div className="mx-auto max-w-6xl px-4 pt-20 pb-12 sm:pt-14 sm:pb-12">
           <div className="flex flex-col gap-5 sm:gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
@@ -290,11 +349,11 @@ export default function Home() {
                 {BRAND.name}
               </div>
             </div>
-
           </div>
 
           <div className="mt-6 sm:mt-8 text-xs text-black/50">
-            &copy; {new Date().getFullYear()} {BRAND.name}. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} {BRAND.name}. Todos los derechos
+            reservados.
           </div>
 
           {BRAND.developerCredit?.enabled && (
@@ -316,67 +375,69 @@ export default function Home() {
       {/* WhatsApp Floating */}
       <WhatsAppFloatingButton />
 
-      {/* Services Popup */}
+      {/* Calendar Popup */}
       <AnimatePresence>
-  {calendarOpen && (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={() => setCalendarOpen(false)}
-        className="absolute inset-0 bg-black/40 backdrop-blur-md"
-        data-testid="calendar-popup-overlay"
-      />
-      
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-[32px] bg-white shadow-2xl"
-        data-testid="calendar-popup"
-      >
-        <div className="flex items-center justify-between border-b border-[#f0dfe6] bg-gradient-to-r from-[#fff7fa] via-[#fdf2f7] to-[#f8eefc] px-4 py-4 sm:px-6">
-          <div>
-            <h3 className="text-base font-bold uppercase tracking-[0.1em] [font-family:var(--font-serif)] text-[#6f4e5f] sm:text-lg">
-              Reservar turno
-            </h3>
-            <p className="mt-1 text-sm text-[#8f6f7e]">
-              Elegí tu servicio, día y horario disponible
-            </p>
-          </div>
+        {calendarOpen && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setCalendarOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-md"
+              data-testid="calendar-popup-overlay"
+            />
 
-          <button
-            onClick={() => setCalendarOpen(false)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#edd6e0] bg-white text-[#8d6677] transition-colors hover:bg-[#fdf0f5] hover:text-[#6f4e5f]"
-            aria-label="Cerrar"
-            data-testid="button-close-calendar"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-[32px] bg-white shadow-2xl"
+              data-testid="calendar-popup"
             >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        </div>
+              <div className="flex items-center justify-between border-b border-[#f0dfe6] bg-gradient-to-r from-[#fff7fa] via-[#fdf2f7] to-[#f8eefc] px-4 py-4 sm:px-6">
+                <div>
+                  <h3 className="text-base font-bold uppercase tracking-[0.1em] [font-family:var(--font-serif)] text-[#6f4e5f] sm:text-lg">
+                    Reservar turno
+                  </h3>
+                  <p className="mt-1 text-sm text-[#8f6f7e]">
+                    Elegí tu servicio, día y horario disponible
+                  </p>
+                </div>
 
-        <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#fff7fa]">
-          <BookingScheduler onClose={() => setCalendarOpen(false)} />
-        </div>
-      </motion.div>
-    </div>
-  )}
-</AnimatePresence>
+                <button
+                  type="button"
+                  onClick={() => setCalendarOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#edd6e0] bg-white text-[#8d6677] transition-colors hover:bg-[#fdf0f5] hover:text-[#6f4e5f]"
+                  aria-label="Cerrar"
+                  data-testid="button-close-calendar"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
 
+              <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#fff7fa]">
+                <BookingScheduler onClose={() => setCalendarOpen(false)} />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Services Popup */}
       <AnimatePresence>
         {servicesOpen && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
@@ -388,6 +449,7 @@ export default function Home() {
               className="absolute inset-0 bg-black/40 backdrop-blur-md"
               data-testid="services-popup-overlay"
             />
+
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -401,13 +463,24 @@ export default function Home() {
                   <h3 className="text-lg font-bold tracking-[0.1em] uppercase [font-family:var(--font-serif)] text-black/80">
                     Nuestros Servicios
                   </h3>
+
                   <button
+                    type="button"
                     onClick={() => setServicesOpen(false)}
                     className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-black/40 hover:bg-black/10 hover:text-black transition-colors"
                     aria-label="Cerrar"
                     data-testid="button-close-services-top"
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <line x1="18" y1="6" x2="6" y2="18" />
                       <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
@@ -426,8 +499,12 @@ export default function Home() {
                       >
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <h4 className="text-sm font-bold tracking-wide text-black/80">{service.name}</h4>
-                            <p className="mt-1 text-xs leading-relaxed text-black/50">{service.description}</p>
+                            <h4 className="text-sm font-bold tracking-wide text-black/80">
+                              {service.name}
+                            </h4>
+                            <p className="mt-1 text-xs leading-relaxed text-black/50">
+                              {service.description}
+                            </p>
                           </div>
                         </div>
                       </motion.div>
@@ -437,14 +514,25 @@ export default function Home() {
 
                 <div className="absolute bottom-6 right-6 z-10">
                   <button
+                    type="button"
                     onClick={() => setServicesOpen(false)}
                     className="flex h-12 items-center gap-2 rounded-full bg-[#B07070] px-6 text-[11px] font-bold uppercase tracking-[0.2em] text-white shadow-lg shadow-[#B07070]/30 active:scale-90 transition-all"
                     data-testid="button-close-services-bottom"
                   >
                     Cerrar
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="ml-1">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="ml-1"
+                    >
                       <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
+                      <line x1="6" y1="6" x2="18" />
                     </svg>
                   </button>
                 </div>
