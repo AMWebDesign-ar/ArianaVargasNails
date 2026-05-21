@@ -182,12 +182,19 @@ export default function Home() {
               </div>
             </a>
           </div>
+          <nav className="hidden items-center gap-6 md:flex">
+            <button
+              type="button"
+              onClick={() => setServicesOpen(true)}
+              className="text-sm font-medium text-[#6f4e5f] transition-colors hover:text-[#B07070]"
+              data-testid="nav-services-button"
+            >
+              Servicios
+            </button>
 
-              <nav className="hidden items-center gap-6 md:flex">
-                <NavLink href="#services" label="Servicios" />
-                <NavLink href={BRAND.instagram} label="Galería" />
-                <NavLink href={BRAND.mapsUrl} label="Ubicación" />
-              </nav>
+            <NavLink href={BRAND.instagram} label="Galería" />
+            <NavLink href={BRAND.mapsUrl} label="Ubicación" />
+          </nav>
         </div>
       </header>
 
