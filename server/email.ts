@@ -32,7 +32,7 @@ function getResendClient() {
 function getFromEmail() {
   return (
     process.env.RESEND_FROM_EMAIL ||
-    "Ariana Vargas Nails <onboarding@resend.dev>"
+    "Ariana Vargas Nails <reservas@arianavargasnails.com.ar>"
   );
 }
 
