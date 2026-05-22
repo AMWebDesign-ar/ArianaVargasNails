@@ -95,7 +95,8 @@ function buildClientHtml(params: BookingEmailParams) {
         </p>
 
         <h1 style="margin:0 0 16px;font-size:26px;line-height:1.25;color:#6f4e5f;">
-          Turno confirmado 💅
+          // Turno confirmado 💅
+          Turno confirmado
         </h1>
 
         <p style="margin:0 0 22px;font-size:16px;line-height:1.6;color:#7a5a68;">
