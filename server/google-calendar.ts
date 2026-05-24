@@ -6,26 +6,31 @@ if (!calendarId) {
   throw new Error("Falta GOOGLE_CALENDAR_ID en variables de entorno.");
 }
 
-function getAuth() {
-  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
 
-  if (!clientEmail || !privateKey) {
-    throw new Error("Faltan GOOGLE_CLIENT_EMAIL o GOOGLE_PRIVATE_KEY.");
-  }
-
-  return new google.auth.GoogleAuth({
-    credentials: {
-      client_email: clientEmail,
-      private_key: privateKey,
-    },
-    scopes: ["https://www.googleapis.com/auth/calendar"],
-  });
+if (!clientEmail) {
+  throw new Error("Falta GOOGLE_CLIENT_EMAIL en variables de entorno.");
 }
 
-async function getCalendarClient() {
-  const auth = getAuth();
-  return google.calendar({ version: "v3", auth });
+const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+
+if (!privateKey) {
+  throw new Error("Falta GOOGLE_PRIVATE_KEY en variables de entorno.");
+}
+
+const auth = new google.auth.GoogleAuth({
+  credentials: {
+    client_email: clientEmail,
+    private_key: privateKey,
+  },
+  scopes: ["https://www.googleapis.com/auth/calendar"],
+});
+
+function getCalendarClient() {
+  return google.calendar({
+    version: "v3",
+    auth,
+  });
 }
 
 export async function getBusyRanges(timeMin: string, timeMax: string) {
@@ -35,6 +40,7 @@ export async function getBusyRanges(timeMin: string, timeMax: string) {
     requestBody: {
       timeMin,
       timeMax,
+      timeZone: "America/Argentina/Buenos_Aires",
       items: [{ id: calendarId }],
     },
   });
@@ -77,7 +83,10 @@ export async function createBookingEvent(params: {
     },
   });
 
-  export async function deleteBookingEvent(eventId: string) {
+  return response.data;
+}
+
+export async function deleteBookingEvent(eventId: string) {
   const calendar = await getCalendarClient();
 
   await calendar.events.delete({
@@ -122,9 +131,6 @@ export async function updateBookingEvent(params: {
       },
     },
   });
-
-  return response.data;
-}
 
   return response.data;
 }
