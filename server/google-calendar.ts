@@ -77,5 +77,54 @@ export async function createBookingEvent(params: {
     },
   });
 
+  export async function deleteBookingEvent(eventId: string) {
+  const calendar = await getCalendarClient();
+
+  await calendar.events.delete({
+    calendarId,
+    eventId,
+  });
+}
+
+export async function updateBookingEvent(params: {
+  eventId: string;
+  serviceName: string;
+  start: string;
+  end: string;
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  notes?: string;
+}) {
+  const calendar = await getCalendarClient();
+
+  const response = await calendar.events.update({
+    calendarId,
+    eventId: params.eventId,
+    requestBody: {
+      summary: `${params.serviceName} - ${params.clientName}`,
+      description: [
+        `Servicio: ${params.serviceName}`,
+        `Cliente: ${params.clientName}`,
+        `Email: ${params.clientEmail}`,
+        `Teléfono: ${params.clientPhone}`,
+        params.notes ? `Notas: ${params.notes}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n"),
+      start: {
+        dateTime: params.start,
+        timeZone: "America/Argentina/Buenos_Aires",
+      },
+      end: {
+        dateTime: params.end,
+        timeZone: "America/Argentina/Buenos_Aires",
+      },
+    },
+  });
+
+  return response.data;
+}
+
   return response.data;
 }

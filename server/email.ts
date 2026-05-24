@@ -9,6 +9,7 @@ type BookingEmailParams = {
   clientPhone: string;
   notes?: string;
   eventId?: string;
+  bookingToken?: string;
 };
 
 type EmailSendResult = {
@@ -42,6 +43,18 @@ function getAdminEmail() {
 
 function getLocation() {
   return process.env.BOOKING_LOCATION || "Gascón 1967, Mar del Plata";
+}
+
+function getPublicSiteUrl() {
+  return (
+    process.env.PUBLIC_SITE_URL || "https://arianavargasnails.com.ar"
+  ).replace(/\/$/, "");
+}
+
+function getManageBookingUrl(token?: string) {
+  if (!token) return "";
+
+  return `${getPublicSiteUrl()}/reserva/${token}`;
 }
 
 function escapeHtml(value: string) {
@@ -85,6 +98,7 @@ function buildClientHtml(params: BookingEmailParams) {
   const startTime = formatTime(params.start);
   const endTime = formatTime(params.end);
   const location = escapeHtml(getLocation());
+  const manageUrl = getManageBookingUrl(params.bookingToken);
 
   return `
   <div style="margin:0;padding:0;background:#fff7fa;font-family:Arial,Helvetica,sans-serif;color:#5f4050;">
@@ -118,7 +132,15 @@ function buildClientHtml(params: BookingEmailParams) {
               </div>`
             : ""
         }
-
+        ${
+          manageUrl
+            ? `<div style="margin:24px 0;">
+                <a href="${manageUrl}" style="display:inline-block;background:#B07070;color:#ffffff;text-decoration:none;border-radius:999px;padding:12px 20px;font-size:14px;font-weight:bold;">
+                  Ver, modificar o cancelar mi turno
+                </a>
+              </div>`
+            : ""
+        }
         <p style="margin:22px 0 0;font-size:14px;line-height:1.6;color:#8f6f7e;">
           Si necesitás modificar o cancelar el turno, respondé este email o escribinos por WhatsApp.
         </p>
@@ -148,6 +170,9 @@ function buildClientText(params: BookingEmailParams) {
     `Teléfono registrado: ${params.clientPhone}`,
     params.notes ? `Notas: ${params.notes}` : "",
     "",
+    params.bookingToken
+    ? `Gestionar turno: ${getManageBookingUrl(params.bookingToken)}`
+    : "",
     "Si necesitás modificar o cancelar el turno, respondé este email o escribinos por WhatsApp.",
   ]
     .filter(Boolean)
@@ -261,6 +286,173 @@ export async function sendBookingConfirmationEmails(
         subject: `Nuevo turno - ${params.serviceName} - ${params.clientName}`,
         html: buildAdminHtml(params),
         text: buildAdminText(params),
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error enviando email interno";
+      errors.push(`admin: ${message}`);
+    }
+  }
+  
+
+  return {
+    clientEmailId,
+    adminEmailId,
+    errors,
+  };
+}
+export async function sendBookingCancellationEmails(
+  params: BookingEmailParams
+): Promise<EmailSendResult> {
+  const errors: string[] = [];
+  let clientEmailId: string | undefined;
+  let adminEmailId: string | undefined;
+
+  try {
+    clientEmailId = await sendEmail({
+      to: params.clientEmail,
+      subject: "Turno cancelado - Ariana Vargas Nails",
+      html: `
+        <div style="font-family:Arial,Helvetica,sans-serif;color:#5f4050;background:#fff7fa;padding:24px;">
+          <div style="max-width:620px;margin:0 auto;background:#ffffff;border:1px solid #f0dfe6;border-radius:20px;padding:24px;">
+            <h1 style="margin:0 0 16px;font-size:22px;color:#6f4e5f;">Turno cancelado</h1>
+            <p>Hola ${escapeHtml(params.clientName)}, tu turno fue cancelado correctamente.</p>
+            <p><strong>Servicio:</strong> ${escapeHtml(params.serviceName)}</p>
+            <p><strong>Fecha:</strong> ${formatDate(params.start)}</p>
+            <p><strong>Horario:</strong> ${formatTime(params.start)} a ${formatTime(params.end)}</p>
+            <p>Si necesitás reservar nuevamente, podés hacerlo desde la web.</p>
+          </div>
+        </div>
+      `,
+      text: [
+        "Turno cancelado - Ariana Vargas Nails",
+        "",
+        `Hola ${params.clientName}, tu turno fue cancelado correctamente.`,
+        `Servicio: ${params.serviceName}`,
+        `Fecha: ${formatDate(params.start)}`,
+        `Horario: ${formatTime(params.start)} a ${formatTime(params.end)}`,
+      ].join("\n"),
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Error enviando email al cliente";
+    errors.push(`cliente: ${message}`);
+  }
+
+  const adminEmail = getAdminEmail();
+
+  if (adminEmail) {
+    try {
+      adminEmailId = await sendEmail({
+        to: adminEmail,
+        subject: `Turno cancelado - ${params.serviceName} - ${params.clientName}`,
+        html: `
+          <div style="font-family:Arial,Helvetica,sans-serif;color:#333;background:#fafafa;padding:24px;">
+            <div style="max-width:620px;margin:0 auto;background:white;border:1px solid #eee;border-radius:18px;padding:24px;">
+              <h1 style="margin:0 0 16px;font-size:22px;">Turno cancelado</h1>
+              <p><strong>Servicio:</strong> ${escapeHtml(params.serviceName)}</p>
+              <p><strong>Cliente:</strong> ${escapeHtml(params.clientName)}</p>
+              <p><strong>Email:</strong> ${escapeHtml(params.clientEmail)}</p>
+              <p><strong>Teléfono:</strong> ${escapeHtml(params.clientPhone)}</p>
+              <p><strong>Fecha:</strong> ${formatDate(params.start)}</p>
+              <p><strong>Horario:</strong> ${formatTime(params.start)} a ${formatTime(params.end)}</p>
+            </div>
+          </div>
+        `,
+        text: [
+          "Turno cancelado",
+          "",
+          `Servicio: ${params.serviceName}`,
+          `Cliente: ${params.clientName}`,
+          `Email: ${params.clientEmail}`,
+          `Teléfono: ${params.clientPhone}`,
+          `Fecha: ${formatDate(params.start)}`,
+          `Horario: ${formatTime(params.start)} a ${formatTime(params.end)}`,
+        ].join("\n"),
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error enviando email interno";
+      errors.push(`admin: ${message}`);
+    }
+  }
+
+  return {
+    clientEmailId,
+    adminEmailId,
+    errors,
+  };
+}
+
+export async function sendBookingRescheduledEmails(
+  params: BookingEmailParams
+): Promise<EmailSendResult> {
+  const errors: string[] = [];
+  let clientEmailId: string | undefined;
+  let adminEmailId: string | undefined;
+
+  try {
+    clientEmailId = await sendEmail({
+      to: params.clientEmail,
+      subject: "Turno modificado - Ariana Vargas Nails",
+      html: `
+        <div style="font-family:Arial,Helvetica,sans-serif;color:#5f4050;background:#fff7fa;padding:24px;">
+          <div style="max-width:620px;margin:0 auto;background:#ffffff;border:1px solid #f0dfe6;border-radius:20px;padding:24px;">
+            <h1 style="margin:0 0 16px;font-size:22px;color:#6f4e5f;">Turno modificado</h1>
+            <p>Hola ${escapeHtml(params.clientName)}, tu turno fue modificado correctamente.</p>
+            <p><strong>Servicio:</strong> ${escapeHtml(params.serviceName)}</p>
+            <p><strong>Fecha:</strong> ${formatDate(params.start)}</p>
+            <p><strong>Horario:</strong> ${formatTime(params.start)} a ${formatTime(params.end)}</p>
+            <p><strong>Dirección:</strong> ${escapeHtml(getLocation())}</p>
+          </div>
+        </div>
+      `,
+      text: [
+        "Turno modificado - Ariana Vargas Nails",
+        "",
+        `Hola ${params.clientName}, tu turno fue modificado correctamente.`,
+        `Servicio: ${params.serviceName}`,
+        `Fecha: ${formatDate(params.start)}`,
+        `Horario: ${formatTime(params.start)} a ${formatTime(params.end)}`,
+        `Dirección: ${getLocation()}`,
+      ].join("\n"),
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Error enviando email al cliente";
+    errors.push(`cliente: ${message}`);
+  }
+
+  const adminEmail = getAdminEmail();
+
+  if (adminEmail) {
+    try {
+      adminEmailId = await sendEmail({
+        to: adminEmail,
+        subject: `Turno modificado - ${params.serviceName} - ${params.clientName}`,
+        html: `
+          <div style="font-family:Arial,Helvetica,sans-serif;color:#333;background:#fafafa;padding:24px;">
+            <div style="max-width:620px;margin:0 auto;background:white;border:1px solid #eee;border-radius:18px;padding:24px;">
+              <h1 style="margin:0 0 16px;font-size:22px;">Turno modificado</h1>
+              <p><strong>Servicio:</strong> ${escapeHtml(params.serviceName)}</p>
+              <p><strong>Cliente:</strong> ${escapeHtml(params.clientName)}</p>
+              <p><strong>Email:</strong> ${escapeHtml(params.clientEmail)}</p>
+              <p><strong>Teléfono:</strong> ${escapeHtml(params.clientPhone)}</p>
+              <p><strong>Fecha:</strong> ${formatDate(params.start)}</p>
+              <p><strong>Horario:</strong> ${formatTime(params.start)} a ${formatTime(params.end)}</p>
+            </div>
+          </div>
+        `,
+        text: [
+          "Turno modificado",
+          "",
+          `Servicio: ${params.serviceName}`,
+          `Cliente: ${params.clientName}`,
+          `Email: ${params.clientEmail}`,
+          `Teléfono: ${params.clientPhone}`,
+          `Fecha: ${formatDate(params.start)}`,
+          `Horario: ${formatTime(params.start)} a ${formatTime(params.end)}`,
+        ].join("\n"),
       });
     } catch (error) {
       const message =
