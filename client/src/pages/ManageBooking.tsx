@@ -296,10 +296,11 @@ export default function ManageBooking() {
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
+                <label htmlFor="service-select" className="mb-2 block text-sm font-medium text-[#6f4e5f]">
                   Servicio
                 </label>
                 <select
+                  id="service-select"
                   value={serviceId}
                   onChange={(e) => setServiceId(e.target.value)}
                   aria-label="Servicio"
@@ -314,10 +315,11 @@ export default function ManageBooking() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#6f4e5f]">
+                <label htmlFor="booking-date" className="mb-2 block text-sm font-medium text-[#6f4e5f]">
                   Fecha
                 </label>
                 <input
+                  id="booking-date"
                   type="date"
                   value={date}
                   min={minDate}
