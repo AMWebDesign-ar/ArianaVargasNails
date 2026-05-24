@@ -302,6 +302,7 @@ export default function ManageBooking() {
                 <select
                   value={serviceId}
                   onChange={(e) => setServiceId(e.target.value)}
+                  aria-label="Servicio"
                   className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-[15px] outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
                 >
                   {services.map((service) => (
