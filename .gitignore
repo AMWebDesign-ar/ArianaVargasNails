@@ -13,7 +13,7 @@ build
 *.tar.gz
 
 tests
-test-results
+tests-results
 coverage
 logs
 *.log   
