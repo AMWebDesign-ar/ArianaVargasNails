@@ -3,9 +3,13 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes, registerBookingRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import session from "express-session";
+import { registerAdminAuthRoutes } from "./admin-auth";
 
 const app = express();
 const httpServer = createServer(app);
+app.set("trust proxy", 1);
+
 
 declare module "http" {
   interface IncomingMessage {
@@ -23,6 +27,29 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false }));
+
+const sessionSecret = process.env.SESSION_SECRET;
+
+if (!sessionSecret) {
+  throw new Error("Falta SESSION_SECRET en variables de entorno.");
+}
+
+app.use(
+  session({
+    name: "arianavargasnails.sid",
+    secret: sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 8,
+    },
+  }),
+);
+
+registerAdminAuthRoutes(app);
 
 // 🔹 Logger simple
 export function log(message: string, source = "express") {
