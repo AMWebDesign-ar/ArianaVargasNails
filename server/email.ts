@@ -467,3 +467,64 @@ export async function sendBookingRescheduledEmails(
     errors,
   };
 }
+
+export async function sendClientLoginCodeEmail(params: {
+  email: string;
+  code: string;
+}): Promise<{ emailId?: string; errors: string[] }> {
+  const errors: string[] = [];
+  let emailId: string | undefined;
+
+  try {
+    emailId = await sendEmail({
+      to: params.email,
+      subject: "Código de acceso - Ariana Vargas Nails",
+      html: `
+        <div style="font-family:Arial,Helvetica,sans-serif;color:#5f4050;background:#fff7fa;padding:24px;">
+          <div style="max-width:620px;margin:0 auto;background:#ffffff;border:1px solid #f0dfe6;border-radius:20px;padding:24px;">
+            <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#b07070;">
+              Ariana Vargas Nails
+            </p>
+
+            <h1 style="margin:0 0 16px;font-size:22px;color:#6f4e5f;">
+              Código de acceso
+            </h1>
+
+            <p style="margin:0 0 16px;font-size:15px;line-height:1.6;">
+              Usá este código para ingresar a tus turnos:
+            </p>
+
+            <div style="font-size:30px;font-weight:bold;letter-spacing:0.18em;background:#fff1f6;border:1px solid #f3c8d8;border-radius:16px;padding:16px;text-align:center;color:#6f4e5f;">
+              ${escapeHtml(params.code)}
+            </div>
+
+            <p style="margin:18px 0 0;font-size:13px;line-height:1.6;color:#8f6f7e;">
+              Este código vence en 10 minutos. Si no lo pediste, podés ignorar este email.
+            </p>
+          </div>
+        </div>
+      `,
+      text: [
+        "Ariana Vargas Nails",
+        "",
+        "Código de acceso",
+        "",
+        `Tu código es: ${params.code}`,
+        "",
+        "Este código vence en 10 minutos. Si no lo pediste, podés ignorar este email.",
+      ].join("\n"),
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Error enviando código de acceso";
+
+    errors.push(message);
+  }
+
+  return {
+    emailId,
+    errors,
+  };
+}

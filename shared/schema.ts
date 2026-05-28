@@ -99,6 +99,23 @@ export const bookings = pgTable(
     ),
   }),
 );
+export const clientLoginCodes = pgTable("client_login_codes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+
+  email: text("email").notNull(),
+
+  codeHash: text("code_hash").notNull(),
+
+  attempts: integer("attempts").notNull().default(0),
+
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+
+  usedAt: timestamp("used_at", { withTimezone: true }),
+
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
 
 export const clientsRelations = relations(clients, ({ many }) => ({
   bookings: many(bookings),
@@ -123,6 +140,19 @@ export const insertBookingSchema = createInsertSchema(bookings).omit({
   updatedAt: true,
   cancelledAt: true,
 });
+
+export const insertClientLoginCodeSchema = createInsertSchema(
+  clientLoginCodes,
+).omit({
+  id: true,
+  createdAt: true,
+  usedAt: true,
+});
+
+export type ClientLoginCode = typeof clientLoginCodes.$inferSelect;
+export type InsertClientLoginCode = z.infer<
+  typeof insertClientLoginCodeSchema
+>;
 
 export type Client = typeof clients.$inferSelect;
 export type InsertClient = z.infer<typeof insertClientSchema>;
