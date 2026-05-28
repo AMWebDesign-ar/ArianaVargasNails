@@ -5,6 +5,7 @@ import { serveStatic } from "./static";
 import { createServer } from "http";
 import session from "express-session";
 import { registerAdminAuthRoutes } from "./admin-auth";
+import { registerAdminRoutes } from "./admin-routes";
 
 const app = express();
 const httpServer = createServer(app);
@@ -50,6 +51,7 @@ app.use(
 );
 
 registerAdminAuthRoutes(app);
+registerAdminRoutes(app);
 
 // 🔹 Logger simple
 export function log(message: string, source = "express") {
