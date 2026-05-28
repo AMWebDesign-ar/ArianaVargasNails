@@ -369,6 +369,16 @@ export default function Home() {
               </a>
             </div>
           )}
+
+          <div className="mt-2 text-xs text-black/40">
+            <a
+              href="/admin"
+              className="underline underline-offset-4 transition-colors hover:text-black/70"
+              data-testid="link-admin-login"
+            >
+              Acceso admin
+            </a>
+          </div>
         </div>
       </footer>
 
