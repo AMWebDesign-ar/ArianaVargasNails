@@ -48,7 +48,7 @@ function MobileMenu({
   onClose: () => void;
   onOpenServices: () => void;
 }) {
-  const mobileItems = [
+    const mobileItems = [
     {
       href: "#services",
       label: "Servicios",
@@ -56,16 +56,21 @@ function MobileMenu({
       delayClass: "[animation-delay:200ms]",
     },
     {
+      href: "/mis-turnos",
+      label: "Mis turnos",
+      delayClass: "[animation-delay:320ms]",
+    },
+    {
       href: BRAND.instagram,
       label: "Ver trabajos",
       external: true,
-      delayClass: "[animation-delay:320ms]",
+      delayClass: "[animation-delay:440ms]",
     },
     {
       href: BRAND.mapsUrl,
       label: "Ubicación",
       external: true,
-      delayClass: "[animation-delay:440ms]",
+      delayClass: "[animation-delay:560ms]",
     },
   ];
 
@@ -135,6 +140,7 @@ function MobileMenu({
                   return;
                 }
 
+                window.location.href = item.href;
                 onClose();
               }}
               className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-smooth hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out [animation-fill-mode:forwards] [font-family:var(--font-serif)] ${item.delayClass}`}
@@ -224,6 +230,7 @@ export default function Home() {
               onClick={() => setServicesOpen(true)}
             />
 
+            <NavLink href="/mis-turnos" label="Mis turnos" />
             <NavLink href={BRAND.instagram} label="Galería" />
             <NavLink href={BRAND.mapsUrl} label="Ubicación" />
           </nav>

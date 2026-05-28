@@ -6,6 +6,7 @@ import { createServer } from "http";
 import session from "express-session";
 import { registerAdminAuthRoutes } from "./admin-auth";
 import { registerAdminRoutes } from "./admin-routes";
+import { registerClientAuthRoutes } from "./client-auth";
 
 const app = express();
 const httpServer = createServer(app);
@@ -52,6 +53,7 @@ app.use(
 
 registerAdminAuthRoutes(app);
 registerAdminRoutes(app);
+registerClientAuthRoutes(app);
 
 // 🔹 Logger simple
 export function log(message: string, source = "express") {
