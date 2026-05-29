@@ -51,6 +51,19 @@ type DashboardData = {
   recentClients: Client[];
 };
 
+type ClientDetail = {
+  client: Client;
+  stats: {
+    totalBookings: number;
+    activeBookings: number;
+    cancelledBookings: number;
+    completedOrPastBookings: number;
+  };
+  nextBooking: Booking | null;
+  lastBooking: Booking | null;
+  bookings: Booking[];
+};
+
 function formatDateTime(value: string) {
   return new Intl.DateTimeFormat("es-AR", {
     timeZone: "America/Argentina/Buenos_Aires",
@@ -104,6 +117,28 @@ function statusClass(status: string) {
 
 function isActiveBooking(status: string) {
   return status === "confirmed" || status === "rescheduled";
+}
+
+function buildWhatsAppUrl(phone: string, name?: string) {
+  let digits = phone.replace(/\D/g, "");
+
+  if (digits.startsWith("00")) {
+    digits = digits.slice(2);
+  }
+
+  if (digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
+
+  if (!digits.startsWith("54")) {
+    digits = `54${digits}`;
+  }
+
+  const message = encodeURIComponent(
+    name ? `Hola ${name}, te escribimos de Ariana Vargas Nails.` : "Hola, te escribimos de Ariana Vargas Nails.",
+  );
+
+  return `https://wa.me/${digits}?text=${message}`;
 }
 
 function toDateTimeLocalValue(value: string) {
@@ -252,7 +287,13 @@ function BookingList({
   );
 }
 
-function ClientsList({ clients }: { clients: Client[] }) {
+function ClientsList({
+  clients,
+  onOpenClient,
+}: {
+  clients: Client[];
+  onOpenClient: (clientId: string) => void;
+}) {
   return (
     <section className="rounded-3xl border border-[#f0dfe6] bg-white p-5 shadow-sm">
       <h2 className="text-lg font-bold text-[#6f4e5f]">Clientas</h2>
@@ -266,7 +307,7 @@ function ClientsList({ clients }: { clients: Client[] }) {
           {clients.map((client) => (
             <div
               key={client.id}
-              className="flex flex-col gap-2 bg-[#fffafc] p-4 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 bg-[#fffafc] p-4 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <p className="text-sm font-bold text-[#6f4e5f]">
@@ -275,14 +316,33 @@ function ClientsList({ clients }: { clients: Client[] }) {
                 <p className="mt-1 text-xs text-[#8f6f7e]">
                   {client.phone} · {client.email}
                 </p>
+
+                {typeof client.bookingCount === "number" && (
+                  <span className="mt-2 inline-flex w-fit rounded-full border border-[#ead8e1] bg-white px-3 py-1 text-xs font-bold text-[#6f4e5f]">
+                    {client.bookingCount} turno
+                    {client.bookingCount === 1 ? "" : "s"}
+                  </span>
+                )}
               </div>
 
-              {typeof client.bookingCount === "number" && (
-                <span className="w-fit rounded-full border border-[#ead8e1] bg-white px-3 py-1 text-xs font-bold text-[#6f4e5f]">
-                  {client.bookingCount} turno
-                  {client.bookingCount === 1 ? "" : "s"}
-                </span>
-              )}
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => onOpenClient(client.id)}
+                  className="rounded-xl border border-[#cfe0f8] bg-white px-3 py-2 text-xs font-bold text-[#315f9c] transition hover:bg-[#eef5ff]"
+                >
+                  Ver ficha
+                </button>
+
+                <a
+                  href={buildWhatsAppUrl(client.phone, client.name)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl border border-[#cfe7d4] bg-white px-3 py-2 text-xs font-bold text-[#2f6b3f] transition hover:bg-[#edf9f0]"
+                >
+                  WhatsApp
+                </a>
+              </div>
             </div>
           ))}
         </div>
@@ -311,6 +371,8 @@ export default function AdminDashboard() {
 
   const [clientsSearch, setClientsSearch] = useState("");
   const [clients, setClients] = useState<Client[]>([]);
+  const [clientDetail, setClientDetail] = useState<ClientDetail | null>(null);
+const [clientDetailLoading, setClientDetailLoading] = useState(false);
 
   const filteredBookingsTitle = useMemo(() => {
     if (bookingSearch || statusFilter !== "all") {
@@ -528,6 +590,28 @@ export default function AdminDashboard() {
     }
   }
 
+    async function openClientDetail(clientId: string) {
+  setClientDetailLoading(true);
+  setError("");
+
+  try {
+    const res = await fetch(`/api/admin/clients/${clientId}`);
+    const response = await res.json();
+
+    if (!res.ok) {
+      throw new Error(response.error || "No se pudo cargar la ficha.");
+    }
+
+    setClientDetail(response);
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : "No se pudo cargar la ficha.",
+    );
+  } finally {
+    setClientDetailLoading(false);
+  }
+}
+
   async function logout() {
     await fetch("/api/admin/logout", {
       method: "POST",
@@ -622,6 +706,12 @@ export default function AdminDashboard() {
             {error}
           </div>
         )}
+
+        {clientDetailLoading && (
+  <div className="rounded-3xl border border-[#cfe0f8] bg-[#eef5ff] p-4 text-sm font-medium text-[#315f9c]">
+    Cargando ficha de clienta...
+  </div>
+)}
 
         {data && (
           <>
@@ -720,7 +810,7 @@ export default function AdminDashboard() {
               />
             </section>
 
-            <ClientsList clients={clients} />
+            <ClientsList clients={clients} onOpenClient={openClientDetail} />
           </>
         )}
       </div>
@@ -823,6 +913,151 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+      {clientDetail && (
+  <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+    <div className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-3xl border border-[#f0dfe6] bg-white shadow-2xl">
+      <div className="flex items-start justify-between gap-4 border-b border-[#f0dfe6] p-6">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#B07070]">
+            Ficha de clienta
+          </p>
+
+          <h2 className="mt-2 text-2xl font-bold text-[#6f4e5f]">
+            {clientDetail.client.name}
+          </h2>
+
+          <p className="mt-1 text-sm text-[#8f6f7e]">
+            {clientDetail.client.phone} · {clientDetail.client.email}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setClientDetail(null)}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ead8e1] bg-white text-[#8c5a6d] transition hover:bg-[#fff1f6]"
+          aria-label="Cerrar ficha"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="max-h-[calc(90vh-120px)] overflow-y-auto p-6">
+        <div className="grid gap-3 sm:grid-cols-4">
+          <SummaryCard
+            label="Total"
+            value={clientDetail.stats.totalBookings}
+          />
+          <SummaryCard
+            label="Activos"
+            value={clientDetail.stats.activeBookings}
+          />
+          <SummaryCard
+            label="Cancelados"
+            value={clientDetail.stats.cancelledBookings}
+          />
+          <SummaryCard
+            label="Historial"
+            value={clientDetail.stats.completedOrPastBookings}
+          />
+        </div>
+
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+          <a
+            href={buildWhatsAppUrl(
+              clientDetail.client.phone,
+              clientDetail.client.name,
+            )}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex flex-1 items-center justify-center rounded-2xl bg-[#2f6b3f] px-4 py-3 text-sm font-bold text-white transition hover:opacity-90"
+          >
+            Escribir por WhatsApp
+          </a>
+
+          <a
+            href={`mailto:${clientDetail.client.email}`}
+            className="inline-flex flex-1 items-center justify-center rounded-2xl border border-[#ead8e1] bg-white px-4 py-3 text-sm font-bold text-[#6f4e5f] transition hover:bg-[#fff1f6]"
+          >
+            Enviar email
+          </a>
+        </div>
+
+        {clientDetail.nextBooking && (
+          <div className="mt-5 rounded-3xl border border-[#cfe7d4] bg-[#edf9f0] p-5">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#2f6b3f]">
+              Próximo turno
+            </p>
+            <p className="mt-2 text-sm font-bold text-[#2f6b3f]">
+              {clientDetail.nextBooking.serviceName}
+            </p>
+            <p className="mt-1 text-sm text-[#2f6b3f]">
+              {formatDateTime(clientDetail.nextBooking.start)}
+            </p>
+          </div>
+        )}
+
+        {clientDetail.lastBooking && (
+          <div className="mt-5 rounded-3xl border border-[#f0dfe6] bg-[#fffafc] p-5">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#B07070]">
+              Último turno
+            </p>
+            <p className="mt-2 text-sm font-bold text-[#6f4e5f]">
+              {clientDetail.lastBooking.serviceName}
+            </p>
+            <p className="mt-1 text-sm text-[#8f6f7e]">
+              {formatDateTime(clientDetail.lastBooking.start)}
+            </p>
+          </div>
+        )}
+
+        <div className="mt-6">
+          <h3 className="text-lg font-bold text-[#6f4e5f]">
+            Historial de turnos
+          </h3>
+
+          {clientDetail.bookings.length === 0 ? (
+            <p className="mt-3 text-sm text-[#8f6f7e]">
+              Esta clienta todavía no tiene turnos.
+            </p>
+          ) : (
+            <div className="mt-4 space-y-3">
+              {clientDetail.bookings.map((booking) => (
+                <div
+                  key={booking.id}
+                  className="rounded-2xl border border-[#f0dfe6] bg-[#fffafc] p-4"
+                >
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-sm font-bold text-[#6f4e5f]">
+                        {booking.serviceName}
+                      </p>
+                      <p className="mt-1 text-xs text-[#8f6f7e]">
+                        {formatDateTime(booking.start)}
+                      </p>
+                      {booking.notes && (
+                        <p className="mt-2 text-xs text-[#8f6f7e]">
+                          {booking.notes}
+                        </p>
+                      )}
+                    </div>
+
+                    <span
+                      className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${statusClass(
+                        booking.status,
+                      )}`}
+                    >
+                      {statusLabel(booking.status)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </main>
   );
 }

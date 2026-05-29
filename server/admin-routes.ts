@@ -422,6 +422,119 @@ export function registerAdminRoutes(app: Express) {
     },
   );
 
+app.get(
+  "/api/admin/clients/:id",
+  requireAdmin,
+  async (req: Request, res: Response) => {
+    try {
+      const clientId = normalizeText(req.params.id);
+
+      if (!clientId) {
+        return res.status(400).json({
+          error: "Clienta inválida.",
+        });
+      }
+
+      const [client] = await db
+        .select({
+          id: clients.id,
+          name: clients.name,
+          email: clients.email,
+          phone: clients.phone,
+          createdAt: clients.createdAt,
+          updatedAt: clients.updatedAt,
+        })
+        .from(clients)
+        .where(eq(clients.id, clientId))
+        .limit(1);
+
+      if (!client) {
+        return res.status(404).json({
+          error: "Clienta no encontrada.",
+        });
+      }
+
+      const clientBookings = await db
+        .select({
+          id: bookings.id,
+          token: bookings.token,
+          googleEventId: bookings.googleEventId,
+          serviceId: bookings.serviceId,
+          serviceName: bookings.serviceName,
+          serviceDuration: bookings.serviceDuration,
+          start: bookings.start,
+          end: bookings.end,
+          status: bookings.status,
+          notes: bookings.notes,
+          createdAt: bookings.createdAt,
+          updatedAt: bookings.updatedAt,
+          cancelledAt: bookings.cancelledAt,
+          clientId: clients.id,
+          clientName: clients.name,
+          clientEmail: clients.email,
+          clientPhone: clients.phone,
+        })
+        .from(bookings)
+        .innerJoin(clients, eq(bookings.clientId, clients.id))
+        .where(eq(bookings.clientId, clientId))
+        .orderBy(desc(bookings.start));
+
+      const serializedBookings = clientBookings.map(serializeBooking);
+
+      const activeBookings = serializedBookings.filter((booking) =>
+        isActiveBookingStatus(booking.status),
+      );
+
+      const cancelledBookings = serializedBookings.filter(
+        (booking) => booking.status === "cancelled",
+      );
+
+      const now = Date.now();
+
+      const nextBooking =
+        activeBookings
+          .filter((booking) => new Date(booking.start).getTime() >= now)
+          .sort(
+            (a, b) =>
+              new Date(a.start).getTime() - new Date(b.start).getTime(),
+          )[0] ?? null;
+
+      const lastBooking =
+        serializedBookings
+          .filter((booking) => new Date(booking.start).getTime() < now)
+          .sort(
+            (a, b) =>
+              new Date(b.start).getTime() - new Date(a.start).getTime(),
+          )[0] ?? null;
+
+      return res.json({
+        client: {
+          ...client,
+          createdAt: toIso(client.createdAt),
+          updatedAt: toIso(client.updatedAt),
+        },
+        stats: {
+          totalBookings: serializedBookings.length,
+          activeBookings: activeBookings.length,
+          cancelledBookings: cancelledBookings.length,
+          completedOrPastBookings: serializedBookings.filter(
+            (booking) => new Date(booking.start).getTime() < now,
+          ).length,
+        },
+        nextBooking,
+        lastBooking,
+        bookings: serializedBookings,
+      });
+    } catch (error) {
+      console.error("admin client detail error:", error);
+
+      return res.status(500).json({
+        error: "No se pudo cargar la ficha de la clienta.",
+      });
+    }
+  },
+);
+
   app.post(
     "/api/admin/bookings/:id/cancel",
     requireAdmin,
