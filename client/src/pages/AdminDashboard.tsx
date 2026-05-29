@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "wouter";
+import { services } from "../data/services";
 
 type AdminUser = {
   email: string;
@@ -101,6 +102,33 @@ function statusClass(status: string) {
   return "bg-[#f7f3f5] text-[#6f4e5f] border-[#ead8e1]";
 }
 
+function isActiveBooking(status: string) {
+  return status === "confirmed" || status === "rescheduled";
+}
+
+function toDateTimeLocalValue(value: string) {
+  const date = new Date(value);
+
+  const parts = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "America/Argentina/Buenos_Aires",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+
+  return parts.replace(" ", "T");
+}
+
+function argentinaDateTimeLocalToIso(value: string) {
+  return new Date(`${value}:00-03:00`).toISOString();
+}
+
+function addMinutesIso(startIso: string, minutes: number) {
+  return new Date(new Date(startIso).getTime() + minutes * 60_000).toISOString();
+}
+
 function SummaryCard({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-3xl border border-[#f0dfe6] bg-white p-5 shadow-sm">
@@ -117,11 +145,17 @@ function BookingList({
   bookings,
   emptyText,
   compact = false,
+  onCancel,
+  onEdit,
+  actionLoadingId,
 }: {
   title: string;
   bookings: Booking[];
   emptyText: string;
   compact?: boolean;
+  onCancel?: (booking: Booking) => void;
+  onEdit?: (booking: Booking) => void;
+  actionLoadingId?: string | null;
 }) {
   return (
     <section className="rounded-3xl border border-[#f0dfe6] bg-white p-5 shadow-sm">
@@ -132,51 +166,85 @@ function BookingList({
       ) : (
         <div className="mt-4 overflow-hidden rounded-2xl border border-[#f0dfe6]">
           <div className="divide-y divide-[#f0dfe6]">
-            {bookings.map((booking) => (
-              <div
-                key={booking.id}
-                className="grid gap-3 bg-[#fffafc] p-4 sm:grid-cols-[120px_1fr_auto]"
-              >
-                <div>
-                  <p className="text-sm font-bold text-[#6f4e5f]">
-                    {compact
-                      ? formatTime(booking.start)
-                      : formatDateTime(booking.start)}
-                  </p>
-                  <p className="text-xs text-[#8f6f7e]">
-                    {booking.serviceDuration} min
-                  </p>
-                </div>
+            {bookings.map((booking) => {
+              const canManage = isActiveBooking(booking.status);
+              const isLoading = actionLoadingId === booking.id;
 
-                <div>
-                  <p className="text-sm font-bold text-[#6f4e5f]">
-                    {booking.clientName}
-                  </p>
-                  <p className="mt-1 text-sm text-[#8f6f7e]">
-                    {booking.serviceName}
-                  </p>
-                  <p className="mt-1 text-xs text-[#8f6f7e]">
-                    {booking.clientPhone} · {booking.clientEmail}
-                  </p>
-
-                  {booking.notes && (
-                    <p className="mt-2 rounded-xl bg-white p-2 text-xs text-[#8f6f7e]">
-                      {booking.notes}
+              return (
+                <div
+                  key={booking.id}
+                  className="grid gap-3 bg-[#fffafc] p-4 sm:grid-cols-[120px_1fr_auto]"
+                >
+                  <div>
+                    <p className="text-sm font-bold text-[#6f4e5f]">
+                      {compact
+                        ? formatTime(booking.start)
+                        : formatDateTime(booking.start)}
                     </p>
-                  )}
-                </div>
 
-                <div className="flex items-start justify-start sm:justify-end">
-                  <span
-                    className={`rounded-full border px-3 py-1 text-xs font-bold ${statusClass(
-                      booking.status,
-                    )}`}
-                  >
-                    {statusLabel(booking.status)}
-                  </span>
+                    <p className="text-xs text-[#8f6f7e]">
+                      {booking.serviceDuration} min
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-bold text-[#6f4e5f]">
+                      {booking.clientName}
+                    </p>
+
+                    <p className="mt-1 text-sm text-[#8f6f7e]">
+                      {booking.serviceName}
+                    </p>
+
+                    <p className="mt-1 text-xs text-[#8f6f7e]">
+                      {booking.clientPhone} · {booking.clientEmail}
+                    </p>
+
+                    {booking.notes && (
+                      <p className="mt-2 rounded-xl bg-white p-2 text-xs text-[#8f6f7e]">
+                        {booking.notes}
+                      </p>
+                    )}
+
+                    {canManage && (onCancel || onEdit) && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {onEdit && (
+                          <button
+                            type="button"
+                            onClick={() => onEdit(booking)}
+                            disabled={isLoading}
+                            className="rounded-xl border border-[#cfe0f8] bg-white px-3 py-2 text-xs font-bold text-[#315f9c] transition hover:bg-[#eef5ff] disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            Modificar
+                          </button>
+                        )}
+
+                        {onCancel && (
+                          <button
+                            type="button"
+                            onClick={() => onCancel(booking)}
+                            disabled={isLoading}
+                            className="rounded-xl border border-[#f3c8d8] bg-white px-3 py-2 text-xs font-bold text-[#8c5a6d] transition hover:bg-[#fff1f6] disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {isLoading ? "Cancelando..." : "Cancelar"}
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-start justify-start sm:justify-end">
+                    <span
+                      className={`rounded-full border px-3 py-1 text-xs font-bold ${statusClass(
+                        booking.status,
+                      )}`}
+                    >
+                      {statusLabel(booking.status)}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -190,7 +258,9 @@ function ClientsList({ clients }: { clients: Client[] }) {
       <h2 className="text-lg font-bold text-[#6f4e5f]">Clientas</h2>
 
       {clients.length === 0 ? (
-        <p className="mt-4 text-sm text-[#8f6f7e]">No hay clientas para mostrar.</p>
+        <p className="mt-4 text-sm text-[#8f6f7e]">
+          No hay clientas para mostrar.
+        </p>
       ) : (
         <div className="mt-4 divide-y divide-[#f0dfe6] overflow-hidden rounded-2xl border border-[#f0dfe6]">
           {clients.map((client) => (
@@ -229,6 +299,11 @@ export default function AdminDashboard() {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState("");
+  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+
+  const [editingBooking, setEditingBooking] = useState<Booking | null>(null);
+  const [editServiceId, setEditServiceId] = useState("");
+  const [editDateTime, setEditDateTime] = useState("");
 
   const [bookingSearch, setBookingSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -286,6 +361,115 @@ export default function AdminDashboard() {
       );
     } finally {
       setDashboardLoading(false);
+    }
+  }
+
+  async function refreshDashboardData() {
+    await loadDashboard();
+
+    if (bookingSearch || statusFilter !== "all") {
+      await searchBookings();
+    }
+
+    if (clientsSearch) {
+      await searchClients();
+    }
+  }
+
+  async function cancelBookingFromAdmin(booking: Booking) {
+    const confirmed = window.confirm(
+      `¿Seguro que querés cancelar el turno de ${booking.clientName}?`,
+    );
+
+    if (!confirmed) return;
+
+    setActionLoadingId(booking.id);
+    setError("");
+
+    try {
+      const res = await fetch(`/api/admin/bookings/${booking.id}/cancel`, {
+        method: "POST",
+      });
+
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.error || "No se pudo cancelar el turno.");
+      }
+
+      await refreshDashboardData();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "No se pudo cancelar el turno.",
+      );
+    } finally {
+      setActionLoadingId(null);
+    }
+  }
+
+  function openEditBookingModal(booking: Booking) {
+    setEditingBooking(booking);
+    setEditServiceId(booking.serviceId);
+    setEditDateTime(toDateTimeLocalValue(booking.start));
+    setError("");
+  }
+
+  async function rescheduleBookingFromAdmin() {
+    if (!editingBooking) return;
+
+    const selectedService = services.find(
+      (service) => service.id === editServiceId,
+    );
+
+    if (!selectedService) {
+      setError("Seleccioná un servicio válido.");
+      return;
+    }
+
+    if (!editDateTime) {
+      setError("Seleccioná fecha y horario.");
+      return;
+    }
+
+    setActionLoadingId(editingBooking.id);
+    setError("");
+
+    try {
+      const start = argentinaDateTimeLocalToIso(editDateTime);
+      const end = addMinutesIso(start, selectedService.duration);
+
+      const res = await fetch(
+        `/api/admin/bookings/${editingBooking.id}/reschedule`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            serviceId: selectedService.id,
+            start,
+            end,
+          }),
+        },
+      );
+
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.error || "No se pudo modificar el turno.");
+      }
+
+      setEditingBooking(null);
+      setEditServiceId("");
+      setEditDateTime("");
+
+      await refreshDashboardData();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "No se pudo modificar el turno.",
+      );
+    } finally {
+      setActionLoadingId(null);
     }
   }
 
@@ -466,12 +650,18 @@ export default function AdminDashboard() {
                 bookings={data.todayBookings}
                 emptyText="No hay turnos para hoy."
                 compact
+                onCancel={cancelBookingFromAdmin}
+                onEdit={openEditBookingModal}
+                actionLoadingId={actionLoadingId}
               />
 
               <BookingList
                 title="Próximos turnos"
                 bookings={data.upcomingBookings}
                 emptyText="No hay próximos turnos."
+                onCancel={cancelBookingFromAdmin}
+                onEdit={openEditBookingModal}
+                actionLoadingId={actionLoadingId}
               />
             </section>
 
@@ -510,6 +700,9 @@ export default function AdminDashboard() {
               title={filteredBookingsTitle}
               bookings={bookings}
               emptyText="No hay turnos para mostrar."
+              onCancel={cancelBookingFromAdmin}
+              onEdit={openEditBookingModal}
+              actionLoadingId={actionLoadingId}
             />
 
             <section className="rounded-3xl border border-[#f0dfe6] bg-white p-5 shadow-sm">
@@ -531,6 +724,105 @@ export default function AdminDashboard() {
           </>
         )}
       </div>
+
+      {editingBooking && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-3xl border border-[#f0dfe6] bg-white p-6 shadow-2xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#B07070]">
+                  Modificar turno
+                </p>
+
+                <h2 className="mt-2 text-xl font-bold text-[#6f4e5f]">
+                  {editingBooking.clientName}
+                </h2>
+
+                <p className="mt-1 text-sm text-[#8f6f7e]">
+                  Turno actual: {formatDateTime(editingBooking.start)}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setEditingBooking(null)}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ead8e1] bg-white text-[#8c5a6d] transition hover:bg-[#fff1f6]"
+                aria-label="Cerrar"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="mt-5 space-y-4">
+              <div>
+                <label
+                  htmlFor="admin-edit-service"
+                  className="mb-2 block text-sm font-medium text-[#6f4e5f]"
+                >
+                  Servicio
+                </label>
+
+                <select
+                  id="admin-edit-service"
+                  value={editServiceId}
+                  onChange={(event) => setEditServiceId(event.target.value)}
+                  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-sm outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+                >
+                  {services.map((service) => (
+                    <option key={service.id} value={service.id}>
+                      {service.name} ({service.duration} min)
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="admin-edit-datetime"
+                  className="mb-2 block text-sm font-medium text-[#6f4e5f]"
+                >
+                  Nueva fecha y horario
+                </label>
+
+                <input
+                  id="admin-edit-datetime"
+                  type="datetime-local"
+                  value={editDateTime}
+                  onChange={(event) => setEditDateTime(event.target.value)}
+                  className="w-full rounded-2xl border border-[#ead8e1] bg-[#fffafc] px-4 py-2.5 text-sm outline-none focus:border-[#d9a8bb] focus:ring-2 focus:ring-[#f7d7e3]"
+                />
+              </div>
+
+              <div className="rounded-2xl bg-[#fff7fa] p-4 text-sm text-[#8f6f7e]">
+                Si el nuevo horario se superpone con otro turno de Google
+                Calendar, el sistema lo va a bloquear.
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={rescheduleBookingFromAdmin}
+                  disabled={actionLoadingId === editingBooking.id}
+                  className="flex-1 rounded-2xl bg-[#B07070] px-4 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {actionLoadingId === editingBooking.id
+                    ? "Guardando..."
+                    : "Guardar cambios"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setEditingBooking(null)}
+                  disabled={actionLoadingId === editingBooking.id}
+                  className="flex-1 rounded-2xl border border-[#ead8e1] bg-white px-4 py-3 text-sm font-semibold text-[#8c5a6d] transition hover:bg-[#fff1f6] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
