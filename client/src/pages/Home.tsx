@@ -127,22 +127,22 @@ function MobileMenu({
             <button
               type="button"
               key={item.label}
-              onClick={() => {
-                if (item.action === "services") {
-                  onOpenServices();
-                  onClose();
-                  return;
-                }
-
-                if (item.external) {
-                  window.open(item.href, "_blank", "noreferrer");
-                  onClose();
-                  return;
-                }
-
-                window.location.href = item.href;
+             onClick={() => {
+              if (item.action === "services") {
+                onOpenServices();
                 onClose();
-              }}
+                return;
+              }
+
+              if (item.external) {
+                window.open(item.href, "_blank", "noreferrer");
+                onClose();
+                return;
+              }
+
+              onClose();
+              window.location.href = item.href;
+            }}
               className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-smooth hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out [animation-fill-mode:forwards] [font-family:var(--font-serif)] ${item.delayClass}`}
               data-testid={`link-mobile-nav-${item.label
                 .toLowerCase()

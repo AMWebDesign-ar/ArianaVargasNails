@@ -32,6 +32,13 @@ export default function AdminLogin() {
         >
           Ingresar con Google
         </a>
+
+        <a
+          href="/"
+          className="mt-3 flex w-full items-center justify-center rounded-2xl border border-[#ead8e1] bg-white px-4 py-3 text-sm font-semibold text-[#8c5a6d] transition hover:bg-[#fff1f6]"
+        >
+          Volver al inicio
+        </a>
       </div>
     </main>
   );

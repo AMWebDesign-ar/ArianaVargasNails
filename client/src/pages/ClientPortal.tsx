@@ -73,6 +73,30 @@ function isActiveBooking(status: string) {
   return status === "confirmed" || status === "rescheduled";
 }
 
+function isPastBooking(booking: Pick<Booking, "start">) {
+  return new Date(booking.start).getTime() < Date.now();
+}
+
+function canManageBooking(booking: Booking) {
+  return isActiveBooking(booking.status) && !isPastBooking(booking);
+}
+
+function bookingDisplayStatusLabel(booking: Booking) {
+  if (isActiveBooking(booking.status) && isPastBooking(booking)) {
+    return "Finalizado";
+  }
+
+  return statusLabel(booking.status);
+}
+
+function bookingDisplayStatusClass(booking: Booking) {
+  if (isActiveBooking(booking.status) && isPastBooking(booking)) {
+    return "bg-[#f7f3f5] text-[#6f4e5f] border-[#ead8e1]";
+  }
+
+  return statusClass(booking.status);
+}
+
 function BookingCard({ booking }: { booking: Booking }) {
   return (
     <article className="rounded-3xl border border-[#f0dfe6] bg-white p-5 shadow-sm">
@@ -98,15 +122,15 @@ function BookingCard({ booking }: { booking: Booking }) {
         </div>
 
         <span
-          className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${statusClass(
-            booking.status,
+          className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${bookingDisplayStatusClass(
+            booking,
           )}`}
         >
-          {statusLabel(booking.status)}
+          {bookingDisplayStatusLabel(booking)}
         </span>
       </div>
 
-      {isActiveBooking(booking.status) && (
+      {canManageBooking(booking) && (
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">
           <a
             href={`/reserva/${booking.token}`}
@@ -293,6 +317,13 @@ export default function ClientPortal() {
           <p className="mt-3 text-sm leading-relaxed text-[#8f6f7e]">
             Ingresá con tu email para ver tus turnos, modificar o cancelar si todavía estás dentro del plazo permitido.
           </p>
+
+          <a
+            href="/"
+            className="mt-4 inline-flex rounded-2xl border border-[#ead8e1] bg-white px-4 py-2.5 text-sm font-semibold text-[#8c5a6d] transition hover:bg-[#fff1f6]"
+          >
+            Volver al inicio
+          </a>
 
           {message && (
             <div className="mt-4 rounded-2xl border border-[#cfe7d4] bg-[#edf9f0] p-3 text-sm font-medium text-[#2f6b3f]">

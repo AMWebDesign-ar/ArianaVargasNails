@@ -119,6 +119,30 @@ function isActiveBooking(status: string) {
   return status === "confirmed" || status === "rescheduled";
 }
 
+function isPastBooking(booking: Pick<Booking, "start">) {
+  return new Date(booking.start).getTime() < Date.now();
+}
+
+function canManageBooking(booking: Booking) {
+  return isActiveBooking(booking.status) && !isPastBooking(booking);
+}
+
+function bookingDisplayStatusLabel(booking: Booking) {
+  if (isActiveBooking(booking.status) && isPastBooking(booking)) {
+    return "Finalizado";
+  }
+
+  return statusLabel(booking.status);
+}
+
+function bookingDisplayStatusClass(booking: Booking) {
+  if (isActiveBooking(booking.status) && isPastBooking(booking)) {
+    return "bg-[#f7f3f5] text-[#6f4e5f] border-[#ead8e1]";
+  }
+
+  return statusClass(booking.status);
+}
+
 function buildWhatsAppUrl(phone: string, name?: string) {
   let digits = phone.replace(/\D/g, "");
 
@@ -202,7 +226,7 @@ function BookingList({
         <div className="mt-4 overflow-hidden rounded-2xl border border-[#f0dfe6]">
           <div className="divide-y divide-[#f0dfe6]">
             {bookings.map((booking) => {
-              const canManage = isActiveBooking(booking.status);
+              const canManage = canManageBooking(booking);
               const isLoading = actionLoadingId === booking.id;
 
               return (
@@ -270,11 +294,11 @@ function BookingList({
 
                   <div className="flex items-start justify-start sm:justify-end">
                     <span
-                      className={`rounded-full border px-3 py-1 text-xs font-bold ${statusClass(
-                        booking.status,
+                      className={`rounded-full border px-3 py-1 text-xs font-bold ${bookingDisplayStatusClass(
+                        booking,
                       )}`}
                     >
-                      {statusLabel(booking.status)}
+                      {bookingDisplayStatusLabel(booking)}
                     </span>
                   </div>
                 </div>
@@ -1042,11 +1066,11 @@ const [clientDetailLoading, setClientDetailLoading] = useState(false);
                     </div>
 
                     <span
-                      className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${statusClass(
-                        booking.status,
+                      className={`w-fit rounded-full border px-3 py-1 text-xs font-bold ${bookingDisplayStatusClass(
+                        booking,
                       )}`}
                     >
-                      {statusLabel(booking.status)}
+                      {bookingDisplayStatusLabel(booking)}
                     </span>
                   </div>
                 </div>
