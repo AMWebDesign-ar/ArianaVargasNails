@@ -53,24 +53,24 @@ function MobileMenu({
       href: "#services",
       label: "Servicios",
       action: "services",
-      delayClass: "[animation-delay:200ms]",
+      delayClass: "[transition-delay:100ms]",
     },
     {
       href: "/mis-turnos",
       label: "Mis turnos",
-      delayClass: "[animation-delay:320ms]",
+      delayClass: "[transition-delay:180ms]",
     },
     {
       href: BRAND.instagram,
       label: "Ver trabajos",
       external: true,
-      delayClass: "[animation-delay:440ms]",
+      delayClass: "[transition-delay:260ms]",
     },
     {
       href: BRAND.mapsUrl,
       label: "Ubicación",
       external: true,
-      delayClass: "[animation-delay:560ms]",
+      delayClass: "[transition-delay:340ms]",
     },
   ];
 
@@ -127,8 +127,12 @@ function MobileMenu({
               key={item.label}
               onClick={() => {
                 if (item.action === "services") {
-                  onOpenServices();
                   onClose();
+
+                  window.setTimeout(() => {
+                    onOpenServices();
+                  }, 80);
+
                   return;
                 }
 
@@ -142,9 +146,13 @@ function MobileMenu({
 
                 window.setTimeout(() => {
                   window.location.assign(item.href);
-                }, 50);
+                }, 80);
               }}
-              className={`relative cursor-pointer overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 opacity-0 transition-all duration-1000 ease-smooth animate-fade-up active:bg-black/5 hover:translate-x-1 hover:bg-[#D6B6B6]/5 hover:text-[#B07070] before:absolute before:inset-0 before:translate-x-[-200%] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:transition-transform before:duration-1000 before:ease-in-out hover:before:translate-x-[200%] [animation-fill-mode:forwards] [font-family:var(--font-serif)] ${item.delayClass}`}
+              className={`relative cursor-pointer overflow-hidden rounded-lg px-3 py-2 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 transition-all duration-500 ease-smooth hover:translate-x-1 hover:bg-[#D6B6B6]/5 hover:text-[#B07070] active:bg-black/5 [font-family:var(--font-serif)] ${
+                open
+                  ? `translate-x-0 opacity-100 ${item.delayClass}`
+                  : "translate-x-4 opacity-0"
+              }`}
               data-testid={`link-mobile-nav-${item.label
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`}
