@@ -48,7 +48,7 @@ function MobileMenu({
   onClose: () => void;
   onOpenServices: () => void;
 }) {
-    const mobileItems = [
+  const mobileItems = [
     {
       href: "#services",
       label: "Servicios",
@@ -76,10 +76,8 @@ function MobileMenu({
 
   return (
     <div
-      className={`fixed inset-0 z-50 transition-all duration-500 md:hidden ${
-        open
-          ? "visible opacity-100"
-          : "invisible opacity-0 pointer-events-none"
+      className={`fixed inset-0 z-[100] transition-all duration-500 md:hidden ${
+        open ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
       }`}
     >
       <div
@@ -89,13 +87,13 @@ function MobileMenu({
       />
 
       <nav
-        className={`absolute right-0 top-0 h-full w-64 bg-white/90 backdrop-blur-xl shadow-2xl transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) ${
+        className={`absolute right-0 top-0 h-full w-64 bg-white/90 backdrop-blur-xl shadow-2xl transition-transform duration-700 ease-smooth ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
         data-testid="nav-mobile-menu"
       >
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-3">
-          <span className="text-[12px] font-light tracking-[0.22em] leading-tight uppercase text-black/70 [font-family:var(--font-serif)] max-w-[180px] drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">
+          <span className="max-w-[180px] text-[12px] font-light leading-tight tracking-[0.22em] uppercase text-black/70 [font-family:var(--font-serif)] drop-shadow-[0_0_8px_rgba(176,112,112,0.3)]">
             {BRAND.name}
           </span>
 
@@ -127,23 +125,26 @@ function MobileMenu({
             <button
               type="button"
               key={item.label}
-             onClick={() => {
-              if (item.action === "services") {
-                onOpenServices();
-                onClose();
-                return;
-              }
+              onClick={() => {
+                if (item.action === "services") {
+                  onOpenServices();
+                  onClose();
+                  return;
+                }
 
-              if (item.external) {
-                window.open(item.href, "_blank", "noreferrer");
-                onClose();
-                return;
-              }
+                if (item.external) {
+                  window.open(item.href, "_blank", "noreferrer");
+                  onClose();
+                  return;
+                }
 
-              onClose();
-              window.location.href = item.href;
-            }}
-              className={`relative overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 active:bg-black/5 transition-all duration-1000 ease-smooth hover:bg-[#D6B6B6]/5 hover:text-[#B07070] hover:translate-x-1 cursor-pointer opacity-0 animate-fade-up before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out [animation-fill-mode:forwards] [font-family:var(--font-serif)] ${item.delayClass}`}
+                onClose();
+
+                window.setTimeout(() => {
+                  window.location.assign(item.href);
+                }, 50);
+              }}
+              className={`relative cursor-pointer overflow-hidden rounded-lg px-3 py-1.5 text-left text-[13px] font-bold tracking-[0.2em] uppercase text-black/90 opacity-0 transition-all duration-1000 ease-smooth animate-fade-up active:bg-black/5 hover:translate-x-1 hover:bg-[#D6B6B6]/5 hover:text-[#B07070] before:absolute before:inset-0 before:translate-x-[-200%] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:transition-transform before:duration-1000 before:ease-in-out hover:before:translate-x-[200%] [animation-fill-mode:forwards] [font-family:var(--font-serif)] ${item.delayClass}`}
               data-testid={`link-mobile-nav-${item.label
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`}
