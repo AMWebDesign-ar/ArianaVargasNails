@@ -42,7 +42,7 @@ function getAdminEmail() {
 }
 
 function getLocation() {
-  return process.env.BOOKING_LOCATION || "Gascón 1967, Mar del Plata";
+  return process.env.BOOKING_LOCATION || "Córdoba 3980, Mar del Plata";
 }
 
 function getPublicSiteUrl() {
